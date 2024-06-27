@@ -1,4 +1,4 @@
 Title,URL,Description
 A C# implementation of the GCC-PHAT algorithm,https://github.com/pmarmaroli/gccphat,a command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique
 Matlab animations,https://github.com/pmarmaroli/matlab-animation,Some Matlab animations of key physics and signal processing concepts
-File encryption and decryption,https://github.com/pmarmaroli/CryptoWizard,a versatile command-line tool for AES file encryption, decryption, and key generation
+File encryption and decryption,https://github.com/pmarmaroli/CryptoWizard,a versatile command-line tool for AES file encryption decryption and key generation
