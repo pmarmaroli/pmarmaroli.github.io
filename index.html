@@ -1,41 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to My GitHub Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            font-size: 1.2em;
-            color: #666;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Profile of Patrick Marmaroli</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to My GitHub Page</h1>
-    <p>This page provides various tools and resources.</p>
-    <p><a href="bufferSizeCalculator.html">Go to the Buffer Size Calculator</a></p>
+    <header>
+        <div class="container">
+            <h1 id="name"></h1>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="#summary">Summary</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#positions">Positions</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="summary" class="main">
+            <h2>Professional Summary</h2>
+            <p id="headline"></p>
+            <p id="summary-text"></p>
+        </section>
+
+        <section id="education" class="education">
+            <h3>Education</h3>
+            <div id="education-content"></div>
+        </section>
+
+        <section id="positions" class="positions">
+            <h3>Professional Positions</h3>
+            <div id="positions-content"></div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Patrick Marmaroli</p>
+    </footer>
+
+    <script src="scripts/main.js"></script>
 </body>
 </html>
