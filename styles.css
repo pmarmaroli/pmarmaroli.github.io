@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f4f4f4;
+    background-color: #e0f7fa;
     margin: 0;
     padding: 0;
 }
@@ -12,35 +12,15 @@ body {
     overflow: hidden;
 }
 header {
-    background: #333;
+    background: #007bb5;
     color: #fff;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #333 3px solid;
-}
-header a {
-    color: #fff;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 16px;
+    border-bottom: #004d73 3px solid;
 }
 header h1 {
-    float: left;
     margin: 0;
     padding: 0 20px;
-}
-.navbar {
-    float: right;
-    margin-top: 10px;
-}
-.navbar ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.navbar li {
-    display: inline;
-    margin-left: 5px;
 }
 .main {
     padding: 20px;
@@ -49,27 +29,22 @@ header h1 {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 .main h2 {
-    color: #333;
+    color: #007bb5;
 }
 .main p {
     color: #666;
 }
-.education, .positions {
+.container .box {
     margin: 20px 0;
-}
-.education h3, .positions h3 {
-    background: #333;
-    color: #fff;
-    padding: 5px 10px;
-}
-.education div, .positions div {
     padding: 10px;
     background: #f9f9f9;
     border: 1px solid #ddd;
-    margin: 10px 0;
+}
+.container .box h3 {
+    color: #007bb5;
 }
 footer {
-    background: #333;
+    background: #007bb5;
     color: #fff;
     text-align: center;
     padding: 10px 0;
