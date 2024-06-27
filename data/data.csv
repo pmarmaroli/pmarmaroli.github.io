@@ -1,4 +1,4 @@
 Title,URL,Description
-"Project 1","https://example.com/project1","Description of Project 1"
+"A C# implementation of the GCC-PHAT algorithm","https://github.com/pmarmaroli/gccphat","a command-line tool for estimating the time delay, in milliseconds, versus time, between channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique"
 "Project 2","https://example.com/project2","Description of Project 2"
 "Project 3","https://example.com/project3","Description of Project 3"
