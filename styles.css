@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+header {
+    background: #333;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #333 3px solid;
+}
+header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+header h1 {
+    float: left;
+    margin: 0;
+    padding: 0 20px;
+}
+.navbar {
+    float: right;
+    margin-top: 10px;
+}
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.navbar li {
+    display: inline;
+    margin-left: 5px;
+}
+.main {
+    padding: 20px;
+    background: #fff;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.main h2 {
+    color: #333;
+}
+.main p {
+    color: #666;
+}
+.education, .positions {
+    margin: 20px 0;
+}
+.education h3, .positions h3 {
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+}
+.education div, .positions div {
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+}
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
