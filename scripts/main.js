@@ -20,9 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function parseCSV(text) {
     const lines = text.trim().split("\n");
     const headers = lines[0].split(";").map((header) => header.trim());
+
     return lines.slice(1).map((line) => {
       const values = line
-        .match(/(".*?"|[^";\s]+)(?=\s*;|\s*$)/g)
+        .split(/;(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/)
         .map((value) => value.replace(/(^"|"$)/g, "").trim());
       return headers.reduce((object, header, index) => {
         object[header] = values[index];

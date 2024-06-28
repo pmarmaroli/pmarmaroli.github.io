@@ -1,3 +1,11 @@
+/* General reset and box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -6,6 +14,8 @@ body {
     margin: 0;
     padding: 0;
 }
+
+/* Container styling */
 .container {
     width: 80%;
     margin: auto;
@@ -15,6 +25,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Header styling */
 header {
     background: #007bb5;
     color: #fff;
@@ -23,65 +35,87 @@ header {
     text-align: center;
     border-radius: 8px 8px 0 0;
 }
+
 header h1 {
     margin: 0;
     font-size: 2.5em;
-    color:#4b3832
+    color: #4b3832;
 }
+
+/* Navbar styling */
 .navbar {
     margin-top: 10px;
 }
+
 .navbar ul {
     margin: 0;
     padding: 0;
     list-style: none;
     text-align: center;
 }
+
 .navbar li {
     display: inline;
     margin-left: 15px;
-    color:#4b3832
+    color: #4b3832;
 }
+
 .navbar a {
     color: #4b3832;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
 }
+
+/* Main content styling */
 .main {
     padding: 20px;
     background: #fff;
     margin: 20px 0;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+
 .main h2 {
     color: #007bb5;
     margin-top: 0;
 }
+
 .main p {
     color: #666;
 }
+
+/* Box styling */
 .container .box {
     margin: 20px 0;
     padding: 20px;
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .container .box h3 {
     color: #007bb5;
     margin-top: 0;
 }
+
 .container .box a {
     color: #4b3832;
     text-decoration: none;
     font-weight: bold;
+    word-wrap: break-word; /* Ensure long URLs wrap correctly */
 }
+
 .container .box a:hover {
     text-decoration: underline;
 }
+
+.container .box p {
+    word-wrap: break-word; /* Ensure long text wraps correctly */
+}
+
+/* Footer styling */
 footer {
     background: #007bb5;
     color: #fff;
@@ -92,4 +126,39 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+}
+
+/* Responsive design for smartphones */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .navbar ul {
+        text-align: left;
+    }
+
+    .navbar li {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .main {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .container .box {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    footer {
+        padding: 5px 0;
+    }
 }
