@@ -19,11 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function parseCSV(text) {
     const lines = text.trim().split("\n");
-    const headers = lines[0].split(",");
+    const headers = lines[0].split(";").map((header) => header.trim());
     return lines.slice(1).map((line) => {
-      const values = line.split(",");
+      const values = line
+        .match(/(".*?"|[^";\s]+)(?=\s*;|\s*$)/g)
+        .map((value) => value.replace(/(^"|"$)/g, "").trim());
       return headers.reduce((object, header, index) => {
-        object[header.trim()] = values[index].trim();
+        object[header] = values[index];
         return object;
       }, {});
     });
@@ -46,12 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
     items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "box";
+      let url = item["URL"];
+      // Handle Markdown format for URL
+      if (url.startsWith("[") && url.includes("](")) {
+        const match = url.match(/\[(.*?)\]\((.*?)\)/);
+        url = match ? match[2] : url;
+      }
       div.innerHTML = `
-                <h3>${item["Title"]}</h3>
-                <a href="${item["URL"]}" target="_blank">${item["URL"]}</a>
-                <p>${item["Description"]}</p>
-                <p>${item["MoreInfo"]}</p>
-            `;
+                  <h3>${item["Title"]}</h3>
+                  <a href="${url}" target="_blank">${url}</a>
+                  <p>${item["Description"]}</p>
+                  <p>${item["MoreInfo"]}</p>
+              `;
       content.appendChild(div);
     });
   }
