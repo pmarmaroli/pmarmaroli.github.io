@@ -1,13 +1,13 @@
-Menu      ;Title                                       ;URL                                            ;Description; MoreInfo
-Github    ;A C# implementation of the GCC-PHAT algorithm ;[Gihub Project](https://github.com/pmarmaroli/gccphat)          ;a command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique;
-Github    ;Matlab animations                           ;https://github.com/pmarmaroli/matlab-animation ;Some Matlab animations of key physics and signal processing concepts;
-Github    ;AES file encryption and decryption          ;https://github.com/pmarmaroli/CryptoWizard     ;a versatile command-line tool for AES file encryption decryption and key generation.
-Contact   ;My Linkedin profile                         ;https://www.linkedin.com/in/pmarmaroli/        ;Let's connect;
-Projects  ;Vocametrix                                  ;https://www.vocametrix.com                     ;Voice-controlled games and audio analysis tools for speech therapy;
-Projects  ;Hidacs                                      ;https:/www.hidacs.ch                           ;Signal processing engineering services;
-Video     ;3D Sound with Matlab                        ;https://studio.youtube.com/video/S-NQ4vEIL_w   ;Implementation of an HRTF-based interface for 3D sound rendering;
-Animation ;Sound source localization                   ;https://youtu.be/gUbjNSG2UK4                   ;Localizing a sound source with a microphone array;
-Animation ;GCC-PHAT vs classical cross-correlation     ;https://youtu.be/wQo50Ot2UOw                   ;Visualizing Time Delay Estimation with GCC-PHAT and classical cross-correlation;
-Video     ;Audio analysis web platform                 ;https://youtu.be/yhOnry-2xuo                   ;a quick overview of the Vocametrix Audio Analysis platform;
-Video     ;Say one sound                               ;https://youtu.be/ap-6O9KR5GU                   ;A prototype of matlab-based game that reacts to voice and phoneme pronounciation;
-Projects  ;ChefFantastique                             ;https://www.cheffantastique.com/               ; AI-assistant that generates custom recipes.; [more info](pmarmaroli.github.io/moreinfo/cheffantastique.html)
+Menu      ,Title                                       ,URL                                            ,Description, MoreInfo
+Github    ,A C# implementation of the GCC-PHAT algorithm ,[Gihub Project](https://github.com/pmarmaroli/gccphat)          ,a command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique,
+Github    ,Matlab animations                           ,https://github.com/pmarmaroli/matlab-animation ,Some Matlab animations of key physics and signal processing concepts,
+Github    ,AES file encryption and decryption          ,https://github.com/pmarmaroli/CryptoWizard     ,a versatile command-line tool for AES file encryption decryption and key generation.
+Contact   ,My Linkedin profile                         ,https://www.linkedin.com/in/pmarmaroli/        ,Let's connect,
+Projects  ,Vocametrix                                  ,https://www.vocametrix.com                     ,Voice-controlled games and audio analysis tools for speech therapy,
+Projects  ,Hidacs                                      ,https:/www.hidacs.ch                           ,Signal processing engineering services,
+Video     ,3D Sound with Matlab                        ,https://studio.youtube.com/video/S-NQ4vEIL_w   ,Implementation of an HRTF-based interface for 3D sound rendering,
+Animation ,Sound source localization                   ,https://youtu.be/gUbjNSG2UK4                   ,Localizing a sound source with a microphone array,
+Animation ,GCC-PHAT vs classical cross-correlation     ,https://youtu.be/wQo50Ot2UOw                   ,Visualizing Time Delay Estimation with GCC-PHAT and classical cross-correlation,
+Video     ,Audio analysis web platform                 ,https://youtu.be/yhOnry-2xuo                   ,a quick overview of the Vocametrix Audio Analysis platform,
+Video     ,Say one sound                               ,https://youtu.be/ap-6O9KR5GU                   ,A prototype of matlab-based game that reacts to voice and phoneme pronounciation,
+Projects  ,ChefFantastique                             ,https://www.cheffantastique.com/               , AI-assistant that generates custom recipes., [more info](pmarmaroli.github.io/moreinfo/cheffantastique.html)
