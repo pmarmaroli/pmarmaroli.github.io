@@ -55,11 +55,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const match = url.match(/\[(.*?)\]\((.*?)\)/);
         url = match ? match[2] : url;
       }
+      let urlinfo = item["MoreInfo"];
+      // Handle Markdown format for URL
+      if (urlinfo.startsWith("[") && urlinfo.includes("](")) {
+        const match = urlinfo.match(/\[(.*?)\]\((.*?)\)/);
+        urlinfo = match ? match[2] : urlinfo;
+      }
       div.innerHTML = `
                   <h3>${item["Title"]}</h3>
                   <a href="${url}" target="_blank">${url}</a>
-                  <p>${item["Description"]}</p>
-                  <p>${item["MoreInfo"]}</p>
+                  <a href="${urlinfo}" target="_blank">${urlinfo}</a>
+                  <p>${item["Description"]}</p>                  
               `;
       content.appendChild(div);
     });
