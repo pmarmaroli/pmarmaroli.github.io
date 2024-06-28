@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.innerHTML = `
                   <h3>${item["Title"]}</h3>
                   <a href="${url}" target="_blank">${url}</a>
+                  <p></p>
                   <a href="${urlinfo}" target="_blank">${urlinfo}</a>
                   <p>${item["Description"]}</p>                  
               `;
