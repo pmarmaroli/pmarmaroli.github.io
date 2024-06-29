@@ -22,25 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const headers = lines[0].split(";").map((header) => header.trim());
 
     return lines.slice(1).map((line) => {
-      const values = line
-        .split(/;(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/)
-        .map((value) => value.replace(/(^"|"$)/g, "").trim());
-
-      // Replace URL and MoreInfo with markdown links if they are URLs
-      const formattedValues = values.map((value, index) => {
-        if (headers[index] === "URL" || headers[index] === "MoreInfo") {
-          if (value.startsWith("http")) {
-            return `[${headers[index]}](${value})`;
-          } else {
-            return value; // If not a URL, return as is
-          }
-        } else {
-          return value;
-        }
-      });
-
+      const values = line.split(";").map((value) => value.trim());
       return headers.reduce((object, header, index) => {
-        object[header] = formattedValues[index];
+        object[header] = values[index];
         return object;
       }, {});
     });
@@ -63,25 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
     items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "box";
-      let url = item["URL"];
-      // Handle Markdown format for URL
-      if (url.startsWith("[") && url.includes("](")) {
-        const match = url.match(/\[(.*?)\]\((.*?)\)/);
-        url = match ? match[2] : url;
-      }
-      let urlinfo = item["MoreInfo"];
-      // Handle Markdown format for URL
-      if (urlinfo.startsWith("[") && urlinfo.includes("](")) {
-        const match = urlinfo.match(/\[(.*?)\]\((.*?)\)/);
-        urlinfo = match ? match[2] : urlinfo;
-      }
       div.innerHTML = `
-                  <h3>${item["Title"]}</h3>
-                  <a href="${url}" target="_blank">${url}</a>
-                  <p></p>
-                  <a href="${urlinfo}" target="_blank">${urlinfo}</a>
-                  <p>${item["Description"]}</p>                  
-              `;
+        <h3>${item["Title"]}</h3>
+        <a href="${item["URL"]}" target="_blank">${item["URL"]}</a>
+        <p></p>
+        <a href="${item["MoreInfo"]}" target="_blank">${item["MoreInfo"]}</a>
+        <p>${item["Description"]}</p>                  
+      `;
       content.appendChild(div);
     });
   }
