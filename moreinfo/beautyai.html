@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>BeautyAI - Development Description</title>
+    <link rel="stylesheet"
+        href="..\styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>About BeautyAI</h1>
+    </header>
+    <div class="container">
+        <main>
+            <section>
+                <p>The development of BeautyAI started with the goal of creating an accessible platform for assessing
+                    skin quality using modern AI technologies. The project leverages AI models to provide detailed skin
+                    quality assessments, making them more accessible to users globally.</p>
+            </section>
+
+            <section>
+                <h2>Overview</h2>
+                <p><strong>BeautyAI</strong> is an AI-powered platform designed to facilitate the analysis of skin
+                    quality based on user-provided images. The development process focused on integrating advanced AI
+                    models to ensure accurate assessments and provide personalized skincare recommendations.</p>
+            </section>
+
+            <section>
+                <h2>User Interface and Experience</h2>
+                <ul>
+                    <li><strong>Camera Integration:</strong> Users can capture images directly through the platform,
+                        ensuring real-time analysis and feedback.</li>
+                    <li><strong>Assessment Display:</strong> Detailed assessment results are displayed with information
+                        about various skin issues and recommended solutions.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Backend Functionality</h2>
+                <ul>
+                    <li><strong>Image Processing:</strong> Utilized Sharp for image resizing to ensure optimal
+                        dimensions for analysis. Images are converted to Base64 encoding for AI model processing.</li>
+                    <li><strong>AI Integration:</strong> Integrated OpenAI's GPT-4 model to analyze skin images and
+                        generate detailed reports, including the severity of skin issues and recommended natural
+                        solutions.</li>
+                    <li><strong>Data Management:</strong> Implemented file system operations to store intermediate data
+                        like Base64 encoded images and JSON results. A cron job was set up to clear temporary data
+                        periodically.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Stripe Payment Integration</h2>
+                <ul>
+                    <li><strong>Payment Handling:</strong> Configured Stripe to handle payment sessions, enabling users
+                        to unlock detailed reports upon successful payment.</li>
+                    <li><strong>Payment State Management:</strong> Managed payment states to blur/unblur content based
+                        on payment status, enhancing the user experience.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Post-Processing and Error Handling</h2>
+                <ul>
+                    <li><strong>Error Handling:</strong> Implemented robust error handling throughout the image
+                        processing and AI integration steps to ensure smooth user experience.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Technical Stack and Tools</h2>
+                <ul>
+                    <li><strong>Frontend Development:</strong> The frontend is developed using HTML, CSS, and
+                        JavaScript, providing a responsive and user-friendly interface.</li>
+                    <li><strong>Backend Development:</strong> The backend uses Node.js and Express for handling API
+                        requests, data processing, and integration with AI models.</li>
+                    <li><strong>Version Control and Deployment:</strong> Git is used for version control, and the
+                        application is set up for deployment on Azure using GitHub Actions for CI/CD.</li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <p><a href="mailto:patrick.marmaroli@gmail.com">patrick.marmaroli@gmail.com</a></p>
+    </footer>
+
+</body>
+
+</html>

@@ -85,6 +85,11 @@ header h1 {
     color: #666;
 }
 
+/* Spacing for paragraphs and headers */
+p, h1, h2, h3, ul, li {
+    margin-bottom: 15px;
+}
+
 /* Box styling */
 .container .box {
     margin: 20px 0;
