@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
       div.className = "box";
       div.innerHTML = `
         <h3>${item["Title"]}</h3>
+        <p>${item["Description"]}</p>
         <a href="${item["URL"]}" target="_blank">${item["URL"]}</a>
         <p></p>
-        <a href="${item["MoreInfo"]}" target="_blank">${item["MoreInfo"]}</a>
-        <p>${item["Description"]}</p>                  
+        <a href="${item["MoreInfo"]}" target="_blank">${item["MoreInfo"]}</a>                          
       `;
       content.appendChild(div);
     });
