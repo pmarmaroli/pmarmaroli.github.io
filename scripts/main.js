@@ -47,12 +47,22 @@ document.addEventListener("DOMContentLoaded", function () {
     items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "box";
+
+      // Extracting link labels from the Markdown-style links
+      const urlLabel = item["URL"].match(/\[([^\]]+)\]/)[1];
+      const moreInfoLabel = item["MoreInfo"].match(/\[([^\]]+)\]/)[1];
+
+      // Displaying item information with extracted labels
       div.innerHTML = `
         <h3>${item["Title"]}</h3>
         <p>${item["Description"]}</p>
-        <a href="${item["URL"]}" target="_blank">${item["URL"]}</a>
+        <a href="${
+          item["URL"].match(/\(([^)]+)\)/)[1]
+        }" target="_blank">${urlLabel}</a>
         <p></p>
-        <a href="${item["MoreInfo"]}" target="_blank">${item["MoreInfo"]}</a>                          
+        <a href="${
+          item["MoreInfo"].match(/\(([^)]+)\)/)[1]
+        }" target="_blank">${moreInfoLabel}</a>                          
       `;
       content.appendChild(div);
     });
