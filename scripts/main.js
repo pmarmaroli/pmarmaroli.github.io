@@ -25,8 +25,22 @@ document.addEventListener("DOMContentLoaded", function () {
       const values = line
         .split(/;(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/)
         .map((value) => value.replace(/(^"|"$)/g, "").trim());
+
+      // Replace URL and MoreInfo with markdown links if they are URLs
+      const formattedValues = values.map((value, index) => {
+        if (headers[index] === "URL" || headers[index] === "MoreInfo") {
+          if (value.startsWith("http")) {
+            return `[${headers[index]}](${value})`;
+          } else {
+            return value; // If not a URL, return as is
+          }
+        } else {
+          return value;
+        }
+      });
+
       return headers.reduce((object, header, index) => {
-        object[header] = values[index];
+        object[header] = formattedValues[index];
         return object;
       }, {});
     });
