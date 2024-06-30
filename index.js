@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("data/data.csv")
+  fetch("data.csv")
     .then((response) => response.text())
     .then((data) => {
       const items = parseCSV(data);
@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error fetching the CSV file:", error));
 
   function parseCSV(text) {
-    const lines = text.trim().split("\n");
-    const headers = lines[0].split(";").map((header) => header.trim());
+    const lines = text.trim().split(/\r?\n/); // Split using both \n and \r\n line endings
+    const headers = lines[0].split(",").map((header) => header.trim());
 
     return lines.slice(1).map((line) => {
-      const values = line.split(";").map((value) => value.trim());
+      const values = line.split(",").map((value) => value.trim());
       return headers.reduce((object, header, index) => {
         object[header] = values[index];
         return object;
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   window.filterItems = function (menu) {
-    fetch("data/data.csv")
+    fetch("data.csv")
       .then((response) => response.text())
       .then((data) => {
         const items = parseCSV(data);
@@ -44,26 +44,29 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayItems(items) {
     const content = document.getElementById("content");
     content.innerHTML = ""; // Clear previous content
+
     items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "box";
 
       // Extracting link labels from the Markdown-style links
-      const urlLabel = item["URL"].match(/\[([^\]]+)\]/)[1];
-      const moreInfoLabel = item["MoreInfo"].match(/\[([^\]]+)\]/)[1];
+      const urlMatch = item["URL"].match(/\[([^\]]+)\]\(([^)]+)\)/);
+      const moreInfoMatch = item["MoreInfo"].match(/\[([^\]]+)\]\(([^)]+)\)/);
 
-      // Displaying item information with extracted labels
+      // Displaying item information with extracted labels if matches found
+      const urlLabel = urlMatch ? urlMatch[1] : "URL";
+      const moreInfoLabel = moreInfoMatch ? moreInfoMatch[1] : "";
+
+      const urlHref = urlMatch ? urlMatch[2] : "#";
+      const moreInfoHref = moreInfoMatch ? moreInfoMatch[2] : "#";
+
       div.innerHTML = `
-        <h3>${item["Title"]}</h3>
-        <p>${item["Description"]}</p>
-        <a href="${
-          item["URL"].match(/\(([^)]+)\)/)[1]
-        }" target="_blank">${urlLabel}</a>
-        <p></p>
-        <a href="${
-          item["MoreInfo"].match(/\(([^)]+)\)/)[1]
-        }" target="_blank">${moreInfoLabel}</a>                          
-      `;
+            <h3>${item["Title"]}</h3>
+            <p>${item["Description"]}</p>
+            <a href="${urlHref}" target="_blank">${urlLabel}</a>
+            <p></p>
+            <a href="${moreInfoHref}" target="_blank">${moreInfoLabel}</a>                          
+        `;
       content.appendChild(div);
     });
   }
