@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const moreInfoMatch = item["MoreInfo"].match(/\[([^\]]+)\]\(([^)]+)\)/);
 
       // Displaying item information with extracted labels if matches found
-      const urlLabel = urlMatch ? urlMatch[1] : "URL";
+      const urlLabel = urlMatch ? urlMatch[1] : "";
       const moreInfoLabel = moreInfoMatch ? moreInfoMatch[1] : "";
 
       const urlHref = urlMatch ? urlMatch[2] : "#";
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       div.innerHTML = `
             <h3>${item["Title"]}</h3>
-            <p>${item["Description"]}</p>
+            <p style="color:black">${item["Description"]}</p>
             <a href="${urlHref}" target="_blank">${urlLabel}</a>
             <p></p>
             <a href="${moreInfoHref}" target="_blank">${moreInfoLabel}</a>                          
