@@ -14,3 +14,4 @@ Contact   ,My Linkedin                           ,[linkedin/pmarmaroli](https://
 Contact   ,My Github                             ,[github/pmarmaroli](https://github.com/pmarmaroli),,
 Contact   ,My Email                                      ,[gmail](hmailto:patrick.marmaroli@gmail.com),,
 Codes    ,HadithGPT                                    ,[go to repo](https://github.com/pmarmaroli/HadithGPT)           ,accessible platform for searching and reading Hadiths using modern LLM technologies,[read technical details](/moreinfo/hadithgpt.html)  
+Codes    ,A script to print out the directory tree structure to the console, [go to repo](https://github.com/pmarmaroli/directory-tree-generator), A PowerShell script that generates a tree-like structure of a directory and its subdirectories. The script uses recursion to traverse the directory structure and prints out the structure with a clear distinction between folders and files.,  
