@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Project Description - TroubleShot</title>
+    <link rel="stylesheet"
+        href="..\styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>About TroubleShot</h1>
+    </header>
+    <div class="container">
+        <main>
+            <section>
+                <p>TroubleShot is a platform designed to help users diagnose and solve DIY problems by providing
+                    detailed instructions and necessary tools based on user-provided images and descriptions. The
+                    project leverages AI to analyze images and generate personalized solutions.</p>
+            </section>
+
+            <section>
+                <h2>Overview</h2>
+                <p><strong>TroubleShot</strong> aims to simplify the DIY troubleshooting process by using image analysis
+                    to provide step-by-step instructions and a list of necessary tools. Users can upload images of their
+                    problems and receive tailored solutions.</p>
+            </section>
+
+            <section>
+                <h2>User Interface and Experience</h2>
+                <ul>
+                    <li><strong>Image Capture:</strong> Users can capture and upload images directly through the
+                        platform for analysis.</li>
+                    <li><strong>Multilingual Support:</strong> The platform supports multiple languages including
+                        English, French, and Estonian, enhancing accessibility for a global audience.</li>
+                    <li><strong>Interactive Elements:</strong> The interface includes interactive elements like tool
+                        selection and instruction lists, making it easy for users to follow the provided solutions.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Frontend Development</h2>
+                <ul>
+                    <li><strong>Technologies Used:</strong> The frontend is built using HTML, CSS, and JavaScript,
+                        ensuring a responsive and user-friendly interface.</li>
+                    <li><strong>Language Switching:</strong> Implemented i18next for dynamic content translation based
+                        on the user's selected language.</li>
+                    <li><strong>Camera Integration:</strong> Used the MediaDevices API to enable users to capture images
+                        directly within the application.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Backend Development</h2>
+                <ul>
+                    <li><strong>Image Processing:</strong> Utilized Node.js and Express for handling image uploads and
+                        processing. Integrated OpenAI's GPT-4 model to analyze images and generate detailed reports.
+                    </li>
+                    <li><strong>Data Management:</strong> Implemented file system operations to store and manage
+                        uploaded images and analysis results.</li>
+                    <li><strong>Payment Integration:</strong> Configured Stripe to handle payments, allowing users to
+                        unlock detailed reports upon successful payment.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Post-Processing and Error Handling</h2>
+                <ul>
+                    <li><strong>Error Handling:</strong> Implemented robust error handling throughout the image
+                        processing and AI integration steps to ensure a smooth user experience.</li>
+                    <li><strong>Data Cleanup:</strong> Set up a cron job to periodically clear temporary data,
+                        maintaining optimal performance and storage management.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Technical Stack and Tools</h2>
+                <ul>
+                    <li><strong>Frontend:</strong> HTML, CSS, JavaScript, i18next</li>
+                    <li><strong>Backend:</strong> Node.js, Express, OpenAI API, Stripe API</li>
+                    <li><strong>Deployment:</strong> The application is deployed using a cloud-based platform, with
+                        GitHub Actions for CI/CD.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Watch the Demo</h2>
+                <iframe width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/your_demo_video"
+                    frameborder="0"
+                    allowfullscreen></iframe>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <p><a href="https://pmarmaroli.github.io/">back to menu</a></p>
+    </footer>
+
+</body>
+
+</html>

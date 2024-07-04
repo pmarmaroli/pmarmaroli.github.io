@@ -10,7 +10,7 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333;
-    background: linear-gradient(90deg, #e0f7fa, #007bb5);
+    background: linear-gradient(90deg, #007bb5, #007bb5);
     margin: 0;
     padding: 0;
 }
@@ -28,7 +28,7 @@ body {
 
 /* Header styling */
 header {
-    background: #007bb5;
+    background: #e0f7fa;
     color: #fff;
     padding: 30px 0;
     border-bottom: #4b3832 3px solid;
@@ -125,7 +125,7 @@ p, h1, h2, h3, ul, li {
 
 /* Footer styling */
 footer {
-    background: #007bb5;
+    background: #e0f7fa;
     color: #fff;
     text-align: center;
     padding: 10px 0;
