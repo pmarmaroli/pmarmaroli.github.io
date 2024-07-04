@@ -10,9 +10,22 @@ body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     color: #333;
-    background: linear-gradient(135deg, #ffffff, #007bb5); /* Wood-like gradient background DEB887*/
+    background: linear-gradient(135deg, #ffffff, #007bb5); /* Wood-like gradient background DEB887 */
     margin: 0;
     padding: 0;
+}
+
+/* Header styling */
+header {
+    text-align: center;
+    padding: 20px;
+    background: #007bb5;
+    color: #fff;
+}
+
+header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
 }
 
 /* Container styling */
@@ -33,32 +46,43 @@ body {
 
 .container .box:hover {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-    
 }
 
-.container .box h3 {
+.container h2 {
     color: #007bb5;
     margin-top: 30px;
     font-weight: 600;
 }
 
-.container .box a {
-    color: #ccc; /* Replaced color */
+.container a {
+    color: #5a9bd5; /* Replaced color */
     text-decoration: none;
     font-weight: bold;
     word-wrap: break-word; /* Ensure long URLs wrap correctly */
     transition: color 0.3s ease;
-    font-size: 12px;
-
+    text-align: right;
 }
 
-.container .box a:hover {
-    color: #007bb5;
+.container a:hover {
+    color: #005f8d;
     text-decoration: underline;
 }
 
-.container .box p {
+.container p,
+.container ul {
+    margin: 20px 0;
     word-wrap: break-word; /* Ensure long text wraps correctly */
+}
+
+.container li {
+    margin: 10px 0;
+}
+
+/* Logo styling */
+.intro .logo {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 200px; /* Adjust the size as needed */
 }
 
 /* Footer styling */
@@ -80,10 +104,6 @@ footer {
 
     header h1 {
         font-size: 2em;
-    }
-
-    header h2 {
-        font-size: 1em;
     }
 
     .navbar ul {
