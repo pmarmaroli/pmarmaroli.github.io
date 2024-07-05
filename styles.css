@@ -113,7 +113,12 @@ footer {
 @media (max-width: 768px) {
     .container {
         width: 90%;
-        padding: 15px;
+        padding: 5px;
+    }
+
+    .container a {
+        color:black;
+        font-size: small;
     }
 
     header h1 {
