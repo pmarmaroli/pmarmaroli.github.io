@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const menu = document.getElementById("menu");
       menuItems.forEach((menuItem) => {
         const li = document.createElement("li");
-        li.innerHTML = `<a onclick="filterItems('${menuItem}')">${menuItem}</a>`;
+        li.innerHTML = `<am onclick="filterItems('${menuItem}')">${menuItem}</am>`;
         menu.appendChild(li);
       });
 
