@@ -167,3 +167,24 @@ footer {
         transform: translateY(0);
     }
 }
+
+
+
+#menu-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#menu-buttons button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    flex: 1 1 auto;
+}
+
+#menu-buttons button.active {
+    background-color: #5db3db;
+    color: white;
+}
