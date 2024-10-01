@@ -1,25 +1,24 @@
-Menu                    ,Title                                          ,URL,Description,MoreInfo
-Public Repositories       ,A C# implementation of the GCC-PHAT algorithm  ,[access the repository](https://github.com/pmarmaroli/gccphat)          ,A command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique ,[read the Linkedin article](https://www.linkedin.com/pulse/accurate-time-delay-estimation-gcc-phat-patrick-marmaroli-eu7jf/?trackingId=Wy8nO%2By6Ssqw0ffHPNFgNQ%3D%3D)
-Public Repositories       ,Matlab animations                              ,[access the repository](https://github.com/pmarmaroli/matlab-animation)   ,Some Matlab animations of key physics and signal processing Prototypes                                                                                                       , 
-Public Repositories       ,AES file encryption and decryption             ,[access the repository](https://github.com/pmarmaroli/CryptoWizard)       ,A versatile command-line tool for AES file encryption decryption and key generation.                                                                                       ,
-Demos & Prototypes       ,3D Sound with Matlab                           ,[listen to the demo on Youtube](https://youtu.be/S-NQ4vEIL_w)   ,Implementation of an HRTF-based interface for 3D sound rendering                                                                                                           ,
-Demos & Prototypes       ,Sound source localization                      ,[see the animation on Youtube](https://youtu.be/gUbjNSG2UK4)              ,Localizing a sound source with a microphone array                                                                                                                          , [download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/sound_source_localization_tdoa_two_mics.m)
-Demos & Prototypes       ,GCC-PHAT vs classical cross-correlation        ,[see the animation on Youtube](https://youtu.be/wQo50Ot2UOw)              ,Visualizing Time Delay Estimation with GCC-PHAT and classical cross-correlation                                                                                            ,[download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/time_delay_estimation_xcorr_vs_gccphat.m)
-Demos & Prototypes       ,Audio analysis web platform                    ,[no public repo]()                   ,A web platform for intuitive audio analysis (pitch - speech transcription - pronunciation assessment - waveform visualization and more),[see the demo and read technical details](/moreinfo/audio_analysis_platform.html) platform                                                                                                                 ,
-Demos & Prototypes       ,Say one sound                                  ,[see the concept on Youtube](https://youtu.be/ap-6O9KR5GU)                   ,A prototype of matlab-based game that reacts to voice and phoneme pronunciation                                                                                            ,
-Demos & Prototypes    ,ChefFantastique                                ,[visit the website](https://www.cheffantastique.com/)              ,AI-assistant that generates custom recipes.                                                                                                                                ,[read technical details](/moreinfo/cheffantastique.html)
-Demos & Prototypes    ,Pronunciation Assessment Game                   ,[no public repo]()              ,Pronunciation Assessment Game for young patients of speech therapists.                                                                                                                                ,[read technical details](/moreinfo/pronunciation_assessment_game.html)
-
-Startups    ,Vocametrix                                     ,[visit the website](https://www.vocametrix.com)                    ,Voice-controlled games and audio analysis tools for speech therapy                                                                                                         ,
-Startups    ,Hidacs                                         ,[visit the website](https://www.hidacs.ch)                         ,Signal processing engineering services                                                                                                                                     ,
-Demos & Prototypes       ,HadithGPT                                      ,[no public repo]()                                             ,An intuitive platform for searching and reading Hadiths using modern LLM technologies,[see the demo and read technical details](/moreinfo/hadithgpt.html)  
-Demos & Prototypes       ,TroubleShot                                    ,[no public repo]()                                             ,A computer vision-based DIY assistant,[see the demo and read technical details](/moreinfo/troubleshot.html)   
-Education,  2008-2013 - Phd Thesis in Acoustics & Audio Signal Processing, ,Swiss Federal Institute of Technology - Switzerland - Bimodal sound source tracking applied to road traffic monitoring, [link to my thesis](https://infoscience.epfl.ch/record/183751?v=pdf) 
-Education,  2007-2008 - Master Thesis in Signal Processing, ,Université du Sud Toulon Var - France - Signal Processing & Psychoacoustics & Trajectography, 
-Education,  2005-2007 - Software Engineering School, ,Institut Supérieur de l'Electronique et du Numérique - Toulon France, [school website](https://isen-mediterranee.fr/) 
-Education, 2003-2005 - Higher School Preparatory Classes, , Lycée Lachenal d'Argonay - France - Physics & Engineering Sciences,
-Education, 1999-2003 - High School, , Lycée Mme de Staël St-Julien-en-Genevois France - Scientific Baccalaureate,
-Positions,Jan 2022 -> Now: MICROSOFT,[To know more about my activity (local tech journal)](https://digipro.geenius.ee/blogi/microsofti-blogi/tallinnas-kaib-too-lahenduse-kallal-mis-aitaks-ule-maailma-videokonevasimusest-voitu-saada/),Senior Audio Engineer, 
+Menu,Title,URL,Description,MoreInfo
+Public Repositories,A C# implementation of the GCC-PHAT algorithm,[access the repository](https://github.com/pmarmaroli/gccphat),A command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique,[read the Linkedin article](https://www.linkedin.com/pulse/accurate-time-delay-estimation-gcc-phat-patrick-marmaroli-eu7jf/?trackingId=Wy8nO%2By6Ssqw0ffHPNFgNQ%3D%3D)
+Public Repositories,Matlab animations,[access the repository](https://github.com/pmarmaroli/matlab-animation),Some Matlab animations of key physics and signal processing Prototypes, 
+Public Repositories,AES file encryption and decryption,[access the repository](https://github.com/pmarmaroli/CryptoWizard),A versatile command-line tool for AES file encryption decryption and key generation.,
+Demos & Prototypes,3D Sound with Matlab,[listen to the demo on Youtube](https://youtu.be/S-NQ4vEIL_w),Implementation of an HRTF-based interface for 3D sound rendering,
+Demos & Prototypes,Sound source localization,[see the animation on Youtube](https://youtu.be/gUbjNSG2UK4),Localizing a sound source with a microphone array, [download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/sound_source_localization_tdoa_two_mics.m)
+Demos & Prototypes,GCC-PHAT vs classical cross-correlation,[see the animation on Youtube](https://youtu.be/wQo50Ot2UOw),Visualizing Time Delay Estimation with GCC-PHAT and classical cross-correlation,[download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/time_delay_estimation_xcorr_vs_gccphat.m)
+Demos & Prototypes,Audio analysis web platform,[no public repo](),A web platform for intuitive audio analysis (pitch - speech transcription - pronunciation assessment - waveform visualization and more),[see the demo and read technical details](/moreinfo/audio_analysis_platform.html) platform,
+Demos & Prototypes,Say one sound,[see the concept on Youtube](https://youtu.be/ap-6O9KR5GU),A prototype of matlab-based game that reacts to voice and phoneme pronunciation,
+Demos & Prototypes,ChefFantastique,[visit the website](https://www.cheffantastique.com/),AI-assistant that generates custom recipes.,[read technical details](/moreinfo/cheffantastique.html)
+Demos & Prototypes,Pronunciation Assessment Game,[see the demo on Facebook](https://www.facebook.com/reel/888272712718230),Pronunciation Assessment Game for young patients of speech therapists,[read technical details](/moreinfo/pronunciation_assessment_game.html)
+Startups,Vocametrix,[visit the website](https://www.vocametrix.com),Voice-controlled games and audio analysis tools for speech therapy,
+Startups,Hidacs,[visit the website](https://www.hidacs.ch),Signal processing engineering services,
+Demos & Prototypes,HadithGPT,[no public repo](),An intuitive platform for searching and reading Hadiths using modern LLM technologies,[see the demo and read technical details](/moreinfo/hadithgpt.html)
+Demos & Prototypes,TroubleShot,[no public repo](),A computer vision-based DIY assistant,[see the demo and read technical details](/moreinfo/troubleshot.html) 
+Education,2008-2013 - Phd Thesis in Acoustics & Audio Signal Processing,,Swiss Federal Institute of Technology - Switzerland - Bimodal sound source tracking applied to road traffic monitoring, [link to my thesis](https://infoscience.epfl.ch/record/183751?v=pdf) 
+Education,2007-2008 - Master Thesis in Signal Processing,,Université du Sud Toulon Var - France - Signal Processing & Psychoacoustics & Trajectography, 
+Education,2005-2007 - Software Engineering School,,Institut Supérieur de l'Electronique et du Numérique - Toulon France, [school website](https://isen-mediterranee.fr/) 
+Education, 2003-2005 - Higher School Preparatory Classes,, Lycée Lachenal d'Argonay - France - Physics & Engineering Sciences,
+Education, 1999-2003 - High School,, Lycée Mme de Staël St-Julien-en-Genevois France - Scientific Baccalaureate,
+Positions,Jan 2022 -> Now: MICROSOFT,[To know more about my activity (Estonian press article)](https://digipro.geenius.ee/blogi/microsofti-blogi/tallinnas-kaib-too-lahenduse-kallal-mis-aitaks-ule-maailma-videokonevasimusest-voitu-saada/),Senior Audio Engineer, 
 Positions,Oct 2021 -> Dec 2021: ONFIDO,[Development of an anti-spoofing technology using ultrasound](https://onfido.com/press-release/onfido-acquires-eyn-to-provide-innovative-acoustic-based-liveness-detection-amid-record-breaking-global-revenue-growth/),Audio Signal Processing Engineer (as a freelance),
 Positions,Jul 2020 -> Sep 2021: HEPIA,[Using loudspeaker for safety detection](https://www.hesge.ch/hepia/recherche-developpement/projets-recherche/earsens),Scientific Collaborator,
 Positions,Jan 2020 -> Aug 2021: HED,[Development of a luxury headphone](https://www.getunity.com/),Audio Department Manager,
@@ -28,11 +27,7 @@ Positions,Aug 2014 -> Jun 2016: PRONA,[Engineering services in building and envi
 Positions,Mar 2013 -> Sep 2014: EPFL,,Post-doctoral Research Scientist,
 Positions,Oct 2008 -> Feb 2013: EPFL,[Bimodal sound source tracking applied to road trafic monitoring](https://infoscience.epfl.ch/record/183751?v=pdf),Phd Student,
 Positions,Mar 2009 -> Aug 2009: CNRS,,Master Thesis,
-Contact     ,My Linkedin                                    ,[linkedin/pmarmaroli](https://www.linkedin.com/in/pmarmaroli)            ,,
-Contact     ,My Github                                      ,[github/pmarmaroli](https://github.com/pmarmaroli)             ,,
-Contact     ,My Email                                       ,[gmail](hmailto:patrick.marmaroli@gmail.com)                   ,,   
+Contact,My Linkedin,[linkedin/pmarmaroli](https://www.linkedin.com/in/pmarmaroli),,
+Contact,My Github,[github/pmarmaroli](https://github.com/pmarmaroli),,
+Contact,My Email,[gmail](hmailto:patrick.marmaroli@gmail.com),, 
 Contact,Patents & Publications,[Google Scholar](https://scholar.google.com/citations?user=Qa_P6n8AAAAJ&hl=en&oi=ao),,
-
-
-
-

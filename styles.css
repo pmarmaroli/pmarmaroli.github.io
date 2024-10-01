@@ -25,7 +25,7 @@ header h1 {
 .container {
     width: 60%;
     margin: 40px auto;
-    background: whitesmoke;
+    background: white;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -35,14 +35,14 @@ header h1 {
 .container:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 
 .container .box {
     padding: 15px;
     margin: 15px 0;
-    background-color: white; /* Initial background color */
+    background-color: #b7d3e1; /* Initial background color */
     transition: background-color 0.8s ease; /* Optional: adds a smooth transition */
     border-radius: 20px;
 }
