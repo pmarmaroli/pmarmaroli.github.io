@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Audio Comparison Tool - Development Description</title>
+    <link rel="stylesheet"
+        href="..\styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Patrick Marmaroli</h1>
+        <h2><em>Senior Audio Engineer at Microsoft - Tech Entrepreneur - Signal Processing & AI Specialist</em></h2>
+    </div>
+    <div class="container"
+        style="display:flex;align-items:center;justify-content:center">
+        <img src="audiocompare.png"
+            style="width: 200px;"
+            alt="Audio Comparison Logo"
+            class="logo">
+    </div>
+    <main>
+        <div class="container">
+            <section class="intro">
+                <h1>About the Audio Comparison Tool</h1>
+                <p>This web application enables users to upload multiple audio files and switch between them for easy
+                    comparative listening. The tool was designed for users who need a simple way to compare multiple
+                    audio files, allowing easy playback and sharing of audio content via a shareable key system.</p>
+            </section>
+
+            <section>
+                <h2>Overview</h2>
+                <p><strong>Audio Comparison Tool</strong> facilitates the seamless comparison of audio files through a
+                    simple interface and interactive controls.</p>
+            </section>
+
+            <section>
+                <h2>User Interface and Experience</h2>
+                <ul>
+                    <li><strong>Interactive Audio Controls:</strong> Users can play, pause, and switch between different
+                        audio files using an intuitive interface with waveform visualizations.</li>
+                    <li><strong>Waveform Display:</strong> Each audio file is displayed with a visual waveform, giving
+                        users more control over playback and navigation through the tracks.</li>
+                    <li><strong>Project Creation:</strong> Users can create their own projects by uploading multiple
+                        audio
+                        files, which are organized under a unique project name for future reference and sharing.</li>
+                    <li><strong>Project Selection:</strong> Users can select projects using a public key, allowing
+                        others to
+                        remotely access and listen to the uploaded audio files.</li>
+                </ul>
+
+            </section>
+
+            <section>
+                <h2>Backend Functionality</h2>
+                <ul>
+                    <li><strong>Audio File Handling:</strong> Audio files are uploaded via the user interface, and the
+                        server processes these files to make them available for comparison. The application supports
+                        multiple
+                        file uploads and different audio formats, with all audio files stored in Azure Storage
+                        containers.</li>
+                    <li><strong>Public Key Access:</strong> Users can choose a public key, similar to a password, which
+                        they can share with others. This key is linked to their audio project, allowing other users to
+                        access and listen to the shared audio files remotely by entering the provided key.</li>
+                    <li><strong>API Integration:</strong> The backend handles API requests to retrieve audio files,
+                        project data, and related labels for audio tagging from Azure Storage containers.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Post-Processing and Error Handling</h2>
+                <ul>
+                    <li><strong>Audio Label Management:</strong> Users can upload label files created with Audacity to
+                        tag specific time
+                        segments in the audio files. These labels are processed and displayed on the waveform, providing
+                        additional
+                        context during playback.</li>
+                    <li><strong>Error Handling:</strong> The application includes robust error handling to manage
+                        invalid public keys, failed audio uploads, and unsupported file formats.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Technical Stack and Tools</h2>
+                <ul>
+                    <li><strong>Frontend Development:</strong> The frontend is built using HTML, CSS, and JavaScript,
+                        incorporating WaveSurfer.js for audio visualization and control.</li>
+                    <li><strong>Backend Development:</strong> The backend handles file uploads, project creation, and
+                        API
+                        requests to retrieve audio and label data. It is integrated with the public key system for user
+                        access
+                        control.</li>
+                    <li><strong>Data Management:</strong> The server manages audio files and project data, ensuring that
+                        files are accessible based on user input and public keys.</li>
+                    <li><strong>Deployment:</strong> The application is deployed on the Azure (cloud) platform to handle
+                        file storage and access for multiple users.</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- <div class="container" style="display:flex;align-items:center;justify-content:center">
+            <section>
+                <h1>Watch the demo</h1>
+                <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+            </section>
+        </div> -->
+    </main>
+
+    <footer>
+        <p><a href="https://pmarmaroli.github.io/">back to menu</a></p>
+    </footer>
+
+</body>
+
+</html>
