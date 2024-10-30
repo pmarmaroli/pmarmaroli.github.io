@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const timestamp = new Date().getTime(); // Use current timestamp to prevent caching
-  fetch(`data.csv?v=${timestamp}`) // Appending timestamp to CSV URL
+  fetch(`/data.csv?v=${timestamp}`) // Appending timestamp to CSV URL
     .then((response) => response.text())
     .then((data) => {
       const items = parseCSV(data);
