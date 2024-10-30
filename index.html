@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
         rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
 
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
@@ -16,9 +17,18 @@
 <body>
     <header>
         <div class="container">
-            <h1>Patrick Marmaroli</h1>
-            <h2><em>Senior Audio Engineer at Microsoft - Tech Entrepreneur - Signal Processing & AI Specialist</em></h2>
+            <h1 style="text-align: center;font-size:45px">Patrick Marmaroli</h1>
+            <h2 style="text-align: center;font-size:45px"><em>Signal
+                    Processing & AI Specialist, Tech Entrepreneur</em></h2>
+            <div style="display: flex; justify-content: center;">
+                <div id="word-cloud-container"
+                    style="margin-top:50px;margin-bottom:50px;width: 90%; height: 200px;">
+                </div>
+            </div>
         </div>
+
+
+
     </header>
     <div class="container">
         <div id="menu-buttons"
@@ -27,8 +37,14 @@
 
             </nav>
         </div>
+
+
         <div class="container"
             id="content">
+            <p id="placeholder-text"
+                style="text-align:center;font-size:30px">Welcome ! Click on a section to dive into my
+                projects and
+                experience...</p>
             <!-- Dynamic content will be inserted here -->
         </div>
 
