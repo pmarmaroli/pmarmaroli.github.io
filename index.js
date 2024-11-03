@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const moreInfoHref = moreInfoMatch ? moreInfoMatch[2] : "#";
 
         div.innerHTML = `
-          <h3>${item["Title"]}</h3>
+          <h1>${item["Title"]}</h1>
           <p style="color:black">${item["Description"]}</p>
           <a href="${urlHref}" target="_blank">${urlLabel}</a>
           <p></p>
