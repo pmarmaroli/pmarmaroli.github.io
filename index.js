@@ -341,6 +341,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "adjusts",
         "easily",
         "share",
+        "easy"
       ];
       const wordCounts = {};
       const words = text.match(/\b\w+\b/g);
