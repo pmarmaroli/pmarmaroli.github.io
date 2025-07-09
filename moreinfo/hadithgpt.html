@@ -1,63 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>HadithGPT - Development Description</title>
-    <link rel="stylesheet"
-        href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HadithGPT - AI-Powered Islamic Text Search</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+        .feature-card h4 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .demo-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #93c5fd;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin: 15px 0;
+        }
+        .architecture-diagram {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 20px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>Patrick Marmaroli</h1>
-        <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
+        <h1>📚 HadithGPT</h1>
+        
+        <div class="demo-section">
+            <h3>🎯 AI-Powered Islamic Text Search & Translation</h3>
+            <p>An intelligent platform for searching, retrieving, and understanding Hadiths using modern LLM technologies, featuring advanced semantic search and multilingual support for global accessibility.</p>
+            <p><strong>Launch:</strong> Spring 2024 • <strong>Focus:</strong> Making Islamic texts accessible through AI</p>
+        </div>
+
+        <h2>🚀 Project Overview</h2>
+        <p>HadithGPT represents an innovative application of modern language model technology to Islamic scholarship and education. Developed in Spring 2024, this platform addresses the challenge of making authentic Hadith literature accessible to a global, multilingual audience through intelligent search capabilities and AI-powered translations and interpretations.</p>
+
+        <div class="highlight">
+            <p><span class="emoji">💡</span><strong>Key Innovation:</strong> Semantic search technology that understands context and meaning rather than just keyword matching, making Hadith discovery more intuitive and relevant</p>
+        </div>
+
+        <h2>🛠️ Technical Architecture</h2>
+
+        <h3>Core Technologies</h3>
+        <div class="tech-stack">
+            <span class="tech-item">Large Language Models</span>
+            <span class="tech-item">Semantic Search</span>
+            <span class="tech-item">Natural Language Processing</span>
+            <span class="tech-item">Arabic Text Processing</span>
+            <span class="tech-item">Cross-lingual Search</span>
+            <span class="tech-item">Translation Engine</span>
+        </div>
+
+        <div class="architecture-diagram">
+            <strong>Search & Retrieval Pipeline:</strong><br>
+            User Query → Language Detection → Semantic Processing → 
+            Hadith Database Search → Relevance Ranking → 
+            Translation & Interpretation → Formatted Results
+        </div>
+
+        <h2>🔧 Core Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔍 Semantic Search Engine</h4>
+                <p>Advanced AI-powered search that understands context, meaning, and thematic connections rather than simple keyword matching.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🌍 Multilingual Support</h4>
+                <p>Dynamic interface supporting Arabic and English with intelligent language detection and seamless switching capabilities.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📖 Intelligent Translation</h4>
+                <p>LLM-powered translations that preserve meaning and context while making texts accessible to non-Arabic speakers.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📊 Detailed Metadata</h4>
+                <p>Comprehensive information about each Hadith including chain of transmission, authenticity grading, and scholarly commentary.</p>
+            </div>
+        </div>
+
+        <h2>🎨 User Experience Features</h2>
+        <ul>
+            <li><span class="emoji">💬</span><strong>Natural Language Queries:</strong> Users can search using conversational language in their preferred language</li>
+            <li><span class="emoji">🔄</span><strong>Dynamic Language Switching:</strong> Seamless interface adaptation based on user language preference</li>
+            <li><span class="emoji">📱</span><strong>Responsive Design:</strong> Optimized for both desktop study and mobile reference</li>
+            <li><span class="emoji">🎯</span><strong>Contextual Results:</strong> Related Hadiths and thematic connections displayed for deeper study</li>
+            <li><span class="emoji">📚</span><strong>Scholarly Presentation:</strong> Authentic presentation with proper attribution and grading information</li>
+        </ul>
+
+        <h2>🧠 AI & Language Processing</h2>
+        
+        <h3>Advanced NLP Capabilities</h3>
+        <ul>
+            <li><strong>Semantic Understanding:</strong> Deep comprehension of query intent and thematic relationships</li>
+            <li><strong>Arabic Text Processing:</strong> Specialized handling of classical Arabic texts with diacritical marks</li>
+            <li><strong>Cross-lingual Search:</strong> Search in one language, retrieve results from Arabic sources</li>
+            <li><strong>Context Preservation:</strong> Maintaining meaning and nuance in translations and interpretations</li>
+        </ul>
+
+        <h3>Search Intelligence</h3>
+        <ul>
+            <li><strong>Thematic Clustering:</strong> Grouping related Hadiths by topic and theme</li>
+            <li><strong>Relevance Ranking:</strong> AI-powered scoring system for result accuracy</li>
+            <li><strong>Query Expansion:</strong> Automatic inclusion of related terms and concepts</li>
+            <li><strong>Authenticity Awareness:</strong> Integration of scholarly grading and chain evaluation</li>
+        </ul>
+
+        <h2>🎯 Educational Applications</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎓 Islamic Studies</h4>
+                <p>Academic research tool for students and scholars studying Islamic jurisprudence, theology, and history.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🕌 Religious Education</h4>
+                <p>Teaching aid for Islamic educators and institutions providing authentic text references and explanations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🌍 Global Accessibility</h4>
+                <p>Bridge for non-Arabic speakers to access authentic Islamic texts with proper context and interpretation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔬 Research Platform</h4>
+                <p>Tool for comparative religious studies and Islamic scholarship research with verified sources.</p>
+            </div>
+        </div>
+
+        <h2>📈 Technical Highlights</h2>
+        
+        <h3>Language Model Integration</h3>
+        <ul>
+            <li><strong>Custom Training:</strong> Models fine-tuned on Islamic texts for accurate interpretation</li>
+            <li><strong>Multilingual Embeddings:</strong> Cross-lingual semantic representations for accurate search</li>
+            <li><strong>Context Awareness:</strong> Understanding of historical and cultural context in interpretations</li>
+            <li><strong>Quality Assurance:</strong> Validation systems ensuring accuracy and authenticity</li>
+        </ul>
+
+        <h3>Cultural & Religious Sensitivity</h3>
+        <ul>
+            <li><span class="emoji">🕌</span><strong>Scholarly Standards:</strong> Adherence to traditional Islamic scholarship methodologies</li>
+            <li><span class="emoji">📜</span><strong>Authentic Sources:</strong> Use of verified, authoritative Hadith collections</li>
+            <li><span class="emoji">🎯</span><strong>Respectful Presentation:</strong> Culturally appropriate interface and content presentation</li>
+            <li><span class="emoji">✅</span><strong>Accuracy Verification:</strong> Multiple validation layers for translation and interpretation quality</li>
+        </ul>
+
+        <h2>🔍 Database & Content Management</h2>
+        
+        <h3>Comprehensive Collection</h3>
+        <ul>
+            <li><strong>Major Collections:</strong> Integration of Sahih Bukhari, Sahih Muslim, and other canonical texts</li>
+            <li><strong>Metadata Rich:</strong> Complete chain of transmission, narrator information, and scholarly grading</li>
+            <li><strong>Version Control:</strong> Multiple translations and interpretations with source attribution</li>
+            <li><strong>Quality Curation:</strong> Scholarly review and validation of all content</li>
+        </ul>
+
+        <h2>🎯 Future Enhancements</h2>
+        <ul>
+            <li><span class="emoji">🤖</span>Advanced AI commentary and explanation generation</li>
+            <li><span class="emoji">🔗</span>Integration with Quranic texts and cross-referencing</li>
+            <li><span class="emoji">📱</span>Mobile application development for enhanced accessibility</li>
+            <li><span class="emoji">🎙️</span>Audio recitation and pronunciation guides</li>
+            <li><span class="emoji">📊</span>Analytics dashboard for educational institutions</li>
+        </ul>
+
+        <div class="demo-section">
+            <h3>🏆 Project Impact</h3>
+            <p>HadithGPT demonstrates the powerful application of modern AI technology to traditional scholarship, making authentic Islamic texts more accessible while maintaining scholarly rigor and cultural sensitivity. This project showcases expertise in NLP, cross-lingual processing, and respectful technology deployment in religious contexts.</p>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
     </div>
-    <main>
-        <div class="container">
-            <section class="intro">
-                <h1>About HadithGPT</h1>
-                <p>The development of HadithGPT started in spring 2024 with the goal of creating an accessible platform
-                    for
-                    searching and reading Hadiths using modern LLM technologies. The project leverages language models
-                    to
-                    provide meaningful translations and interpretations of Hadiths, making them more accessible to a
-                    global audience.</p>
-            </section>
+</body>
+</html>
 
-            <section>
-                <h2>Overview</h2>
-                <p><strong>HadithGPT</strong> is an AI-powered platform designed to facilitate the search and retrieval
-                    of Hadiths based on user queries. The development process focused on integrating advanced language
-                    models to ensure accurate translations and efficient search capabilities.</p>
-            </section>
-
-            <section>
-                <h2>User Interface and Experience</h2>
-                <ul>
-                    <li><strong>Language Support:</strong> The platform supports both English and Arabic. The interface
-                        dynamically adjusts based on the selected language.</li>
-                    <li><strong>Search Functionality:</strong> Users can input their queries through a text field, and
-                        the platform will retrieve the most relevant Hadiths based on the input. The search results are
-                        displayed with detailed information about each Hadith.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Backend Functionality</h2>
-                <ul>
-                    <li><strong>Translation Integration:</strong> The platform uses translation APIs to convert Arabic
-                        queries to English, ensuring broader accessibility. The translations are then processed by the
-                        language models to find relevant Hadiths.</li>
-                    <li><strong>Hadith Information Extraction:</strong> The backend processes Hadith data to extract
-                        relevant information such as narrator, book title, author, and Hadith number, which are
-                        displayed in the search results.</li>
-                    <li><strong>Data Management:</strong> The system efficiently manages large datasets of Hadiths,
-                        ensuring quick retrieval and accurate results.</li>
-                </ul>
-            </section>
 
             <section>
                 <h2>Post-Processing and Error Handling</h2>

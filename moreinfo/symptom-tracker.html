@@ -3,104 +3,133 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Symptom Tracker - Development Description</title>
-    <link rel="stylesheet"
-        href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Tracker - Health Monitoring Platform</title>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Patrick Marmaroli</h1>
-        <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
-    </div>
-    <div class="container"
-        style="display:flex;align-items:center;justify-content:center">
-        <img src="/moreinfo/stlogo.png"
-            style="width: 200px;"
-            alt="Symptom Tracker Logo"
-            class="logo">
-    </div>
-    <main>
+    <!-- Header Section -->
+    <header>
         <div class="container">
-            <section class="intro">
-                <h1>About Symptom Tracker</h1>
-                <p><strong>Symptom Tracker</strong> is a simple web-based application designed to help users track and
-                    log their symptoms over time. It allows users to visualize the frequency of symptoms using charts,
-                    and download symptom logs as CSV files for further analysis.</p>
-            </section>
+            <h1>Patrick Marmaroli</h1>
+            <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
+        </div>
+    </header>
 
-            <section>
-                <h2>Overview</h2>
-                <p>Symptom Tracker offers a lightweight solution for individuals looking to monitor their health
-                    symptoms. It helps users add, log, visualize, and export their symptom data.</p>
-            </section>
+    <!-- Logo Section -->
+    <div class="container logo-section">
+        <img src="/moreinfo/stlogo.png" alt="Symptom Tracker Logo" class="project-logo">
+    </div>
 
-            <section>
-                <h2>User Interface and Experience</h2>
-                <ul>
-                    <li><strong>Interactive Elements:</strong> The interface allows users to add new symptoms, log
-                        occurrences, and view a history of logs.</li>
-                    <li><strong>Chart Visualizations:</strong> Users can select a symptom from a dropdown menu to view a
-                        graphical representation of its occurrences over time.</li>
-                    <li><strong>CSV Download:</strong> Users can export their symptom logs to a CSV file for offline use
-                        or sharing with healthcare providers.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Frontend Development</h2>
-                <ul>
-                    <li><strong>Technologies Used:</strong> HTML, CSS, and JavaScript for building a responsive and
-                        interactive web application.</li>
-                    <li><strong>Chart.js Integration:</strong> The app uses Chart.js to generate dynamic line charts
-                        that display the frequency of logged symptoms over time.</li>
-                    <li><strong>Moment.js Integration:</strong> Moment.js is used to handle date and time formatting
-                        within the application.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Backend and Data Management</h2>
-                <ul>
-                    <li><strong>LocalStorage:</strong> Symptom Tracker uses the browser's LocalStorage to persist user
-                        data, allowing users to retain logs and symptoms across sessions without needing a backend
-                        server.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Post-Processing and Error Handling</h2>
-                <ul>
-                    <li><strong>Data Cleanup:</strong> A system is in place to allow users to delete symptoms and their
-                        associated logs, ensuring that they can maintain relevant data without clutter.</li>
-                    <li><strong>Error Handling:</strong> Robust error handling is implemented for actions such as data
-                        entry, log deletion, and CSV export.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Technical Stack and Tools</h2>
-                <ul>
-                    <li><strong>Frontend:</strong> HTML, CSS, JavaScript, Chart.js, Moment.js</li>
-                    <li><strong>Data Persistence:</strong> LocalStorage for session persistence</li>
-                    <li><strong>Deployment:</strong> Hosted on GitHub Pages</li>
-                </ul>
-            </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Project Overview -->
+        <div class="container project-overview">
+            <div class="hero-section">
+                <h1>Symptom Tracker</h1>
+                <p class="project-subtitle">Web-based health monitoring application with data visualization and export capabilities</p>
+            </div>
+            
+            <div class="description-box">
+                <p><strong>Symptom Tracker</strong> is a lightweight web application designed to help users track and log their symptoms over time. It provides intuitive data visualization through charts and enables users to export their symptom logs as CSV files for further analysis or sharing with healthcare providers.</p>
+            </div>
         </div>
 
-        <div class="container"
-            style="display:flex;align-items:center;justify-content:center">
-            <section>
-                <h1>Test it!</h1>
-                <a href="https://pmarmaroli.github.io/symptom-tracker/">Click here to test the Symptom Tracker</a>
-            </section>
+        <!-- Key Features -->
+        <div class="container features-section">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📊 Data Visualization</h3>
+                    <p>Interactive charts display symptom frequency patterns over time using Chart.js library</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💾 Local Storage</h3>
+                    <p>Browser-based data persistence without requiring server infrastructure</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📋 CSV Export</h3>
+                    <p>Export symptom logs for offline analysis or healthcare provider consultation</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔧 Data Management</h3>
+                    <p>Add, edit, and delete symptoms with comprehensive log history</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Implementation -->
+        <div class="container technical-section">
+            <h2>Technical Implementation</h2>
+            
+            <div class="tech-category">
+                <h3>Frontend Architecture</h3>
+                <ul>
+                    <li><strong>Core Technologies:</strong> HTML5, CSS3, and JavaScript for responsive web interface</li>
+                    <li><strong>Chart.js Integration:</strong> Dynamic line charts for visualizing symptom frequency trends</li>
+                    <li><strong>Moment.js:</strong> Advanced date and time formatting for precise temporal tracking</li>
+                    <li><strong>Responsive Design:</strong> Cross-device compatibility with mobile-first approach</li>
+                </ul>
+            </div>
+
+            <div class="tech-category">
+                <h3>Data Management</h3>
+                <ul>
+                    <li><strong>LocalStorage API:</strong> Client-side data persistence for symptom logs and user preferences</li>
+                    <li><strong>Data Structure:</strong> JSON-based symptom records with timestamp indexing</li>
+                    <li><strong>Export Functionality:</strong> CSV generation for external data analysis</li>
+                    <li><strong>Data Validation:</strong> Input sanitization and format checking</li>
+                </ul>
+            </div>
+
+            <div class="tech-category">
+                <h3>User Experience Features</h3>
+                <ul>
+                    <li><strong>Interactive Interface:</strong> Intuitive symptom logging with dropdown selections</li>
+                    <li><strong>Real-time Updates:</strong> Immediate chart refreshing upon data entry</li>
+                    <li><strong>Data Cleanup Tools:</strong> Bulk deletion and selective symptom removal</li>
+                    <li><strong>Error Handling:</strong> Comprehensive validation and user feedback systems</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="container stack-section">
+            <h2>Technology Stack</h2>
+            <div class="stack-grid">
+                <div class="stack-item frontend">
+                    <h3>Frontend</h3>
+                    <p>HTML5, CSS3, JavaScript, Chart.js, Moment.js</p>
+                </div>
+                <div class="stack-item storage">
+                    <h3>Data Storage</h3>
+                    <p>Browser LocalStorage API</p>
+                </div>
+                <div class="stack-item deployment">
+                    <h3>Deployment</h3>
+                    <p>GitHub Pages hosting platform</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Section -->
+        <div class="container demo-section">
+            <h2>Live Demo</h2>
+            <div class="demo-box">
+                <p>Experience the Symptom Tracker application with full functionality:</p>
+                <a href="https://pmarmaroli.github.io/symptom-tracker/" class="demo-link" target="_blank">
+                    Launch Symptom Tracker
+                </a>
+            </div>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <p><a href="https://pmarmaroli.github.io/">back to menu</a></p>
+        <div class="container">
+            <p><a href="https://pmarmaroli.github.io/">← Back to Portfolio</a></p>
+        </div>
     </footer>
 
 </body>

@@ -1,58 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Patrick Marmaroli</title>
-    <link rel="stylesheet"
-        href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrick Marmaroli - Audio Signal Processing & AI Engineer</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1 style="text-align: center;font-size:35px">Patrick Marmaroli</h1>
-            <h2 style="text-align: center;font-size:25px"><em>Signal
-                    Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
-            <div style="display: flex; justify-content: center;">
-                <div id="word-cloud-container"
-                    style="margin-top:50px;margin-bottom:50px;width: 90%; height: 200px;">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <img src="patrick-marmaroli.png" alt="Patrick Marmaroli" class="profile-image">
+                </div>
+                <h1 class="hero-title">Patrick Marmaroli</h1>
+                <p class="hero-subtitle">Audio Signal Processing Specialist & AI Engineer</p>
+                <div class="hero-tags">
+                    <span class="tag">Signal Processing</span>
+                    <span class="tag">Agent Building</span>
+                    <span class="tag">Full-Stack Development</span>
+                    <span class="tag">Entrepreneurship</span>
+                    <span class="tag">Consulting</span>
+                </div>
+            </div>
+            
+           
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div id="menu-buttons" class="nav-buttons">
+                <!-- Dynamic buttons will be inserted here -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <div id="content" class="projects-grid">
+                <div id="placeholder-text" class="welcome-message">
+                    <i class="fas fa-rocket"></i>
+                    <h2>Welcome to My Portfolio</h2>
+                    <p>Explore my projects and professional journey in audio signal processing, AI development, and innovative technology solutions organized by industry field.</p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary" onclick="clickSideProjectsButton()">
+                            <i class="fas fa-code"></i> View Projects
+                        </button>
+                        <a href="mailto:patrick.marmaroli@gmail.com" class="cta-btn secondary">
+                            <i class="fas fa-envelope"></i> Get in Touch
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+    </main>
 
-
-
-    </header>
-    <div class="container">
-        <div id="menu-buttons"
-            style="display: flex; gap: 10px;">
-            <!-- Dynamic buttons will be inserted here -->
-
-            </nav>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="mailto:patrick.marmaroli@gmail.com" class="footer-link">
+                    <i class="fas fa-envelope"></i> patrick.marmaroli@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/pmarmaroli" class="footer-link" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="https://github.com/pmarmaroli" class="footer-link" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+            <p class="footer-copyright">© 2025 Patrick Marmaroli. All rights reserved.</p>
         </div>
+    </footer>
 
-
-        <div class="container"
-            id="content">
-            <p id="placeholder-text"
-                style="text-align:center;font-size:25px">Welcome ! Click on a section to dive into my
-                projects and
-                experience...</p>
-            <!-- Dynamic content will be inserted here -->
-        </div>
-
-        <footer>
-            <p><a href="mailto:patrick.marmaroli@gmail.com">patrick.marmaroli@gmail.com</a></p>
-        </footer>
-
-        <script src="/index.js"></script>
+    <script src="/index.js"></script>
 </body>
 
 </html>

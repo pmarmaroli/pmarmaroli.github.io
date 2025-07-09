@@ -1,33 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Project Description - Pronunciation Assessment Game</title>
-    <link rel="stylesheet"
-        href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocametrix Pronunciation Assessment Game</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+        .feature-card h4 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .demo-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #93c5fd;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin: 15px 0;
+        }
+        .architecture-diagram {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 20px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        .logo-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .logo-section img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>Patrick Marmaroli</h1>
-        <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
+        <h1>🎮 Pronunciation Assessment Game</h1>
+        
+        <div class="logo-section">
+            <img src="/moreinfo/vocametrix.png" alt="Vocametrix Logo" />
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎯 Interactive Speech Therapy Gaming Platform</h3>
+            <p>An innovative gamified platform designed to improve speech pronunciation through interactive gameplay, specifically targeting young patients in speech therapy with engaging, AI-powered assessment technology.</p>
+            <p><strong>Demo:</strong> <a href="https://www.facebook.com/reel/888272712718230" target="_blank" style="color: #2563eb; font-weight: bold;">Facebook Demo</a></p>
+        </div>
+
+        <h2>🚀 Project Overview</h2>
+        <p>The Pronunciation Assessment Game represents a breakthrough in speech therapy technology, combining the engaging elements of interactive gaming with advanced AI-powered pronunciation assessment. Built specifically for young patients, this platform transforms traditional speech therapy exercises into fun, motivating games that encourage consistent practice and measurable improvement.</p>
+
+        <div class="highlight">
+            <p><span class="emoji">💡</span><strong>Key Innovation:</strong> Gamification of speech therapy using Microsoft Speech SDK's Pronunciation Assessment API for real-time, accurate feedback in an engaging game environment</p>
+        </div>
+
+        <h2>🛠️ Technical Architecture</h2>
+
+        <h3>Core Technologies</h3>
+        <div class="tech-stack">
+            <span class="tech-item">Microsoft Speech SDK</span>
+            <span class="tech-item">Pronunciation Assessment API</span>
+            <span class="tech-item">Real-time Audio Processing</span>
+            <span class="tech-item">Interactive Gaming Engine</span>
+            <span class="tech-item">Progress Tracking</span>
+            <span class="tech-item">Child-Friendly UI/UX</span>
+        </div>
+
+        <div class="architecture-diagram">
+            <strong>Game Assessment Pipeline:</strong><br>
+            Audio Input → Real-time Processing → Pronunciation Analysis → 
+            Scoring Algorithm → Game Feedback → Progress Tracking → 
+            Therapeutic Reports → Clinician Dashboard
+        </div>
+
+        <h2>🔧 Core Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎮 Gamified Learning</h4>
+                <p>Interactive game mechanics that make pronunciation practice enjoyable and motivating for young patients through rewards and achievements.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎯 Real-time Assessment</h4>
+                <p>Instant pronunciation feedback using Microsoft's advanced speech recognition technology for immediate correction and improvement.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>👶 Child-Centered Design</h4>
+                <p>Age-appropriate interface with colorful graphics, simple interactions, and engaging characters designed specifically for young users.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📊 Progress Tracking</h4>
+                <p>Comprehensive analytics and reporting system for speech therapists to monitor patient progress and adjust treatment plans.</p>
+            </div>
+        </div>
+
+        <h2>🎨 User Experience Features</h2>
+        <ul>
+            <li><span class="emoji">🌟</span><strong>Engaging Characters:</strong> Friendly animated characters that guide and encourage players throughout the experience</li>
+            <li><span class="emoji">🏆</span><strong>Achievement System:</strong> Rewards and badges for consistent practice and pronunciation improvements</li>
+            <li><span class="emoji">🎨</span><strong>Visual Feedback:</strong> Colorful, immediate visual responses to pronunciation attempts</li>
+            <li><span class="emoji">📱</span><strong>Touch-Friendly:</strong> Optimized for tablet use in clinical and home settings</li>
+            <li><span class="emoji">🔄</span><strong>Adaptive Difficulty:</strong> Game difficulty adjusts based on individual progress and capabilities</li>
+        </ul>
+
+        <h2>🧠 AI & Speech Technology Integration</h2>
+        
+        <h3>Microsoft Speech SDK Integration</h3>
+        <ul>
+            <li><strong>Pronunciation Assessment:</strong> Leverages Microsoft's state-of-the-art pronunciation assessment technology</li>
+            <li><strong>Phoneme Analysis:</strong> Detailed analysis of individual speech sounds for targeted therapy</li>
+            <li><strong>Accuracy Scoring:</strong> Precise pronunciation scoring with clinical-grade accuracy</li>
+            <li><strong>Real-time Processing:</strong> Instantaneous feedback for immediate learning reinforcement</li>
+        </ul>
+
+        <h3>Therapeutic Intelligence</h3>
+        <ul>
+            <li><strong>Progress Analytics:</strong> Sophisticated tracking of improvement patterns and areas needing focus</li>
+            <li><strong>Adaptive Learning:</strong> Game content adjusts to individual patient needs and progress</li>
+            <li><strong>Clinical Reporting:</strong> Detailed reports for speech-language pathologists and caregivers</li>
+            <li><strong>Data-Driven Insights:</strong> Analytics to optimize therapy sessions and track outcomes</li>
+        </ul>
+
+        <h2>🎯 Target Applications</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏥 Clinical Speech Therapy</h4>
+                <p>Professional tool for speech-language pathologists to conduct engaging therapy sessions with measurable outcomes.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🏠 Home Practice</h4>
+                <p>Continuation of therapy at home with parental supervision and progress sharing with clinicians.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎓 Educational Settings</h4>
+                <p>Classroom tool for special education and language development programs in schools.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>👶 Early Intervention</h4>
+                <p>Early detection and intervention tool for children with speech development challenges.</p>
+            </div>
+        </div>
+
+        <h2>📈 Clinical Benefits</h2>
+        
+        <h3>For Speech Therapists</h3>
+        <ul>
+            <li><strong>Objective Measurement:</strong> Quantifiable pronunciation assessment data for treatment planning</li>
+            <li><strong>Patient Engagement:</strong> Increased motivation and compliance through gamification</li>
+            <li><strong>Progress Tracking:</strong> Detailed analytics to demonstrate therapy effectiveness</li>
+            <li><strong>Treatment Efficiency:</strong> Automated assessment allows focus on complex therapeutic interventions</li>
+        </ul>
+
+        <h3>For Young Patients</h3>
+        <ul>
+            <li><span class="emoji">😊</span><strong>Reduced Anxiety:</strong> Game environment makes therapy less intimidating</li>
+            <li><span class="emoji">🎯</span><strong>Immediate Feedback:</strong> Instant pronunciation correction and positive reinforcement</li>
+            <li><span class="emoji">🏆</span><strong>Motivation:</strong> Achievement system encourages consistent practice</li>
+            <li><span class="emoji">🎮</span><strong>Fun Learning:</strong> Transforms repetitive exercises into enjoyable activities</li>
+        </ul>
+
+        <h2>🔧 Technical Implementation</h2>
+        
+        <h3>Speech Processing Engine</h3>
+        <ul>
+            <li><strong>Audio Capture:</strong> High-quality microphone input with noise reduction</li>
+            <li><strong>Real-time Analysis:</strong> Immediate processing and feedback delivery</li>
+            <li><strong>Multi-language Support:</strong> Configurable for different language therapy needs</li>
+            <li><strong>Accuracy Calibration:</strong> Adjustable sensitivity for different age groups and conditions</li>
+        </ul>
+
+        <h3>Game Mechanics</h3>
+        <ul>
+            <li><strong>Level Progression:</strong> Structured advancement through pronunciation difficulty levels</li>
+            <li><strong>Scoring System:</strong> Point-based rewards tied to pronunciation accuracy</li>
+            <li><strong>Challenge Modes:</strong> Varied game types to maintain engagement</li>
+            <li><strong>Social Features:</strong> Safe sharing of achievements with family and therapists</li>
+        </ul>
+
+        <h2>🎯 Future Enhancements</h2>
+        <ul>
+            <li><span class="emoji">🤖</span>Advanced AI for personalized therapy path recommendation</li>
+            <li><span class="emoji">👥</span>Multiplayer features for group therapy sessions</li>
+            <li><span class="emoji">📱</span>Mobile app development for increased accessibility</li>
+            <li><span class="emoji">🌍</span>Multi-language expansion for diverse patient populations</li>
+            <li><span class="emoji">🔗</span>Integration with electronic health records and therapy management systems</li>
+        </ul>
+
+        <div class="demo-section">
+            <h3>🏆 Project Impact</h3>
+            <p>The Pronunciation Assessment Game demonstrates the powerful intersection of healthcare technology, AI, and user experience design. By making speech therapy engaging and measurable, this platform has the potential to significantly improve therapy outcomes for young patients while providing valuable tools for speech-language pathologists.</p>
+        </div>
+
+        <div class="demo-section">
+            <h3>🎬 Live Demo</h3>
+            <p>Watch our pronunciation assessment game in action:</p>
+            <p><a href="https://www.facebook.com/reel/888272712718230" target="_blank" style="color: #2563eb; font-weight: bold;">View Demo on Facebook</a></p>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
     </div>
-    <div class="container"
-        style="display:flex;align-items:center;justify-content:center">
-        <img src="/moreinfo/vocametrix.png"
-            style="width: 200px;"
-            alt="Pronunciation Assessment Game Logo"
-            class="logo">
-    </div>
-    <main>
-        <div class="container">
-            <section class="intro">
-                <h1>About Vocametrix Pronunciation Assessment Game</h1>
-                <p><strong>Pronunciation Assessment Game</strong> is an innovative, interactive game designed to assist
-                    in improving speech pronunciation by leveraging the <strong>Microsoft Speech SDK's Pronunciation
+</body>
+</html>
                         Assessment</strong> feature. This game is especially helpful for speech therapists and
                     individuals looking to enhance their language skills.</p>
             </section>

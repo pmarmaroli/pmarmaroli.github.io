@@ -3,126 +3,150 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Audio Detection & Classification - Development Description</title>
-    <link rel="stylesheet"
-        href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Audio Detection & Classification - MATLAB Signal Processing System</title>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Patrick Marmaroli</h1>
-        <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
-    </div>
-
-    <div class="container"
-        style="display:flex;align-items:center;justify-content:center">
-        <img src="/moreinfo/hidacs.png"
-            style="width: 200px;"
-            alt="hidacs"
-            class="logo">
-    </div>
-    <main>
+    <!-- Header Section -->
+    <header>
         <div class="container">
-            <section class="intro">
-                <h1>Acoustic-based Vehicle Detection and Classification</h1>
-                <p>This project is a MATLAB-based system designed to detect and classify audio data, specifically
-                    identifying passing by vehicle types like cars, trucks, and motorbikes.
-                    The system performs real-time audio analysis using microphone array processing associated with deep
-                    neural networks and provides visualization.</p>
-            </section>
+            <h1>Patrick Marmaroli</h1>
+            <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
+        </div>
+    </header>
 
-            <section>
-                <h2>Overview</h2>
-                <p>The project aims to accurately detect and classify various vehicle types based on sound. It utilizes
-                    custom-trained neural networks, where all data recording, training, and manual labeling were done
-                    internally. The system classifies detected audio as one of several classes: "No Vehicles",
-                    "Truck", "Car", or "Motorbike". It processes audio captured through microphone arrays and provides
-                    real-time visual feedback to display probabilities and classifications.</p>
-            </section>
+    <!-- Logo Section -->
+    <div class="container logo-section">
+        <img src="/moreinfo/hidacs.png" alt="HIDACS Vehicle Detection System" class="project-logo">
+    </div>
 
-            <section>
-                <h2>User Interface and Experience</h2>
-                <ul>
-                    <li><strong>Real-time Audio Input:</strong> Users can provide live audio input through a microphone
-                        or select pre-recorded audio files for classification. The system processes audio using MATLAB's
-                        `audioDeviceReader` for real-time capture, or `audioread` for file-based inputs.</li>
-                    <li><strong>Real-time Visualization:</strong> The system displays real-time probability plots for
-                        each detected class ("No Vehicles", "Truck", "Car", "Motorbike") and shows updated
-                        classifications in response to incoming audio data.</li>
-                    <li><strong>Webcam Integration:</strong> The webcam is used for taking screenshots during the
-                        detection process, not for enhancing detection accuracy.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Backend Functionality</h2>
-                <ul>
-                    <li><strong>Custom-Trained Convolutional Neural Networks:</strong> The project utilizes CNN for
-                        detection (multiple microphones) and classification (one microphone). All recording, training,
-                        and manual labeling were
-                        done internally.</li>
-                    <li><strong>Microphone Array Processing:</strong> Detection is based on processing audio data from
-                        a microphone array. The system uses cross-correlation to detect the evolution of signals over
-                        time between pairs of microphones. More details can be found in <a
-                            href="https://www.researchgate.net/publication/255754739_Observation_of_Vehicle_Axles_Through_Pass-by_Noise_A_Strategy_of_Microphone_Array_Design"
-                            style="color: black; font-weight: bold;">this article</a>.
-                    </li>
-                    <li><strong>Classification Layers:</strong> The classification layer converts the time signal into a
-                        spectrogram, feeding a CNN to identify whether the audio matches any of the predefined vehicle
-                        categories. I've made a similar demo of this technique which is visible on this <a
-                            href="https://youtu.be/f6ypnGXMado"
-                            style="color: black; font-weight: bold;">Youtube link</a>.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Post-Processing and Error Handling</h2>
-                <ul>
-                    <li><strong>Real-time Data Buffering:</strong> Audio data and classification results are buffered
-                        and smoothed over time to provide stable and accurate probability plots. The visualizations
-                        reflect both instantaneous and historical data.</li>
-                    <li><strong>Error Handling:</strong> The system checks for discrepancies in the audio input, such as
-                        mismatched sampling rates, and handles these errors by resampling or prompting the user to
-                        correct the input format.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Technical Stack and Tools</h2>
-                <ul>
-                    <li><strong>Platform:</strong> MATLAB R2018b</li>
-                    <li><strong>Neural Networks:</strong> Custom-trained DNNs for vehicle detection and classification
-                    </li>
-                    <li><strong>Audio Input:</strong> Real-time audio capture via `audioDeviceReader` or file-based
-                        input via `audioread`</li>
-                    <li><strong>Visualization:</strong> MATLAB plots for real-time probability display, with webcam
-                        integration for capturing screenshots</li>
-                    <li><strong>File Management:</strong> Handling of audio data and neural network models from local
-                        directories</li>
-                </ul>
-            </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Project Overview -->
+        <div class="container project-overview">
+            <div class="hero-section">
+                <h1>Acoustic Vehicle Detection & Classification</h1>
+                <p class="project-subtitle">Advanced MATLAB-based system using microphone arrays and deep neural networks for real-time vehicle identification</p>
+            </div>
+            
+            <div class="description-box">
+                <p>This project implements a sophisticated <strong>MATLAB-based acoustic detection system</strong> that identifies and classifies passing vehicles (cars, trucks, motorbikes) using advanced signal processing techniques. The system combines microphone array processing with custom-trained deep neural networks to provide real-time audio analysis and classification with visual feedback.</p>
+            </div>
         </div>
 
+        <!-- Key Features -->
+        <div class="container features-section">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 Real-time Classification</h3>
+                    <p>Instant vehicle type identification: No Vehicles, Car, Truck, or Motorbike</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎤 Microphone Arrays</h3>
+                    <p>Multi-microphone cross-correlation processing for enhanced detection accuracy</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧠 Custom Neural Networks</h3>
+                    <p>Internally trained CNNs with proprietary dataset for vehicle audio classification</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Live Visualization</h3>
+                    <p>Real-time probability plots and classification displays with webcam integration</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Technical Implementation -->
+        <div class="container technical-section">
+            <h2>Technical Implementation</h2>
+            
+            <div class="tech-category">
+                <h3>Signal Processing Architecture</h3>
+                <ul>
+                    <li><strong>Audio Capture:</strong> Real-time audio input via MATLAB's audioDeviceReader for live processing</li>
+                    <li><strong>File Processing:</strong> Support for pre-recorded audio files using audioread function</li>
+                    <li><strong>Cross-correlation Analysis:</strong> Multi-microphone signal evolution tracking for vehicle detection</li>
+                    <li><strong>Spectrogram Generation:</strong> Time-frequency domain conversion for CNN input preparation</li>
+                </ul>
+            </div>
 
-        <div class="container"
-            style="display:flex;align-items:center;justify-content:center">
-            <section>
-                <h1>Watch the demo</h1>
-                <iframe width="560"
-                    height="315"
-                    src="https://www.youtube.com/embed/JD5aI4iJMJg"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-            </section>
+            <div class="tech-category">
+                <h3>Machine Learning Components</h3>
+                <ul>
+                    <li><strong>Detection CNN:</strong> Custom-trained network for vehicle presence detection using microphone arrays</li>
+                    <li><strong>Classification CNN:</strong> Single-microphone based neural network for vehicle type identification</li>
+                    <li><strong>Training Dataset:</strong> Internally recorded and manually labeled vehicle audio data</li>
+                    <li><strong>Model Optimization:</strong> MATLAB deep learning toolbox optimization for real-time performance</li>
+                </ul>
+            </div>
+
+            <div class="tech-category">
+                <h3>Visualization & Interface</h3>
+                <ul>
+                    <li><strong>Real-time Plotting:</strong> Dynamic probability displays for each vehicle class</li>
+                    <li><strong>Data Buffering:</strong> Temporal smoothing of classification results for stability</li>
+                    <li><strong>Webcam Integration:</strong> Screenshot capture during detection events for documentation</li>
+                    <li><strong>Error Handling:</strong> Robust audio format validation and sampling rate correction</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Research & Publications -->
+        <div class="container research-section">
+            <h2>Research Foundation</h2>
+            <div class="research-box">
+                <h3>Academic Research</h3>
+                <p>The microphone array processing methodology is based on established research in vehicle detection through pass-by noise analysis. The cross-correlation technique for signal evolution tracking between microphone pairs is detailed in:</p>
+                <a href="https://www.researchgate.net/publication/255754739_Observation_of_Vehicle_Axles_Through_Pass-by_Noise_A_Strategy_of_Microphone_Array_Design" 
+                   target="_blank" class="research-link">
+                    📄 "Observation of Vehicle Axles Through Pass-by Noise: A Strategy of Microphone Array Design"
+                </a>
+                <p class="demo-note">A similar demonstration of this classification technique can be viewed in my <a href="https://youtu.be/f6ypnGXMado" target="_blank" class="demo-link">YouTube demonstration</a>.</p>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="container stack-section">
+            <h2>Technology Stack</h2>
+            <div class="stack-grid">
+                <div class="stack-item platform">
+                    <h3>Platform</h3>
+                    <p>MATLAB R2018b</p>
+                </div>
+                <div class="stack-item ai">
+                    <h3>AI/ML</h3>
+                    <p>Custom CNNs, Deep Learning Toolbox</p>
+                </div>
+                <div class="stack-item hardware">
+                    <h3>Hardware</h3>
+                    <p>Microphone arrays, Webcam integration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Section -->
+        <div class="container demo-section">
+            <h2>System Demonstration</h2>
+            <div class="demo-box">
+                <p>Watch the complete system demonstration showcasing real-time vehicle detection and classification:</p>
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/JD5aI4iJMJg" 
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <p><a href="mailto:patrick.marmaroli@gmail.com">Contact: patrick.marmaroli@gmail.com</a></p>
+        <div class="container">
+            <p><a href="https://pmarmaroli.github.io/">← Back to Portfolio</a></p>
+        </div>
     </footer>
+
 </body>
 
 </html>

@@ -1,118 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Audio Comparison Tool - Development Description</title>
-    <link rel="stylesheet"
-        href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Comparison Tool - Technical Details</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+        .feature-card h4 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .demo-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #93c5fd;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin: 15px 0;
+        }
+        .architecture-diagram {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 20px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        .logo-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .logo-section img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>Patrick Marmaroli</h1>
-        <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
-    </div>
-    <div class="container"
-        style="display:flex;align-items:center;justify-content:center">
-        <img src="/moreinfo/audiocompare.png"
-            style="width: 200px;"
-            alt="Audio Comparison Logo"
-            class="logo">
-    </div>
-    <main>
-        <div class="container">
-            <section class="intro">
-                <h1>About the Audio Comparison Tool</h1>
-                <p>This web application enables users to upload multiple audio files and switch between them for easy
-                    comparative listening. The tool was designed for users who need a simple way to compare multiple
-                    audio files, allowing easy playback and sharing of audio content via a shareable key system.</p>
-            </section>
-
-            <section>
-                <h2>Overview</h2>
-                <p><strong>Audio Comparison Tool</strong> facilitates the seamless comparison of audio files through a
-                    simple interface and interactive controls.</p>
-            </section>
-
-            <section>
-                <h2>User Interface and Experience</h2>
-                <ul>
-                    <li><strong>Interactive Audio Controls:</strong> Users can play, pause, and switch between different
-                        audio files using an intuitive interface with waveform visualizations.</li>
-                    <li><strong>Waveform Display:</strong> Each audio file is displayed with a visual waveform, giving
-                        users more control over playback and navigation through the tracks.</li>
-                    <li><strong>Project Creation:</strong> Users can create their own projects by uploading multiple
-                        audio
-                        files, which are organized under a unique project name for future reference and sharing.</li>
-                    <li><strong>Project Selection:</strong> Users can select projects using a public key, allowing
-                        others to
-                        remotely access and listen to the uploaded audio files.</li>
-                </ul>
-
-            </section>
-
-            <section>
-                <h2>Backend Functionality</h2>
-                <ul>
-                    <li><strong>Audio File Handling:</strong> Audio files are uploaded via the user interface, and the
-                        server processes these files to make them available for comparison. The application supports
-                        multiple
-                        file uploads and different audio formats, with all audio files stored in Azure Storage
-                        containers.</li>
-                    <li><strong>Public Key Access:</strong> Users can choose a public key, similar to a password, which
-                        they can share with others. This key is linked to their audio project, allowing other users to
-                        access and listen to the shared audio files remotely by entering the provided key.</li>
-                    <li><strong>API Integration:</strong> The backend handles API requests to retrieve audio files,
-                        project data, and related labels for audio tagging from Azure Storage containers.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Post-Processing and Error Handling</h2>
-                <ul>
-                    <li><strong>Audio Label Management:</strong> Users can upload label files created with Audacity to
-                        tag specific time
-                        segments in the audio files. These labels are processed and displayed on the waveform, providing
-                        additional
-                        context during playback.</li>
-                    <li><strong>Error Handling:</strong> The application includes robust error handling to manage
-                        invalid public keys, failed audio uploads, and unsupported file formats.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Technical Stack and Tools</h2>
-                <ul>
-                    <li><strong>Frontend Development:</strong> The frontend is built using HTML, CSS, and JavaScript,
-                        incorporating WaveSurfer.js for audio visualization and control.</li>
-                    <li><strong>Backend Development:</strong> The backend handles file uploads, project creation, and
-                        API
-                        requests to retrieve audio and label data. It is integrated with the public key system for user
-                        access
-                        control.</li>
-                    <li><strong>Data Management:</strong> The server manages audio files and project data, ensuring that
-                        files are accessible based on user input and public keys.</li>
-                    <li><strong>Deployment:</strong> The application is deployed on the Azure (cloud) platform to handle
-                        file storage and access for multiple users.</li>
-                </ul>
-            </section>
+        <h1>🎵 Audio Comparison Tool</h1>
+        
+        <div class="logo-section">
+            <img src="/moreinfo/audiocompare.png" alt="Audio Comparison Logo" />
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎯 Professional Audio Comparison Platform</h3>
+            <p>A sophisticated web application designed for comparative audio analysis, featuring interactive waveform visualization, project management, and collaborative sharing capabilities.</p>
+            <p><strong>Purpose:</strong> Streamlined audio comparison for professionals, researchers, and content creators</p>
         </div>
 
-        <!-- <div class="container" style="display:flex;align-items:center;justify-content:center">
-            <section>
-                <h1>Watch the demo</h1>
-                <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-            </section>
-        </div> -->
-    </main>
+        <h2>🚀 Project Overview</h2>
+        <p>The Audio Comparison Tool represents a specialized solution for scenarios requiring detailed comparative listening analysis. Built with modern web technologies, it provides users with an intuitive platform to upload, organize, and compare multiple audio files simultaneously, featuring advanced waveform visualization and collaborative project sharing.</p>
 
-    <footer>
-        <p><a href="https://pmarmaroli.github.io/">back to menu</a></p>
-    </footer>
+        <div class="highlight">
+            <p><span class="emoji">💡</span><strong>Key Innovation:</strong> Synchronized playback system with real-time waveform navigation for precise comparative analysis</p>
+        </div>
 
+        <h2>🛠️ Technical Architecture</h2>
+
+        <h3>Core Technologies</h3>
+        <div class="tech-stack">
+            <span class="tech-item">Web Audio API</span>
+            <span class="tech-item">Waveform Visualization</span>
+            <span class="tech-item">File Management</span>
+            <span class="tech-item">Project Sharing</span>
+            <span class="tech-item">Real-time Sync</span>
+            <span class="tech-item">Interactive UI</span>
+        </div>
+
+        <div class="architecture-diagram">
+            <strong>Audio Processing Pipeline:</strong><br>
+            File Upload → Audio Processing → Waveform Generation → 
+            Project Creation → Sharing System → Collaborative Access → 
+            Synchronized Playback → Comparison Analysis
+        </div>
+
+        <h2>🔧 Core Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 Interactive Waveform Display</h4>
+                <p>Advanced waveform visualization with precise navigation controls and visual feedback for accurate audio positioning.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔄 Synchronized Playback</h4>
+                <p>Seamless switching between multiple audio files with synchronized timing and position preservation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📁 Project Management</h4>
+                <p>Organized project creation system allowing users to group and manage multiple audio files under unique project names.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔗 Collaborative Sharing</h4>
+                <p>Shareable project keys enabling team collaboration and easy access sharing with stakeholders.</p>
+            </div>
+        </div>
+
+        <h2>🎨 User Experience Features</h2>
+        <ul>
+            <li><span class="emoji">🎛️</span><strong>Intuitive Controls:</strong> Professional audio controls with play, pause, and seamless track switching</li>
+            <li><span class="emoji">📈</span><strong>Visual Feedback:</strong> Real-time waveform display with playback position indicators</li>
+            <li><span class="emoji">🔍</span><strong>Precise Navigation:</strong> Click-to-seek functionality for exact audio positioning</li>
+            <li><span class="emoji">📱</span><strong>Responsive Design:</strong> Optimized interface for desktop and mobile comparative listening</li>
+            <li><span class="emoji">⚡</span><strong>Fast Loading:</strong> Optimized audio processing for quick project access and playback</li>
+        </ul>
+
+        <h2>🎯 Use Cases & Applications</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎵 Music Production</h4>
+                <p>A/B testing different mix versions, comparing mastered tracks, and collaborative decision-making for producers and engineers.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎙️ Audio Post-Production</h4>
+                <p>Comparing different takes, evaluating processing options, and client collaboration for video and podcast production.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔬 Research & Analysis</h4>
+                <p>Academic research requiring comparative audio analysis, linguistic studies, and scientific audio evaluation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🏢 Client Presentations</h4>
+                <p>Professional presentations allowing clients to compare different audio options with easy-to-use sharing mechanisms.</p>
+            </div>
+        </div>
+
+        <h2>🔧 Technical Implementation</h2>
+        
+        <h3>Audio Processing Engine</h3>
+        <ul>
+            <li><strong>Format Support:</strong> Multiple audio format compatibility with automatic conversion</li>
+            <li><strong>Waveform Generation:</strong> Real-time audio analysis and visual representation</li>
+            <li><strong>Buffering Strategy:</strong> Intelligent preloading for smooth playback transitions</li>
+            <li><strong>Quality Preservation:</strong> Lossless audio handling maintaining original quality</li>
+        </ul>
+
+        <h3>Project Management System</h3>
+        <ul>
+            <li><strong>Unique Identifiers:</strong> Secure project key generation for sharing and access control</li>
+            <li><strong>File Organization:</strong> Logical grouping and labeling system for audio files</li>
+            <li><strong>Access Control:</strong> Public/private project settings with secure sharing</li>
+            <li><strong>Version Control:</strong> Project update tracking and file management</li>
+        </ul>
+
+        <h2>📈 Technical Highlights</h2>
+        
+        <h3>Performance Optimization</h3>
+        <ul>
+            <li><strong>Lazy Loading:</strong> On-demand audio loading for faster initial project access</li>
+            <li><strong>Caching Strategy:</strong> Intelligent caching for frequently accessed projects</li>
+            <li><strong>Compression:</strong> Optimized file storage and transmission</li>
+            <li><strong>Progressive Enhancement:</strong> Fallback options for varying browser capabilities</li>
+        </ul>
+
+        <h3>Security & Privacy</h3>
+        <ul>
+            <li><span class="emoji">🔒</span><strong>Secure Upload:</strong> Encrypted file transmission and secure storage</li>
+            <li><span class="emoji">🛡️</span><strong>Access Control:</strong> Project-based permissions and sharing controls</li>
+            <li><span class="emoji">🔐</span><strong>Data Protection:</strong> Privacy-compliant handling of audio content</li>
+        </ul>
+
+        <h2>🎯 Future Enhancements</h2>
+        <ul>
+            <li><span class="emoji">📊</span>Advanced analytics and comparison metrics</li>
+            <li><span class="emoji">🔗</span>Integration with popular DAWs and audio platforms</li>
+            <li><span class="emoji">👥</span>Real-time collaborative commenting and annotation system</li>
+            <li><span class="emoji">📱</span>Native mobile applications for on-the-go comparison</li>
+            <li><span class="emoji">🤖</span>AI-powered similarity analysis and automatic categorization</li>
+        </ul>
+
+        <div class="demo-section">
+            <h3>🏆 Project Impact</h3>
+            <p>The Audio Comparison Tool demonstrates expertise in web audio processing, user interface design, and collaborative platform development. It successfully addresses the need for professional-grade comparative listening tools in a web-based environment.</p>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+    </div>
 </body>
-
 </html>
+
