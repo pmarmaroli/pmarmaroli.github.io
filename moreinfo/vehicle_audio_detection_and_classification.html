@@ -5,148 +5,355 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Audio Detection & Classification - MATLAB Signal Processing System</title>
-    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+        .feature-card h4 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .feature-card h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .demo-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #93c5fd;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin: 15px 0;
+        }
+        .architecture-diagram {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 20px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        .project-subtitle {
+            font-size: 1.2em;
+            color: #1e40af;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .hero-section {
+            margin-bottom: 30px;
+        }
+        .description-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .tech-category {
+            margin: 25px 0;
+        }
+        .tech-category h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+        .tech-category ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .tech-category li {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #2563eb;
+        }
+        .video-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .video-container iframe {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .research-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin: 10px 0;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .research-link:hover {
+            transform: translateY(-2px);
+            color: #1d4ed8;
+        }
+        .demo-note {
+            margin-top: 15px;
+            font-style: italic;
+        }
+        .demo-link {
+            color: #2563eb;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="container">
-            <h1>Patrick Marmaroli</h1>
-            <h2><em>Signal Processing Specialist, Full-Stack Developer, AI Enthusiast & Tech Entrepreneur</em></h2>
+    <div class="container">
+        <h1>🎵 Acoustic Vehicle Detection & Classification</h1>
+        
+        <div class="demo-section">
+            <h3>🚗 Advanced MATLAB Signal Processing System</h3>
+            <p>This project implements a sophisticated MATLAB-based acoustic detection system that identifies and classifies passing vehicles (cars, trucks, motorbikes) using advanced signal processing techniques. The system combines microphone array processing with custom-trained deep neural networks to provide real-time audio analysis and classification with visual feedback.</p>
+            <p><strong>Purpose:</strong> Real-time vehicle identification using microphone arrays and deep neural networks for traffic monitoring and analysis</p>
         </div>
-    </header>
 
-    <!-- Logo Section -->
-    <div class="container logo-section">
-        <img src="/moreinfo/hidacs.png" alt="HIDACS Vehicle Detection System" class="project-logo">
+        <div class="demo-section">
+            <h3>🎥 System Demonstration</h3>
+            <p>Watch the complete system demonstration showcasing real-time vehicle detection and classification:</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/JD5aI4iJMJg" 
+                        frameborder="0" allowfullscreen></iframe>
+            </div>
+            <p class="demo-note">A similar demonstration of this classification technique can be viewed in my <a href="https://youtu.be/f6ypnGXMado" target="_blank" class="demo-link">YouTube demonstration</a>.</p>
+        </div>
+
+        <h2>🚀 Project Overview</h2>
+        <p>This advanced signal processing system leverages MATLAB's deep learning capabilities and microphone array technology to create a real-time vehicle classification platform. By combining traditional signal processing techniques with modern machine learning approaches, the system achieves accurate vehicle detection and type identification through acoustic signature analysis.</p>
+
+        <div class="highlight">
+            <p><span class="emoji">💡</span><strong>Key Innovation:</strong> Integration of microphone array cross-correlation processing with custom-trained CNNs for robust real-time vehicle acoustic classification</p>
+        </div>
+
+        <h2>🛠️ Technical Stack</h2>
+
+        <h3>Core Platform</h3>
+        <div class="tech-stack">
+            <span class="tech-item">MATLAB R2018b</span>
+            <span class="tech-item">Signal Processing Toolbox</span>
+            <span class="tech-item">Deep Learning Toolbox</span>
+            <span class="tech-item">Audio System Toolbox</span>
+            <span class="tech-item">Computer Vision Toolbox</span>
+            <span class="tech-item">Real-time Processing</span>
+        </div>
+
+        <h3>Signal Processing</h3>
+        <div class="tech-stack">
+            <span class="tech-item">Microphone Arrays</span>
+            <span class="tech-item">Cross-correlation Analysis</span>
+            <span class="tech-item">Spectrogram Generation</span>
+            <span class="tech-item">Time-Frequency Analysis</span>
+            <span class="tech-item">Audio Feature Extraction</span>
+            <span class="tech-item">Noise Reduction</span>
+        </div>
+
+        <h3>Machine Learning</h3>
+        <div class="tech-stack">
+            <span class="tech-item">Custom CNNs</span>
+            <span class="tech-item">Detection Networks</span>
+            <span class="tech-item">Classification Networks</span>
+            <span class="tech-item">Model Optimization</span>
+            <span class="tech-item">Training Pipeline</span>
+            <span class="tech-item">Real-time Inference</span>
+        </div>
+
+        <div class="architecture-diagram">
+            <strong>Signal Processing Pipeline:</strong><br>
+            Audio Input → Microphone Array Processing → Cross-correlation Analysis → 
+            Spectrogram Generation → CNN Detection → Vehicle Classification → 
+            Probability Calculation → Visual Feedback → Screenshot Capture
+        </div>
+
+        <h2>🔧 Core Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎯 Real-time Classification</h4>
+                <p>Instant vehicle type identification: No Vehicles, Car, Truck, or Motorbike with probability scoring and temporal smoothing for stable results.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎤 Microphone Arrays</h4>
+                <p>Multi-microphone cross-correlation processing for enhanced detection accuracy and spatial audio analysis capabilities.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🧠 Custom Neural Networks</h4>
+                <p>Internally trained CNNs with proprietary dataset for vehicle audio classification, optimized for real-time performance.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📊 Live Visualization</h4>
+                <p>Real-time probability plots and classification displays with webcam integration for comprehensive monitoring and documentation.</p>
+            </div>
+        </div>
+
+        <h2>🔬 Research Foundation</h2>
+        
+        <div class="highlight">
+            <h3>📄 Academic Research</h3>
+            <p>The microphone array processing methodology is based on established research in vehicle detection through pass-by noise analysis. The cross-correlation technique for signal evolution tracking between microphone pairs is detailed in:</p>
+            <a href="https://www.researchgate.net/publication/255754739_Observation_of_Vehicle_Axles_Through_Pass-by_Noise_A_Strategy_of_Microphone_Array_Design" 
+               target="_blank" class="research-link">
+                📄 "Observation of Vehicle Axles Through Pass-by Noise: A Strategy of Microphone Array Design"
+            </a>
+        </div>
+
+        <h2>🎯 Traffic Monitoring Applications</h2>
+        <ul>
+            <li><span class="emoji">🚦</span><strong>Traffic Analysis:</strong> Automated vehicle counting and classification for traffic management systems</li>
+            <li><span class="emoji">🔊</span><strong>Noise Monitoring:</strong> Environmental noise assessment and vehicle noise pollution tracking</li>
+            <li><span class="emoji">🛣️</span><strong>Highway Surveillance:</strong> Remote monitoring of highway traffic patterns and vehicle types</li>
+            <li><span class="emoji">📊</span><strong>Data Collection:</strong> Long-term traffic statistics and pattern analysis for urban planning</li>
+            <li><span class="emoji">🚨</span><strong>Security Applications:</strong> Perimeter monitoring and unauthorized vehicle detection</li>
+        </ul>
+
+        <h2>🛠️ Implementation Details</h2>
+        
+        <div class="tech-category">
+            <h3>Signal Processing Architecture</h3>
+            <ul>
+                <li><strong>Audio Capture:</strong> Real-time audio input via MATLAB's audioDeviceReader for live processing</li>
+                <li><strong>File Processing:</strong> Support for pre-recorded audio files using audioread function</li>
+                <li><strong>Cross-correlation Analysis:</strong> Multi-microphone signal evolution tracking for vehicle detection</li>
+                <li><strong>Spectrogram Generation:</strong> Time-frequency domain conversion for CNN input preparation</li>
+            </ul>
+        </div>
+
+        <div class="tech-category">
+            <h3>Machine Learning Components</h3>
+            <ul>
+                <li><strong>Detection CNN:</strong> Custom-trained network for vehicle presence detection using microphone arrays</li>
+                <li><strong>Classification CNN:</strong> Single-microphone based neural network for vehicle type identification</li>
+                <li><strong>Training Dataset:</strong> Internally recorded and manually labeled vehicle audio data</li>
+                <li><strong>Model Optimization:</strong> MATLAB deep learning toolbox optimization for real-time performance</li>
+            </ul>
+        </div>
+
+        <div class="tech-category">
+            <h3>Visualization & Interface</h3>
+            <ul>
+                <li><strong>Real-time Plotting:</strong> Dynamic probability displays for each vehicle class</li>
+                <li><strong>Data Buffering:</strong> Temporal smoothing of classification results for stability</li>
+                <li><strong>Webcam Integration:</strong> Screenshot capture during detection events for documentation</li>
+                <li><strong>Error Handling:</strong> Robust audio format validation and sampling rate correction</li>
+            </ul>
+        </div>
+
+        <h2>📈 Technical Highlights</h2>
+        
+        <h3>Advanced Signal Processing</h3>
+        <ul>
+            <li><strong>Multi-channel Analysis:</strong> Sophisticated microphone array processing for enhanced spatial resolution</li>
+            <li><strong>Real-time Performance:</strong> Optimized algorithms for low-latency vehicle detection and classification</li>
+            <li><strong>Noise Robustness:</strong> Advanced filtering techniques for operation in various acoustic environments</li>
+            <li><strong>Adaptive Processing:</strong> Dynamic parameter adjustment based on environmental conditions</li>
+        </ul>
+
+        <h3>Machine Learning</h3>
+        <ul>
+            <li><span class="emoji">🧠</span><strong>Custom Architecture:</strong> Purpose-built CNN architectures for vehicle acoustic signatures</li>
+            <li><span class="emoji">📊</span><strong>Training Methodology:</strong> Comprehensive dataset creation and validation procedures</li>
+            <li><span class="emoji">⚡</span><strong>Real-time Inference:</strong> Optimized models for live classification with minimal latency</li>
+            <li><span class="emoji">🎯</span><strong>High Accuracy:</strong> Robust classification performance across various vehicle types and conditions</li>
+        </ul>
+
+        <a href="../index.html" class="back-link">← Back to Portfolio</a>
     </div>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Project Overview -->
-        <div class="container project-overview">
-            <div class="hero-section">
-                <h1>Acoustic Vehicle Detection & Classification</h1>
-                <p class="project-subtitle">Advanced MATLAB-based system using microphone arrays and deep neural networks for real-time vehicle identification</p>
-            </div>
-            
-            <div class="description-box">
-                <p>This project implements a sophisticated <strong>MATLAB-based acoustic detection system</strong> that identifies and classifies passing vehicles (cars, trucks, motorbikes) using advanced signal processing techniques. The system combines microphone array processing with custom-trained deep neural networks to provide real-time audio analysis and classification with visual feedback.</p>
-            </div>
-        </div>
-
-        <!-- Key Features -->
-        <div class="container features-section">
-            <h2>Key Features</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>🎯 Real-time Classification</h3>
-                    <p>Instant vehicle type identification: No Vehicles, Car, Truck, or Motorbike</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🎤 Microphone Arrays</h3>
-                    <p>Multi-microphone cross-correlation processing for enhanced detection accuracy</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🧠 Custom Neural Networks</h3>
-                    <p>Internally trained CNNs with proprietary dataset for vehicle audio classification</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📊 Live Visualization</h3>
-                    <p>Real-time probability plots and classification displays with webcam integration</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Technical Implementation -->
-        <div class="container technical-section">
-            <h2>Technical Implementation</h2>
-            
-            <div class="tech-category">
-                <h3>Signal Processing Architecture</h3>
-                <ul>
-                    <li><strong>Audio Capture:</strong> Real-time audio input via MATLAB's audioDeviceReader for live processing</li>
-                    <li><strong>File Processing:</strong> Support for pre-recorded audio files using audioread function</li>
-                    <li><strong>Cross-correlation Analysis:</strong> Multi-microphone signal evolution tracking for vehicle detection</li>
-                    <li><strong>Spectrogram Generation:</strong> Time-frequency domain conversion for CNN input preparation</li>
-                </ul>
-            </div>
-
-            <div class="tech-category">
-                <h3>Machine Learning Components</h3>
-                <ul>
-                    <li><strong>Detection CNN:</strong> Custom-trained network for vehicle presence detection using microphone arrays</li>
-                    <li><strong>Classification CNN:</strong> Single-microphone based neural network for vehicle type identification</li>
-                    <li><strong>Training Dataset:</strong> Internally recorded and manually labeled vehicle audio data</li>
-                    <li><strong>Model Optimization:</strong> MATLAB deep learning toolbox optimization for real-time performance</li>
-                </ul>
-            </div>
-
-            <div class="tech-category">
-                <h3>Visualization & Interface</h3>
-                <ul>
-                    <li><strong>Real-time Plotting:</strong> Dynamic probability displays for each vehicle class</li>
-                    <li><strong>Data Buffering:</strong> Temporal smoothing of classification results for stability</li>
-                    <li><strong>Webcam Integration:</strong> Screenshot capture during detection events for documentation</li>
-                    <li><strong>Error Handling:</strong> Robust audio format validation and sampling rate correction</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Research & Publications -->
-        <div class="container research-section">
-            <h2>Research Foundation</h2>
-            <div class="research-box">
-                <h3>Academic Research</h3>
-                <p>The microphone array processing methodology is based on established research in vehicle detection through pass-by noise analysis. The cross-correlation technique for signal evolution tracking between microphone pairs is detailed in:</p>
-                <a href="https://www.researchgate.net/publication/255754739_Observation_of_Vehicle_Axles_Through_Pass-by_Noise_A_Strategy_of_Microphone_Array_Design" 
-                   target="_blank" class="research-link">
-                    📄 "Observation of Vehicle Axles Through Pass-by Noise: A Strategy of Microphone Array Design"
-                </a>
-                <p class="demo-note">A similar demonstration of this classification technique can be viewed in my <a href="https://youtu.be/f6ypnGXMado" target="_blank" class="demo-link">YouTube demonstration</a>.</p>
-            </div>
-        </div>
-
-        <!-- Technology Stack -->
-        <div class="container stack-section">
-            <h2>Technology Stack</h2>
-            <div class="stack-grid">
-                <div class="stack-item platform">
-                    <h3>Platform</h3>
-                    <p>MATLAB R2018b</p>
-                </div>
-                <div class="stack-item ai">
-                    <h3>AI/ML</h3>
-                    <p>Custom CNNs, Deep Learning Toolbox</p>
-                </div>
-                <div class="stack-item hardware">
-                    <h3>Hardware</h3>
-                    <p>Microphone arrays, Webcam integration</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Demo Section -->
-        <div class="container demo-section">
-            <h2>System Demonstration</h2>
-            <div class="demo-box">
-                <p>Watch the complete system demonstration showcasing real-time vehicle detection and classification:</p>
-                <div class="video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/JD5aI4iJMJg" 
-                            frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p><a href="https://pmarmaroli.github.io/">← Back to Portfolio</a></p>
-        </div>
-    </footer>
-
 </body>
 
 </html>
