@@ -69,6 +69,7 @@
         .upload-icon {
             font-size: 48px;
             margin-bottom: 15px;
+            pointer-events: none;
         }
 
         .upload-text {
@@ -76,11 +77,13 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
+            pointer-events: none;
         }
 
         .upload-subtext {
             color: #999;
             font-size: 13px;
+            pointer-events: none;
         }
 
         .file-list {
@@ -266,7 +269,7 @@
         }
     </style>
 </head>
-<body ondragover="event.preventDefault(); event.stopPropagation(); return false;" ondrop="event.preventDefault(); event.stopPropagation(); return false;">
+<body>
     <div class="container">
         <h1>📄 PDF Merger</h1>
         <p class="subtitle">Merge multiple PDF files into one - 100% client-side</p>
@@ -274,7 +277,7 @@
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">📁</div>
             <div class="upload-text">Click to select PDFs or drag & drop</div>
-            <div class="upload-subtext">Select multiple PDF files to merge</div>
+            <div class="upload-subtext">Drag files here and RELEASE to drop</div>
         </div>
         <input type="file" id="fileInput" accept="application/pdf" multiple style="display: none;">
 
@@ -296,19 +299,20 @@
 
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script>
-        // Prevent browser from opening files when dropped ANYWHERE - must be at top level
-        window.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
-        
-        window.addEventListener('drop', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
-
         // Wait for DOM to be ready
         document.addEventListener('DOMContentLoaded', function() {
+        
+        // Prevent browser default file opening on entire page
+        document.body.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            console.log('Body dragover');
+        }, false);
+        
+        document.body.addEventListener('drop', function(e) {
+            e.preventDefault();
+            console.log('Body drop - should be handled by upload area');
+        }, false);
+        
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
@@ -347,40 +351,66 @@
             return false;
         }, false);
 
-        // Drag and drop
+        // Drag and drop counter to handle dragleave properly
+        let dragCounter = 0;
+
+        uploadArea.addEventListener('dragenter', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter++;
+            uploadArea.classList.add('dragover');
+            console.log('Dragenter, counter:', dragCounter);
+            return false;
+        }, false);
+
         uploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            uploadArea.classList.add('dragover');
+            e.dataTransfer.dropEffect = 'copy';
             return false;
         }, false);
 
         uploadArea.addEventListener('dragleave', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            uploadArea.classList.remove('dragover');
+            dragCounter--;
+            console.log('Dragleave, counter:', dragCounter);
+            if (dragCounter === 0) {
+                uploadArea.classList.remove('dragover');
+            }
             return false;
         }, false);
 
         uploadArea.addEventListener('drop', function(e) {
+            console.log('DROP EVENT FIRED! e=', e);
             e.preventDefault();
             e.stopPropagation();
+            dragCounter = 0;
             uploadArea.classList.remove('dragover');
+            
+            console.log('DataTransfer:', e.dataTransfer);
+            console.log('Files:', e.dataTransfer.files);
+            console.log('Files length:', e.dataTransfer.files.length);
             
             // Immediate visual feedback
             uploadArea.style.background = '#c8ffc8';
             setTimeout(() => { uploadArea.style.background = '#f8f9ff'; }, 500);
             
-            console.log('Files dropped');
             try {
-                const files = Array.from(e.dataTransfer.files).filter(file => 
+                const allFiles = Array.from(e.dataTransfer.files);
+                console.log('All files:', allFiles.map(f => f.name + ' - ' + f.type));
+                
+                const files = allFiles.filter(file => 
                     file.type === 'application/pdf'
                 );
                 console.log('PDF files found:', files.length);
+                
                 if (files.length > 0) {
                     handleFiles(files);
+                } else if (allFiles.length > 0) {
+                    showStatus('Please drop PDF files only. Found: ' + allFiles.map(f => f.type).join(', '), 'error');
                 } else {
-                    showStatus('Please drop PDF files only.', 'error');
+                    showStatus('No files detected in drop event.', 'error');
                 }
             } catch (error) {
                 console.error('Error handling dropped files:', error);
