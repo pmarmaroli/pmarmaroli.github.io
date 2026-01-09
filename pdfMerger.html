@@ -414,18 +414,24 @@
                         <span class="file-name" title="${file.name}">${file.name}</span>
                         <span class="file-size">${formatFileSize(file.size)}</span>
                     </div>
-                    <button class="remove-btn" onclick="removeFile(${index})">Remove</button>
+                    <button class="remove-btn" data-index="${index}">Remove</button>
                 `;
                 fileList.appendChild(fileItem);
             });
-        }
-
-        function removeFile(index) {
-            selectedFiles.splice(index, 1);
-            updateFileList();
-            updateMergeButton();
-            downloadBtn.style.display = 'none';
-            mergedPdfBytes = null;
+            
+            // Add event listeners to remove buttons
+            const removeButtons = fileList.querySelectorAll('.remove-btn');
+            removeButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const index = parseInt(this.getAttribute('data-index'));
+                    selectedFiles.splice(index, 1);
+                    updateFileList();
+                    updateMergeButton();
+                    downloadBtn.style.display = 'none';
+                    mergedPdfBytes = null;
+                });
+            });
         }
 
         function updateMergeButton() {
