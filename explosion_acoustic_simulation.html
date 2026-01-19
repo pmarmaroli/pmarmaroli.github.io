@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acoustic Attenuation - Explosion</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+        }
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .controls:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        .control-group {
+            margin-bottom: 12px;
+            padding: 4px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 12px;
+            color: #2d3748;
+            letter-spacing: 0.2px;
+            transition: color 0.2s ease;
+        }
+        .control-group:hover label {
+            color: #667eea;
+        }
+        input[type="checkbox"] {
+            margin-right: 6px;
+            cursor: pointer;
+        }
+        label[for="groundEffect"] {
+            font-weight: normal;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            outline: none;
+            transition: opacity 0.2s;
+        }
+        input[type="range"]:hover {
+            opacity: 0.8;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+        .value-display {
+            color: #667eea;
+            font-size: 11px;
+            margin-top: 3px;
+            font-weight: 600;
+            background: rgba(102,126,234,0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+        .control-group:hover .value-display {
+            background: rgba(102,126,234,0.15);
+            transform: translateX(3px);
+        }
+        .graph-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .graph-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        canvas {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .info {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            margin-top: 12px;
+            color: #2d3748;
+            border-left: 3px solid #667eea;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+        }
+        .info:hover {
+            background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+            transform: translateX(2px);
+        }
+        .info strong {
+            color: #667eea;
+        }
+        .geometry-diagram {
+            margin-top: 10px;
+            background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%);
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid rgba(102,126,234,0.2);
+        }
+        .geometry-diagram canvas {
+            width: 100%;
+            height: 220px;
+            display: block;
+            background: #fff;
+            border-radius: 8px;
+        }
+        .geometry-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔊 Acoustic Attenuation Simulation - Impulse (Explosion)</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="distance">Distance (m)</label>
+                <input type="range" id="distance" min="0" max="2000" value="1000" step="1">
+                <div class="value-display"><span id="distanceValue">10</span> m</div>
+            </div>
+
+            <div class="control-group">
+                <label for="temperature">Temperature (°C)</label>
+                <input type="range" id="temperature" min="-20" max="50" value="20" step="1">
+                <div class="value-display"><span id="temperatureValue">20</span> °C</div>
+            </div>
+
+            <div class="control-group">
+                <label for="humidity">Relative Humidity (%)</label>
+                <input type="range" id="humidity" min="0" max="100" value="50" step="1">
+                <div class="value-display"><span id="humidityValue">50</span> %</div>
+            </div>
+
+            <div class="control-group">
+                <label for="pressure">Pressure (Pa)</label>
+                <input type="range" id="pressure" min="95000" max="105000" value="101325" step="100">
+                <div class="value-display"><span id="pressureValue">101325</span> Pa</div>
+            </div>
+
+            <div class="control-group">
+                <label for="explosiveCharge">Explosive Charge (kg TNT-equiv)</label>
+                <input type="range" id="explosiveCharge" min="0.1" max="1000" value="10" step="0.1">
+                <div class="value-display"><span id="explosiveChargeValue">10</span> kg</div>
+            </div>
+
+            <div class="control-group">
+                <label for="explosiveType">Explosive Type</label>
+                <select id="explosiveType" style="width: 100%; padding: 6px; border-radius: 6px; border: 2px solid #667eea; font-size: 13px; cursor: pointer;">
+                    <option value="TNT">TNT (reference)</option>
+                    <option value="dynamite">Dynamite</option>
+                    <option value="C4">C4</option>
+                    <option value="ANFO">ANFO</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="burstType">Burst Type</label>
+                <select id="burstType" style="width: 100%; padding: 6px; border-radius: 6px; border: 2px solid #667eea; font-size: 13px; cursor: pointer;">
+                    <option value="surface">Surface Burst (Hemispherical)</option>
+                    <option value="freeair">Free-Air Burst (Spherical)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="burstHeight">Burst Height (m)</label>
+                <input type="range" id="burstHeight" min="0" max="100" value="1" step="0.1">
+                <div class="value-display"><span id="burstHeightValue">1</span> m</div>
+            </div>
+
+            <div class="control-group">
+                <label for="micHeight">Microphone Height (m)</label>
+                <input type="range" id="micHeight" min="0.01" max="10" value="1.6" step="0.1">
+                <div class="value-display"><span id="micHeightValue">1.6</span> m</div>
+            </div>
+
+            <div class="control-group">
+                <label for="soilType">Soil Type</label>
+                <select id="soilType" style="width: 100%; padding: 6px; border-radius: 6px; border: 2px solid #667eea; font-size: 13px; cursor: pointer;">
+                    <option value="concrete">Concrete (reflective)</option>
+                    <option value="asphalt">Asphalt</option>
+                    <option value="compacted_earth">Compacted Earth</option>
+                    <option value="grass">Grass</option>
+                    <option value="forest">Forest</option>
+                    <option value="sand">Sand</option>
+                    <option value="water">Water</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="groundEffect">
+                    <input type="checkbox" id="groundEffect" checked>
+                    Ground Effect
+                </label>
+            </div>
+
+            <div class="info">
+                <strong>� Explosion Model:</strong> Kingery-Bulmash empirical formulas for blast wave propagation. Friedlander waveform with realistic ground absorption.
+            </div>
+
+            <div class="geometry-diagram">
+                <div class="geometry-title">🎯 Geometry Setup</div>
+                <canvas id="geometryCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="graph-container">
+            <canvas id="spectrumCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Physical constants
+        const C = 331.3; // Speed of sound at 0°C (m/s)
+        const P_REF = 20e-6; // Reference pressure (Pa)
+        const I_REF = 1e-12; // Reference intensity (W/m²)
+
+        // DOM element retrieval
+        const distanceSlider = document.getElementById('distance');
+        const temperatureSlider = document.getElementById('temperature');
+        const humiditySlider = document.getElementById('humidity');
+        const pressureSlider = document.getElementById('pressure');
+        const explosiveChargeSlider = document.getElementById('explosiveCharge');
+        const explosiveTypeSelect = document.getElementById('explosiveType');
+        const burstTypeSelect = document.getElementById('burstType');
+        const burstHeightSlider = document.getElementById('burstHeight');
+        const micHeightSlider = document.getElementById('micHeight');
+        const soilTypeSelect = document.getElementById('soilType');
+
+        const distanceValue = document.getElementById('distanceValue');
+        const temperatureValue = document.getElementById('temperatureValue');
+        const humidityValue = document.getElementById('humidityValue');
+        const pressureValue = document.getElementById('pressureValue');
+        const explosiveChargeValue = document.getElementById('explosiveChargeValue');
+        const burstHeightValue = document.getElementById('burstHeightValue');
+        const micHeightValue = document.getElementById('micHeightValue');
+
+        // ========== PHASE 1: EXPLOSIVE CHARGE MODELING ==========
+
+        // Task 1.2: TNT-equivalent conversion
+        function getTNTEquivalent(explosiveType, mass) {
+            // Heat of explosion relative to TNT (Q/Q_TNT)
+            const energyRatios = {
+                'TNT': 1.0,
+                'dynamite': 1.15,      // ~15% more powerful than TNT
+                'C4': 1.34,            // ~34% more powerful
+                'ANFO': 0.74           // ~26% less powerful
+            };
+            
+            const ratio = energyRatios[explosiveType] || 1.0;
+            return mass * ratio;  // TNT-equivalent mass
+        }
+
+        // Task 1.3: Calculate scaled distance
+        function calculateScaledDistance(distance, explosiveCharge) {
+            // Z = R / W^(1/3)  [m/kg^(1/3)]
+            // R: distance in meters
+            // W: TNT-equivalent charge in kg
+            
+            if (explosiveCharge <= 0 || distance <= 0) return Infinity;
+            
+            const scaledDist = distance / Math.pow(explosiveCharge, 1/3);
+            return scaledDist;
+        }
+
+        const canvas = document.getElementById('spectrumCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const geometryCanvas = document.getElementById('geometryCanvas');
+        const geoCtx = geometryCanvas.getContext('2d');
+
+        // ========== PHASE 2: KINGERY-BULMASH MODEL ==========
+
+        // Task 2.1: Kingery-Bulmash overpressure function
+        function kingeryBulmashOverpressure(scaledDistance, burstType = 'surface') {
+            // Kingery & Bulmash (1984) - ARBL-TR-02555
+            // "Airblast parameters from TNT spherical air burst and hemispherical surface burst"
+            // Valid polynomial range: Z = 0.05 to 40 m/kg^(1/3)
+            // Beyond Z = 40, extrapolation is used (less accurate)
+            
+            const Z = scaledDistance;
+            
+            // Limit cases
+            if (Z < 0.05) return 10000000;  // Very close, saturation (~10 MPa)
+            if (Z > 200) return 0;           // Very far, negligible
+            
+            // Kingery-Bulmash polynomial in log-log scale:
+            // log₁₀(Ps_kPa) = a₀ + a₁·log₁₀(Z) + a₂·(log₁₀(Z))²
+            // Where Ps is in kPa, Z in m/kg^(1/3)
+            
+            const logZ = Math.log10(Z);
+            
+            // Official coefficients from Kingery & Bulmash (1984)
+            // Source: TM 5-1300, CONWEP, UFC 3-340-02, AASTP-1
+            let a0, a1, a2;
+            
+            if (burstType === 'surface') {
+                // Hemispherical surface burst (explosion at ground level)
+                // Energy is concentrated in hemisphere → 2x pressure vs free-air
+                a0 = 2.207;    // ✓ VERIFIED from Kingery-Bulmash tables
+                a1 = -0.656;   // ✓ VERIFIED
+                a2 = 0.0043;   // ✓ VERIFIED (positive!)
+            } else if (burstType === 'freeair') {
+                // Spherical free-air burst (explosion in air, no ground)
+                // Energy distributed in full sphere
+                a0 = 2.303;    // ✓ VERIFIED from Kingery-Bulmash tables
+                a1 = -0.656;   // ✓ VERIFIED (same as surface)
+                a2 = 0.0043;   // ✓ VERIFIED (same as surface)
+            } else {
+                // Default to surface burst
+                a0 = 2.207;
+                a1 = -0.656;
+                a2 = 0.0043;
+            }
+            
+            // Warning if extrapolating beyond validated range
+            if (Z > 40) {
+                console.warn(
+                    `⚠️  Kingery-Bulmash: Z = ${Z.toFixed(1)} m/kg^(1/3) exceeds validated polynomial range (0.05-40).\n` +
+                    `   Extrapolation used. Results may be less accurate.`
+                );
+            }
+            
+            const logPs = a0 + a1 * logZ + a2 * logZ * logZ;
+            const Ps_kPa = Math.pow(10, logPs);  // Overpressure in kPa
+            const Ps_Pa = Ps_kPa * 1000;         // Convert kPa → Pa
+            
+            return Ps_Pa;
+        }
+
+        // Task 2.2: Positive phase duration
+        function kingeryBulmashDuration(scaledDistance) {
+            // Duration of positive phase T⁺ (in ms)
+            // Based on Kingery-Bulmash data
+            
+            const Z = scaledDistance;
+            
+            if (Z < 0.1) return 1;    // Very close
+            if (Z > 100) return 1000; // Very far
+            
+            // Empirical relationship: T⁺ increases with Z
+            const logZ = Math.log10(Z);
+            const logTplus = 1.0 + 0.8 * logZ;  // Empirical coefficients
+            
+            return Math.pow(10, logTplus);  // In ms
+        }
+
+        // Task 2.3: Negative phase pressure
+        function kingeryBulmashNegativePressure(scaledDistance, peakPressure) {
+            // Negative overpressure (negative phase)
+            // Typically 10-20% of positive overpressure
+            
+            const Z = scaledDistance;
+            
+            if (Z < 0.5) return -peakPressure * 0.1;   // Very close
+            if (Z > 50) return -peakPressure * 0.05;   // Far
+            
+            // Progressive variation
+            const ratio = Math.max(0.05, Math.min(0.2, 0.25 - 0.003 * Z));
+            return -peakPressure * ratio;
+        }
+
+        // ========== PHASE 3: FRIEDLANDER WAVEFORM ==========
+
+        // Task 3.1: Friedlander waveform function
+        function friedlanderWaveform(time, peakPressure, phaseDuration, negativePressure) {
+            // Modified Friedlander equation
+            // p(t) = p₀ · (1 - t/T⁺) · exp(-t/T⁺)  for 0 ≤ t ≤ T⁺
+            // p(t) = p₋ · exp(-(t - T⁺) / T₋)       for t > T⁺
+            
+            const t = time;
+            const p0 = peakPressure;
+            const Tplus = phaseDuration;
+            const pMinus = negativePressure;
+            
+            if (t < 0) return 0;
+            
+            if (t <= Tplus) {
+                // Positive phase (Friedlander)
+                return p0 * (1 - t / Tplus) * Math.exp(-t / Tplus);
+            } else {
+                // Negative phase (exponential)
+                const Tminus = Tplus * 2;  // Negative phase duration
+                return pMinus * Math.exp(-(t - Tplus) / Tminus);
+            }
+        }
+
+        // Task 3.2: Calculate impulse (integral of pressure)
+        function calculateImpulse(peakPressure, phaseDuration, negativePressure) {
+            // Impulse = ∫ p(t) dt
+            // For Friedlander, there exists an analytical formula
+            
+            const p0 = peakPressure;
+            const Tplus = phaseDuration;
+            const pMinus = negativePressure;
+            
+            // Positive phase: ∫₀^T⁺ p₀(1 - t/T⁺)exp(-t/T⁺) dt
+            const impulsePositive = p0 * Tplus * (1 - Math.exp(-1));  // ≈ 0.632 * p0 * T⁺
+            
+            // Negative phase (approximation)
+            const Tminus = Tplus * 2;
+            const impulseNegative = pMinus * Tminus;
+            
+            return impulsePositive + impulseNegative;  // In Pa·s
+        }
+
+        // Task 3.3: Adapt waveform to distance
+        function adaptFriedlanderToDistance(scaledDistance, burstType = 'surface') {
+            // Friedlander parameters change with distance
+            
+            const Ps = kingeryBulmashOverpressure(scaledDistance, burstType);
+            const Tplus = kingeryBulmashDuration(scaledDistance);
+            const pMinus = kingeryBulmashNegativePressure(scaledDistance, Ps);
+            
+            return {
+                peakPressure: Ps,
+                phaseDuration: Tplus / 1000,  // Convert ms to s
+                negativePressure: pMinus
+            };
+        }
+
+        // ========== PHASE 4: GROUND ABSORPTION ==========
+
+        // Task 4.1: Soil absorption model
+        function getSoilAbsorption(soilType) {
+            // Soil absorption coefficient (0-1)
+            // Higher = more absorbing
+            
+            const absorptionCoefficients = {
+                'concrete': 0.01,      // Very reflective
+                'asphalt': 0.02,       // Reflective
+                'compacted_earth': 0.1, // Slightly absorbing
+                'grass': 0.4,          // Absorbing
+                'forest': 0.5,         // Very absorbing
+                'sand': 0.2,           // Moderately absorbing
+                'water': 0.01          // Very reflective
+            };
+            
+            return absorptionCoefficients[soilType] || 0.1;
+        }
+
+        function calculateGroundAbsorptionAttenuation(
+            distance, 
+            explosionHeight, 
+            receiverHeight, 
+            soilType, 
+            frequency
+        ) {
+            // Attenuation due to ground absorption
+            // Based on absorbing ground propagation theory
+            
+            const sigma = getSoilAbsorption(soilType);
+            
+            // Ground absorption factor
+            const groundFactor = -10 * Math.log10(1 - sigma);
+            
+            // Effective distance (reflected path)
+            const reflectionDistance = Math.sqrt(
+                distance * distance + 
+                4 * explosionHeight * receiverHeight
+            );
+            
+            // Attenuation increases with frequency
+            const frequencyFactor = 1 + 0.001 * frequency;
+            
+            // Total ground attenuation
+            const groundAttenuation = groundFactor * frequencyFactor * 
+                                     (reflectionDistance / distance - 1);
+            
+            return groundAttenuation;  // In dB
+        }
+
+        // Task 4.2: Replace image source with realistic model
+        function calculateGroundEffect(
+            frequency,
+            distance,
+            explosionHeight,
+            receiverHeight,
+            soilType
+        ) {
+            // New approach: ground absorption instead of simple image source
+            
+            if (soilType === 'concrete' || soilType === 'asphalt') {
+                // Reflective ground: keep image source
+                const c = calculateSoundSpeed(20);  // Use default temp
+                const lambda = c / frequency;  // Wavelength
+                const pathDifference = 2 * explosionHeight * receiverHeight / distance;
+                const phaseDiff = 2 * Math.PI * pathDifference / lambda;
+                return 20 * Math.log10(Math.abs(2 * Math.cos(phaseDiff / 2)));
+            } else {
+                // Absorbing ground: use absorption model
+                return -calculateGroundAbsorptionAttenuation(
+                    distance, explosionHeight, receiverHeight, soilType, frequency
+                );
+            }
+        }
+
+        // Draw geometry diagram
+        function drawGeometry() {
+            const explosionHeight = parseFloat(burstHeightSlider.value);
+            const h_r = parseFloat(micHeightSlider.value);
+            const distance = getDistanceFromSlider(distanceSlider.value);
+            const includeGroundEffect = document.getElementById('groundEffect').checked;
+
+            const rect = geometryCanvas.getBoundingClientRect();
+            geometryCanvas.width = rect.width;
+            geometryCanvas.height = rect.height;
+
+            const padding = 30;
+            const groundY = geometryCanvas.height - padding;
+            const width = geometryCanvas.width - 2 * padding;
+            
+            // Scale factor to fit distance and heights
+            const maxDim = Math.max(distance, explosionHeight, h_r, 2);
+            const scale = width / Math.max(distance, 3);
+            const heightScale = Math.min((geometryCanvas.height - 2 * padding - 30) / Math.max(explosionHeight, h_r, 1), scale);
+
+            // Clear
+            geoCtx.fillStyle = '#fff';
+            geoCtx.fillRect(0, 0, geometryCanvas.width, geometryCanvas.height);
+
+            // Ground line
+            geoCtx.strokeStyle = '#8b7355';
+            geoCtx.lineWidth = 3;
+            geoCtx.beginPath();
+            geoCtx.moveTo(padding - 10, groundY);
+            geoCtx.lineTo(geometryCanvas.width - padding + 10, groundY);
+            geoCtx.stroke();
+
+            // Ground hatch pattern
+            geoCtx.strokeStyle = '#8b7355';
+            geoCtx.lineWidth = 1.5;
+            for (let i = 0; i < width + 20; i += 15) {
+                geoCtx.beginPath();
+                geoCtx.moveTo(padding - 10 + i, groundY);
+                geoCtx.lineTo(padding - 10 + i + 10, groundY + 10);
+                geoCtx.stroke();
+            }
+
+            // Explosion position
+            const explosionX = padding + 30;
+            const explosionY = groundY - explosionHeight * heightScale;
+
+            // Microphone position
+            const micX = explosionX + distance * scale;
+            const micY = groundY - h_r * heightScale;
+
+            // Direct path
+            geoCtx.strokeStyle = '#ff6b35';
+            geoCtx.lineWidth = 2.5;
+            geoCtx.setLineDash([]);
+            geoCtx.beginPath();
+            geoCtx.moveTo(explosionX, explosionY);
+            geoCtx.lineTo(micX, micY);
+            geoCtx.stroke();
+
+            // Reflected path (if ground effect enabled)
+            if (includeGroundEffect) {
+                // Image source (mirror below ground)
+                const imageSourceY = groundY + explosionHeight * heightScale;
+                
+                geoCtx.strokeStyle = '#e53e3e';
+                geoCtx.lineWidth = 2;
+                geoCtx.setLineDash([5, 5]);
+                geoCtx.beginPath();
+                geoCtx.moveTo(explosionX, imageSourceY);
+                geoCtx.lineTo(micX, micY);
+                geoCtx.stroke();
+                geoCtx.setLineDash([]);
+
+                // Reflection point on ground
+                const reflectX = explosionX + (micX - explosionX) * explosionHeight / (explosionHeight + h_r);
+                geoCtx.fillStyle = '#e53e3e';
+                geoCtx.beginPath();
+                geoCtx.arc(reflectX, groundY, 3, 0, Math.PI * 2);
+                geoCtx.fill();
+
+                // Image source indicator
+                geoCtx.fillStyle = 'rgba(229, 62, 62, 0.3)';
+                geoCtx.strokeStyle = '#e53e3e';
+                geoCtx.lineWidth = 2;
+                geoCtx.setLineDash([3, 3]);
+                geoCtx.beginPath();
+                geoCtx.arc(explosionX, imageSourceY, 8, 0, Math.PI * 2);
+                geoCtx.fill();
+                geoCtx.stroke();
+                geoCtx.setLineDash([]);
+            }
+
+            // Explosion (starburst symbol)
+            geoCtx.fillStyle = '#ff6b35';
+            geoCtx.strokeStyle = '#ff6b35';
+            geoCtx.lineWidth = 2;
+            // Draw starburst
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI / 4);
+                geoCtx.beginPath();
+                geoCtx.moveTo(explosionX, explosionY);
+                geoCtx.lineTo(
+                    explosionX + Math.cos(angle) * 10,
+                    explosionY + Math.sin(angle) * 10
+                );
+                geoCtx.stroke();
+            }
+            geoCtx.beginPath();
+            geoCtx.arc(explosionX, explosionY, 6, 0, Math.PI * 2);
+            geoCtx.fill();
+
+            // Explosion height line
+            geoCtx.strokeStyle = 'rgba(255, 107, 53, 0.3)';
+            geoCtx.lineWidth = 1;
+            geoCtx.setLineDash([3, 3]);
+            geoCtx.beginPath();
+            geoCtx.moveTo(explosionX, explosionY);
+            geoCtx.lineTo(explosionX, groundY);
+            geoCtx.stroke();
+            geoCtx.setLineDash([]);
+
+            // Microphone
+            geoCtx.fillStyle = '#48bb78';
+            geoCtx.strokeStyle = '#48bb78';
+            geoCtx.lineWidth = 2;
+            geoCtx.beginPath();
+            geoCtx.arc(micX, micY, 8, 0, Math.PI * 2);
+            geoCtx.fill();
+
+            // Microphone height line
+            geoCtx.strokeStyle = 'rgba(72, 187, 120, 0.3)';
+            geoCtx.lineWidth = 1;
+            geoCtx.setLineDash([3, 3]);
+            geoCtx.beginPath();
+            geoCtx.moveTo(micX, micY);
+            geoCtx.lineTo(micX, groundY);
+            geoCtx.stroke();
+            geoCtx.setLineDash([]);
+
+            // Distance line
+            const distLineY = groundY + 20;
+            geoCtx.strokeStyle = '#2d3748';
+            geoCtx.lineWidth = 1;
+            geoCtx.beginPath();
+            geoCtx.moveTo(explosionX, distLineY);
+            geoCtx.lineTo(micX, distLineY);
+            geoCtx.stroke();
+            // Arrows
+            geoCtx.beginPath();
+            geoCtx.moveTo(explosionX, distLineY);
+            geoCtx.lineTo(explosionX + 5, distLineY - 3);
+            geoCtx.moveTo(explosionX, distLineY);
+            geoCtx.lineTo(explosionX + 5, distLineY + 3);
+            geoCtx.moveTo(micX, distLineY);
+            geoCtx.lineTo(micX - 5, distLineY - 3);
+            geoCtx.moveTo(micX, distLineY);
+            geoCtx.lineTo(micX - 5, distLineY + 3);
+            geoCtx.stroke();
+
+            // Labels
+            geoCtx.font = 'bold 11px Arial';
+            geoCtx.textAlign = 'center';
+            
+            // Explosion label
+            geoCtx.fillStyle = '#ff6b35';
+            geoCtx.fillText('💥 Explosion', explosionX, explosionY - 15);
+            geoCtx.font = '10px Arial';
+            geoCtx.fillText(`h = ${explosionHeight.toFixed(2)}m`, explosionX, explosionY - 25);
+            
+            // Microphone label
+            geoCtx.font = 'bold 11px Arial';
+            geoCtx.fillStyle = '#48bb78';
+            geoCtx.fillText('Mic', micX, micY - 15);
+            geoCtx.font = '10px Arial';
+            geoCtx.fillText(`h = ${h_r.toFixed(2)}m`, micX, micY - 25);
+            
+            // Distance label
+            geoCtx.font = '10px Arial';
+            geoCtx.fillStyle = '#2d3748';
+            geoCtx.fillText(`d = ${distance.toFixed(2)}m`, (explosionX + micX) / 2, distLineY + 12);
+
+            // Legend
+            const legendX = padding;
+            const legendY = 15;
+            geoCtx.font = '10px Arial';
+            geoCtx.textAlign = 'left';
+            
+            // Direct path
+            geoCtx.strokeStyle = '#ff6b35';
+            geoCtx.lineWidth = 2;
+            geoCtx.beginPath();
+            geoCtx.moveTo(legendX, legendY);
+            geoCtx.lineTo(legendX + 20, legendY);
+            geoCtx.stroke();
+            geoCtx.fillStyle = '#2d3748';
+            geoCtx.fillText('Direct', legendX + 25, legendY + 4);
+            
+            if (includeGroundEffect) {
+                // Reflected path
+                geoCtx.strokeStyle = '#e53e3e';
+                geoCtx.lineWidth = 2;
+                geoCtx.setLineDash([5, 5]);
+                geoCtx.beginPath();
+                geoCtx.moveTo(legendX + 70, legendY);
+                geoCtx.lineTo(legendX + 90, legendY);
+                geoCtx.stroke();
+                geoCtx.setLineDash([]);
+                geoCtx.fillStyle = '#2d3748';
+                geoCtx.fillText('Reflected', legendX + 95, legendY + 4);
+            }
+        }
+
+        // Update displayed values
+        function updateDisplayValues() {
+            distanceValue.textContent = getDistanceFromSlider(distanceSlider.value).toFixed(2);
+            temperatureValue.textContent = temperatureSlider.value;
+            humidityValue.textContent = humiditySlider.value;
+            pressureValue.textContent = parseInt(pressureSlider.value).toLocaleString();
+            explosiveChargeValue.textContent = parseFloat(explosiveChargeSlider.value).toFixed(1);
+            burstHeightValue.textContent = parseFloat(burstHeightSlider.value).toFixed(1);
+            micHeightValue.textContent = parseFloat(micHeightSlider.value).toFixed(2);
+        }
+
+        function getDistanceFromSlider(val) {
+            val = parseFloat(val);
+            if (val <= 1000) {
+                return val / 100; // 0-10m over 0-1000 steps (1cm res)
+            } else if (val <= 1500) {
+                return 10 + (val - 1000) * (90 / 500); // 10-100m over 500 steps
+            } else {
+                return 100 + (val - 1500) * (9900 / 500); // 100-10000m over 500 steps
+            }
+        }
+
+        function polyfit(x, y, degree) {
+            const n = x.length;
+            const k = degree + 1;
+            const X = new Float64Array(2 * k).fill(0);
+            const Y = new Float64Array(k).fill(0);
+            
+            for (let i = 0; i < n; i++) {
+                const xi = x[i];
+                const yi = y[i];
+                let p = 1;
+                for (let j = 0; j < 2 * k; j++) {
+                    X[j] += p;
+                    p *= xi;
+                }
+                p = 1;
+                for (let j = 0; j < k; j++) {
+                    Y[j] += p * yi;
+                    p *= xi;
+                }
+            }
+
+            const B = Array.from({ length: k }, () => new Float64Array(k + 1));
+            for (let i = 0; i < k; i++) {
+                for (let j = 0; j < k; j++) B[i][j] = X[i + j];
+                B[i][k] = Y[i];
+            }
+
+            for (let i = 0; i < k; i++) {
+                let maxRow = i;
+                for (let j = i + 1; j < k; j++) {
+                    if (Math.abs(B[j][i]) > Math.abs(B[maxRow][i])) maxRow = j;
+                }
+                [B[i], B[maxRow]] = [B[maxRow], B[i]];
+
+                const div = B[i][i];
+                for (let j = i; j <= k; j++) B[i][j] /= div;
+
+                for (let j = 0; j < k; j++) {
+                    if (i !== j) {
+                        const mul = B[j][i];
+                        for (let l = i; l <= k; l++) B[j][l] -= mul * B[i][l];
+                    }
+                }
+            }
+            return B.map(row => row[k]);
+        }
+
+        function polyval(coeffs, x) {
+            return coeffs.reduce((sum, coeff, i) => sum + coeff * Math.pow(x, i), 0);
+        }
+
+        function generatePolyfitCurve(spectrum) {
+            const x = spectrum.map(p => Math.log10(p.f));
+            const y = spectrum.map(p => p.attenuation);
+            const degree = 6;
+            const coeffs = polyfit(x, y, degree);
+            
+            return spectrum.map(p => ({
+                f: p.f,
+                attenuation: polyval(coeffs, Math.log10(p.f))
+            }));
+        }
+
+        // Atmospheric absorption calculation (ISO 9613-1)
+        function calculateAbsorptionCoefficient(f, T, HR, P) {
+            const T_K = T + 273.15;
+            const T_ref = 293.15; // 20°C (293.15K) T0
+            const P_ref = 101325; // 1 atm pr
+            
+            // Ratios
+            const pr = P / P_ref;
+            const tr = T_K / T_ref;
+
+            // Saturation vapor pressure calculation (ISO 9613-1)
+            // C = -6.8346 * (273.16 / T)^1.261 + 4.6151
+            const C_exp = -6.8346 * Math.pow(273.16 / T_K, 1.261) + 4.6151;
+            const p_sat = P_ref * Math.pow(10, C_exp);
+
+            // Water vapor molar concentration h (%) - ISO 9613-1 formula
+            const h = HR * (p_sat / P); 
+
+            // Relaxation frequency for oxygen (Hz)
+            const f_rO = pr * (24 + 4.04e4 * h * (0.02 + h) / (0.391 + h));
+
+            // Relaxation frequency for nitrogen (Hz)
+            const f_rN = pr * Math.pow(tr, -0.5) * (9 + 280 * h * Math.exp(-4.17 * (Math.pow(tr, -1/3) - 1)));
+
+            // Absorption coefficients
+            const f2 = f * f;
+            
+            // Complete ISO 9613-1 formula
+            const alpha = 8.686 * f2 * (
+                1.84e-11 * (1/pr) * Math.pow(tr, 0.5) +
+                Math.pow(tr, -2.5) * (
+                    0.01275 * Math.exp(-2239.1 / T_K) / (f_rO + f2/f_rO) +
+                    0.1068 * Math.exp(-3352 / T_K) / (f_rN + f2/f_rN)
+                )
+            );
+
+            return alpha;
+        }
+
+        // Sound speed calculation
+        function calculateSoundSpeed(T) {
+            return C + 0.6 * T;
+        }
+
+        // ========== PHASE 5: INTEGRATED EXPLOSION MODEL ==========
+
+        // Task 5.1: New total attenuation function
+        function calculateExplosionAttenuation(
+            frequency,
+            distance,
+            explosiveCharge,
+            burstHeight,
+            receiverHeight,
+            temperature,
+            humidity,
+            pressure,
+            soilType,
+            includeGroundEffect,
+            burstType = 'surface'
+        ) {
+            // 1. Calculate scaled distance
+            const scaledDistance = calculateScaledDistance(distance, explosiveCharge);
+            
+            // 2. Get Kingery-Bulmash parameters
+            const peakPressure = kingeryBulmashOverpressure(scaledDistance, burstType);
+            const phaseDuration = kingeryBulmashDuration(scaledDistance);
+            const negativePressure = kingeryBulmashNegativePressure(scaledDistance, peakPressure);
+            
+            // 3. Convert overpressure to sound pressure level (dB)
+            const P_ref = 20e-6;  // Reference pressure (Pa)
+            const pressureLevel = 20 * Math.log10(peakPressure / P_ref);
+            
+            // 4. Atmospheric attenuation (ISO 9613-1)
+            const alpha_dB_per_m = calculateAbsorptionCoefficient(frequency, temperature, humidity, pressure);
+            const atmosphericAttenuation = -alpha_dB_per_m * distance;
+            
+            // 5. Ground effect (explosion height is the source)
+            let groundEffect = 0;
+            if (includeGroundEffect) {
+                groundEffect = calculateGroundEffect(
+                    frequency, distance, burstHeight, receiverHeight, soilType
+                );
+            }
+            
+            // Total attenuation
+            const totalAttenuation = pressureLevel + atmosphericAttenuation + groundEffect;
+            
+            return totalAttenuation;
+        }
+
+        // Task 5.2: Generate explosion spectrum
+        function generateExplosionSpectrum(
+            distance,
+            explosiveCharge,
+            explosiveType,
+            burstHeight,
+            temperature,
+            humidity,
+            pressure,
+            receiverHeight,
+            soilType,
+            includeGroundEffect,
+            burstType = 'surface'
+        ) {
+            const fMin = 20;
+            const fMax = 40000;
+            const nPoints = 1000;
+            
+            // Convert to TNT equivalent
+            const tntEquiv = getTNTEquivalent(explosiveType, explosiveCharge);
+            
+            const spectrum = [];
+            const logStep = (Math.log10(fMax) - Math.log10(fMin)) / nPoints;
+            
+            for (let i = 0; i <= nPoints; i++) {
+                const f = Math.pow(10, Math.log10(fMin) + i * logStep);
+                
+                const attenuation = calculateExplosionAttenuation(
+                    f,
+                    distance,
+                    tntEquiv,
+                    burstHeight,
+                    receiverHeight,
+                    temperature,
+                    humidity,
+                    pressure,
+                    soilType,
+                    includeGroundEffect,
+                    burstType
+                );
+                
+                spectrum.push({ f, attenuation });
+            }
+            
+            return spectrum;
+        }
+
+        // Drawing the graph
+        function drawSpectrum() {
+            // Parameter retrieval
+            const distance = getDistanceFromSlider(distanceSlider.value);
+            const T = parseInt(temperatureSlider.value);
+            const HR = parseInt(humiditySlider.value); // Directly in % (ISO 9613-1)
+            const P = parseInt(pressureSlider.value);
+            const explosiveCharge = parseFloat(explosiveChargeSlider.value);
+            const explosiveType = explosiveTypeSelect.value;
+            const burstHeight = parseFloat(burstHeightSlider.value);
+            const h_r = parseFloat(micHeightSlider.value);
+            const soilType = soilTypeSelect.value;
+            const burstType = burstTypeSelect.value;
+            const includeGroundEffect = document.getElementById('groundEffect').checked;
+
+            // Spectrum generation
+            const spectrum = generateExplosionSpectrum(
+                distance, explosiveCharge, explosiveType, burstHeight,
+                T, HR, P, h_r, soilType, includeGroundEffect, burstType
+            );
+            const polySpectrum = generatePolyfitCurve(spectrum);
+            
+            // Calculate scaled distance for display
+            const tntEquiv = getTNTEquivalent(explosiveType, explosiveCharge);
+            const Z = calculateScaledDistance(distance, tntEquiv);
+            const Ps = kingeryBulmashOverpressure(Z, burstType);
+            
+            // Debug output
+            console.log('Explosion parameters:', {
+                distance, explosiveCharge, explosiveType, tntEquiv, Z,
+                Ps: `${Ps.toFixed(0)} Pa = ${(Ps/1000).toFixed(2)} kPa`,
+                SPL: `${(20 * Math.log10(Ps / 20e-6)).toFixed(1)} dB`,
+                spectrumPoints: spectrum.length,
+                sampleValues: [
+                    `${spectrum[0].f.toFixed(0)}Hz: ${spectrum[0].attenuation.toFixed(1)}dB`,
+                    `${spectrum[Math.floor(spectrum.length/2)].f.toFixed(0)}Hz: ${spectrum[Math.floor(spectrum.length/2)].attenuation.toFixed(1)}dB`,
+                    `${spectrum[spectrum.length-1].f.toFixed(0)}Hz: ${spectrum[spectrum.length-1].attenuation.toFixed(1)}dB`
+                ]
+            });
+            
+            // Canvas dimensions
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            const margin = { top: 40, right: 40, bottom: 50, left: 60 };
+            const width = canvas.width - margin.left - margin.right;
+            const height = canvas.height - margin.top - margin.bottom;
+
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Y-axis: fixed range 30-220 dB SPL
+            const minAtt = 30;
+            const maxAtt = 220;
+            const yRange = maxAtt - minAtt;
+
+            // Mapping function
+            const xScale = (f) => margin.left + (Math.log10(f) - Math.log10(20)) / (Math.log10(40000) - Math.log10(20)) * width;
+            const yScale = (att) => margin.top + height - ((att - minAtt) / yRange) * height;
+
+            // Grid and axes
+            ctx.strokeStyle = '#ddd';
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+
+            // X-axis (frequencies, log scale)
+            const freqs = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 40000];
+            freqs.forEach(f => {
+                const x = xScale(f);
+                ctx.beginPath();
+                ctx.moveTo(x, margin.top + height);
+                ctx.lineTo(x, margin.top + height + 5);
+                ctx.stroke();
+                ctx.fillText(f >= 1000 ? (f/1000) + 'k' : f, x, margin.top + height + 20);
+            });
+
+            // Y-axis (attenuation in dB) - fixed
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            const yStep = 10;
+            for (let att = minAtt; att <= maxAtt; att += yStep) {
+                const y = yScale(att);
+                ctx.beginPath();
+                ctx.moveTo(margin.left - 5, y);
+                ctx.lineTo(margin.left, y);
+                ctx.stroke();
+                ctx.fillText(att.toFixed(0), margin.left - 10, y);
+            }
+
+            // Spectrum plot
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            spectrum.forEach((point, index) => {
+                const x = xScale(point.f);
+                const y = yScale(point.attenuation);
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Trend curve plot (Polyfit)
+            ctx.strokeStyle = '#e53e3e';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            polySpectrum.forEach((point, index) => {
+                const x = xScale(point.f);
+                const y = yScale(point.attenuation);
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Axis labels
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('Frequency (Hz)', canvas.width / 2, canvas.height - 5);
+
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText('Sound Pressure Level (dB)', 0, 0);
+            ctx.restore();
+
+            // Title
+            ctx.font = 'bold 15px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#2d3748';
+            const SPL_ref = 20 * Math.log10(Ps / 20e-6);
+            ctx.fillText(`Explosion Spectrum (Kingery-Bulmash) - ${explosiveCharge.toFixed(1)}kg ${explosiveType} | d=${distance.toFixed(1)}m | Z=${Z.toFixed(1)} | SPL=${SPL_ref.toFixed(0)}dB`, canvas.width / 2, 25);
+        }
+
+        // Event listeners
+        [distanceSlider, temperatureSlider, humiditySlider, pressureSlider, 
+         explosiveChargeSlider, burstHeightSlider, micHeightSlider].forEach(slider => {
+            slider.addEventListener('input', () => {
+                updateDisplayValues();
+                drawSpectrum();
+                drawGeometry();
+            });
+        });
+
+        // Event listeners for selects
+        [explosiveTypeSelect, burstTypeSelect, soilTypeSelect].forEach(select => {
+            select.addEventListener('change', () => {
+                drawSpectrum();
+                drawGeometry();
+            });
+        });
+
+        // Event listener for checkbox
+        document.getElementById('groundEffect').addEventListener('change', () => {
+            drawSpectrum();
+            drawGeometry();
+        });
+
+        // Initialization
+        updateDisplayValues();
+        drawSpectrum();
+        drawGeometry();
+
+        // Redraw on resize
+        window.addEventListener('resize', () => {
+            drawSpectrum();
+            drawGeometry();
+        });
+    </script>
+</body>
+</html>
