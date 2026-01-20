@@ -672,117 +672,57 @@
             status.innerHTML = '';
         }
 
-        // Get EXIF orientation from image
-        function getOrientation(arrayBuffer) {
-            const view = new DataView(arrayBuffer);
-            if (view.getUint16(0, false) != 0xFFD8) return -2;
-            const length = view.byteLength;
-            let offset = 2;
-            while (offset < length) {
-                if (view.getUint16(offset+2, false) <= 8) return -1;
-                let marker = view.getUint16(offset, false);
-                offset += 2;
-                if (marker == 0xFFE1) {
-                    if (view.getUint32(offset += 2, false) != 0x45786966) return -1;
-                    let little = view.getUint16(offset += 6, false) == 0x4949;
-                    offset += view.getUint32(offset + 4, little);
-                    let tags = view.getUint16(offset, little);
-                    offset += 2;
-                    for (let i = 0; i < tags; i++) {
-                        if (view.getUint16(offset + (i * 12), little) == 0x0112) {
-                            return view.getUint16(offset + (i * 12) + 8, little);
-                        }
-                    }
-                } else if ((marker & 0xFF00) != 0xFF00) {
-                    break;
-                } else { 
-                    offset += view.getUint16(offset, false);
-                }
-            }
-            return -1;
-        }
-
         // Convert image to PDF with proper orientation
         async function imageToPdf(imageFile) {
             const { PDFDocument } = PDFLib;
             const pdfDoc = await PDFDocument.create();
             
-            const imageBytes = await imageFile.arrayBuffer();
+            // Use createImageBitmap with imageOrientation: 'from-image' to respect EXIF
+            const bitmap = await createImageBitmap(imageFile, { 
+                imageOrientation: 'from-image' 
+            });
             
-            // Get EXIF orientation
-            const orientation = getOrientation(imageBytes);
-            
-            // Create bitmap from image
-            const bitmap = await createImageBitmap(imageFile);
-            
-            // Determine if we need to rotate based on EXIF
-            let needsRotation = orientation >= 5 && orientation <= 8;
-            let needsFlip = orientation === 2 || orientation === 4 || orientation === 5 || orientation === 7;
-            let rotation = 0;
-            
-            if (orientation === 3) rotation = 180;
-            else if (orientation === 6) rotation = 90;
-            else if (orientation === 8) rotation = 270;
-            
-            // Create canvas with corrected dimensions
+            // Create canvas with the bitmap's corrected dimensions
             const canvas = document.createElement('canvas');
-            if (needsRotation) {
-                canvas.width = bitmap.height;
-                canvas.height = bitmap.width;
-            } else {
-                canvas.width = bitmap.width;
-                canvas.height = bitmap.height;
-            }
+            canvas.width = bitmap.width;
+            canvas.height = bitmap.height;
             
             const ctx = canvas.getContext('2d');
-            
-            // Apply transformations
-            ctx.save();
-            
-            if (needsRotation) {
-                ctx.translate(canvas.width / 2, canvas.height / 2);
-                ctx.rotate(rotation * Math.PI / 180);
-                if (needsFlip) {
-                    ctx.scale(-1, 1);
-                }
-                ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
-            } else {
-                ctx.translate(canvas.width / 2, canvas.height / 2);
-                ctx.rotate(rotation * Math.PI / 180);
-                if (needsFlip) {
-                    ctx.scale(-1, 1);
-                }
-                ctx.drawImage(bitmap, -canvas.width / 2, -canvas.height / 2);
-            }
-            
-            ctx.restore();
+            ctx.drawImage(bitmap, 0, 0);
             
             // Convert canvas to JPEG
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
             const convertedBytes = await blob.arrayBuffer();
             const image = await pdfDoc.embedJpg(convertedBytes);
             
-            // Calculate page dimensions - use A4 proportions if image is close to A4
+            // Determine page size based on image orientation
             let pageWidth = image.width;
             let pageHeight = image.height;
             
-            // A4 dimensions in points: 595 x 842 (portrait)
-            const A4_WIDTH = 595;
-            const A4_HEIGHT = 842;
-            const A4_RATIO = A4_HEIGHT / A4_WIDTH; // ~1.414
+            // A4 dimensions in points: 595 x 842 (portrait), 842 x 595 (landscape)
+            const A4_PORTRAIT_WIDTH = 595;
+            const A4_PORTRAIT_HEIGHT = 842;
             
-            const imageRatio = image.height / image.width;
-            
-            // If image is roughly portrait (height > width), fit to A4 portrait
-            if (imageRatio > 1) {
-                const maxWidth = A4_WIDTH * 2; // Allow up to 2x A4 for high-res images
+            // Check if image is portrait (taller than wide)
+            if (image.height > image.width) {
+                // Portrait orientation - scale to fit A4 portrait if too large
+                const maxWidth = A4_PORTRAIT_WIDTH * 2.5; // Allow 2.5x for high-res
                 if (image.width > maxWidth) {
+                    const scale = maxWidth / image.width;
                     pageWidth = maxWidth;
-                    pageHeight = maxWidth * imageRatio;
+                    pageHeight = image.height * scale;
+                }
+            } else {
+                // Landscape orientation - scale to fit A4 landscape if too large
+                const maxHeight = A4_PORTRAIT_WIDTH * 2.5; // Use portrait width as landscape height
+                if (image.height > maxHeight) {
+                    const scale = maxHeight / image.height;
+                    pageHeight = maxHeight;
+                    pageWidth = image.width * scale;
                 }
             }
             
-            // Create a page with the calculated dimensions
+            // Create page and draw image
             const page = pdfDoc.addPage([pageWidth, pageHeight]);
             page.drawImage(image, {
                 x: 0,
