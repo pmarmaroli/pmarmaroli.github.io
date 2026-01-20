@@ -285,11 +285,41 @@
             to { transform: rotate(360deg); }
         }
 
-        .download-btn {
+        .download-section {
             display: none;
+            margin-top: 15px;
+        }
+
+        .download-section.show {
+            display: block;
+        }
+
+        .filename-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--background);
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .filename-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .filename-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .download-btn {
             width: 100%;
             padding: 15px;
-            margin-top: 15px;
             background: var(--accent-warm);
             color: white;
             border: none;
@@ -398,7 +428,10 @@
 
         <div class="status" id="status"></div>
 
-        <button class="download-btn" id="downloadBtn">⬇️ Download Merged PDF</button>
+        <div class="download-section" id="downloadSection">
+            <input type="text" id="filenameInput" class="filename-input" placeholder="Enter PDF name (optional)" />
+            <button class="download-btn" id="downloadBtn">⬇️ Download PDF</button>
+        </div>
 
         <div class="info-box">
             <strong>How it works:</strong> Select or drag multiple PDF files and/or images (JPG, PNG, HEIC, etc.). Images will be converted to PDF pages. They will be merged in the order shown. All processing happens in your browser - no files are uploaded to any server.
@@ -428,7 +461,9 @@
         const fileList = document.getElementById('fileList');
         const mergeBtn = document.getElementById('mergeBtn');
         const clearBtn = document.getElementById('clearBtn');
+        const downloadSection = document.getElementById('downloadSection');
         const downloadBtn = document.getElementById('downloadBtn');
+        const filenameInput = document.getElementById('filenameInput');
         const status = document.getElementById('status');
         const uploadText = document.getElementById('uploadText');
         const uploadSubtext = document.getElementById('uploadSubtext');
@@ -577,7 +612,7 @@
             updateFileList();
             updateMergeButton();
             hideStatus();
-            downloadBtn.style.display = 'none';
+            downloadSection.classList.remove('show');
             mergedPdfBytes = null;
         }
 
@@ -607,7 +642,7 @@
                     selectedFiles.splice(index, 1);
                     updateFileList();
                     updateMergeButton();
-                    downloadBtn.style.display = 'none';
+                    downloadSection.classList.remove('show');
                     mergedPdfBytes = null;
                 });
             });
@@ -794,7 +829,8 @@
                 mergedPdfBytes = await mergedPdf.save();
                 
                 showStatus(`✅ Successfully processed ${selectedFiles.length} file(s)!`, 'success');
-                downloadBtn.style.display = 'block';
+                downloadSection.classList.add('show');
+                filenameInput.focus();
                 mergeBtn.disabled = false;
 
             } catch (error) {
@@ -808,11 +844,21 @@
         downloadBtn.addEventListener('click', () => {
             if (!mergedPdfBytes) return;
 
+            // Get custom filename or use default
+            let filename = filenameInput.value.trim();
+            if (!filename) {
+                filename = `document_${new Date().toISOString().slice(0,10).replace(/-/g, '')}`;
+            }
+            // Add .pdf extension if not present
+            if (!filename.toLowerCase().endsWith('.pdf')) {
+                filename += '.pdf';
+            }
+
             const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `merged_${Date.now()}.pdf`;
+            link.download = filename;
             link.click();
             URL.revokeObjectURL(url);
         });
@@ -821,10 +867,11 @@
         clearBtn.addEventListener('click', () => {
             selectedFiles = [];
             mergedPdfBytes = null;
+            filenameInput.value = '';
             updateFileList();
             updateMergeButton();
             hideStatus();
-            downloadBtn.style.display = 'none';
+            downloadSection.classList.remove('show');
         });
         }); // End DOMContentLoaded
     </script>
