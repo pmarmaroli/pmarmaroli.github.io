@@ -637,39 +637,123 @@
             status.innerHTML = '';
         }
 
-        // Convert image to PDF
+        // Get EXIF orientation from image
+        function getOrientation(arrayBuffer) {
+            const view = new DataView(arrayBuffer);
+            if (view.getUint16(0, false) != 0xFFD8) return -2;
+            const length = view.byteLength;
+            let offset = 2;
+            while (offset < length) {
+                if (view.getUint16(offset+2, false) <= 8) return -1;
+                let marker = view.getUint16(offset, false);
+                offset += 2;
+                if (marker == 0xFFE1) {
+                    if (view.getUint32(offset += 2, false) != 0x45786966) return -1;
+                    let little = view.getUint16(offset += 6, false) == 0x4949;
+                    offset += view.getUint32(offset + 4, little);
+                    let tags = view.getUint16(offset, little);
+                    offset += 2;
+                    for (let i = 0; i < tags; i++) {
+                        if (view.getUint16(offset + (i * 12), little) == 0x0112) {
+                            return view.getUint16(offset + (i * 12) + 8, little);
+                        }
+                    }
+                } else if ((marker & 0xFF00) != 0xFF00) {
+                    break;
+                } else { 
+                    offset += view.getUint16(offset, false);
+                }
+            }
+            return -1;
+        }
+
+        // Convert image to PDF with proper orientation
         async function imageToPdf(imageFile) {
             const { PDFDocument } = PDFLib;
             const pdfDoc = await PDFDocument.create();
             
             const imageBytes = await imageFile.arrayBuffer();
-            let image;
             
-            if (imageFile.type === 'image/png') {
-                image = await pdfDoc.embedPng(imageBytes);
-            } else if (imageFile.type === 'image/jpeg' || imageFile.type === 'image/jpg') {
-                image = await pdfDoc.embedJpg(imageBytes);
+            // Get EXIF orientation
+            const orientation = getOrientation(imageBytes);
+            
+            // Create bitmap from image
+            const bitmap = await createImageBitmap(imageFile);
+            
+            // Determine if we need to rotate based on EXIF
+            let needsRotation = orientation >= 5 && orientation <= 8;
+            let needsFlip = orientation === 2 || orientation === 4 || orientation === 5 || orientation === 7;
+            let rotation = 0;
+            
+            if (orientation === 3) rotation = 180;
+            else if (orientation === 6) rotation = 90;
+            else if (orientation === 8) rotation = 270;
+            
+            // Create canvas with corrected dimensions
+            const canvas = document.createElement('canvas');
+            if (needsRotation) {
+                canvas.width = bitmap.height;
+                canvas.height = bitmap.width;
             } else {
-                // For other formats (HEIC, etc.), convert to canvas first
-                const bitmap = await createImageBitmap(imageFile);
-                const canvas = document.createElement('canvas');
                 canvas.width = bitmap.width;
                 canvas.height = bitmap.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(bitmap, 0, 0);
-                
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
-                const convertedBytes = await blob.arrayBuffer();
-                image = await pdfDoc.embedJpg(convertedBytes);
             }
             
-            // Create a page with the image dimensions
-            const page = pdfDoc.addPage([image.width, image.height]);
+            const ctx = canvas.getContext('2d');
+            
+            // Apply transformations
+            ctx.save();
+            
+            if (needsRotation) {
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(rotation * Math.PI / 180);
+                if (needsFlip) {
+                    ctx.scale(-1, 1);
+                }
+                ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
+            } else {
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(rotation * Math.PI / 180);
+                if (needsFlip) {
+                    ctx.scale(-1, 1);
+                }
+                ctx.drawImage(bitmap, -canvas.width / 2, -canvas.height / 2);
+            }
+            
+            ctx.restore();
+            
+            // Convert canvas to JPEG
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+            const convertedBytes = await blob.arrayBuffer();
+            const image = await pdfDoc.embedJpg(convertedBytes);
+            
+            // Calculate page dimensions - use A4 proportions if image is close to A4
+            let pageWidth = image.width;
+            let pageHeight = image.height;
+            
+            // A4 dimensions in points: 595 x 842 (portrait)
+            const A4_WIDTH = 595;
+            const A4_HEIGHT = 842;
+            const A4_RATIO = A4_HEIGHT / A4_WIDTH; // ~1.414
+            
+            const imageRatio = image.height / image.width;
+            
+            // If image is roughly portrait (height > width), fit to A4 portrait
+            if (imageRatio > 1) {
+                const maxWidth = A4_WIDTH * 2; // Allow up to 2x A4 for high-res images
+                if (image.width > maxWidth) {
+                    pageWidth = maxWidth;
+                    pageHeight = maxWidth * imageRatio;
+                }
+            }
+            
+            // Create a page with the calculated dimensions
+            const page = pdfDoc.addPage([pageWidth, pageHeight]);
             page.drawImage(image, {
                 x: 0,
                 y: 0,
-                width: image.width,
-                height: image.height,
+                width: pageWidth,
+                height: pageHeight,
             });
             
             return pdfDoc;
