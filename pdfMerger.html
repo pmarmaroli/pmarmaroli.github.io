@@ -352,6 +352,29 @@
             font-weight: 600;
         }
 
+        .debug-info {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid var(--border);
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: monospace;
+            line-height: 1.5;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .debug-info.show {
+            display: block;
+        }
+
+        .debug-line {
+            margin: 3px 0;
+        }
+
         .camera-btn {
             display: none;
             width: 100%;
@@ -436,6 +459,8 @@
         <div class="info-box">
             <strong>How it works:</strong> Select or drag multiple PDF files and/or images (JPG, PNG, HEIC, etc.). Images will be converted to PDF pages. They will be merged in the order shown. All processing happens in your browser - no files are uploaded to any server.
         </div>
+
+        <div class="debug-info" id="debugInfo"></div>
     </div>
 
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -467,9 +492,27 @@
         const status = document.getElementById('status');
         const uploadText = document.getElementById('uploadText');
         const uploadSubtext = document.getElementById('uploadSubtext');
+        const debugInfo = document.getElementById('debugInfo');
 
         let selectedFiles = [];
         let mergedPdfBytes = null;
+
+        // Debug logging function
+        function debugLog(message) {
+            console.log(message);
+            const line = document.createElement('div');
+            line.className = 'debug-line';
+            line.textContent = message;
+            debugInfo.appendChild(line);
+            debugInfo.classList.add('show');
+            // Auto-scroll to bottom
+            debugInfo.scrollTop = debugInfo.scrollHeight;
+        }
+
+        function clearDebug() {
+            debugInfo.innerHTML = '';
+            debugInfo.classList.remove('show');
+        }
 
         // Detect if on mobile device
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -677,12 +720,23 @@
             const { PDFDocument } = PDFLib;
             const pdfDoc = await PDFDocument.create();
             
-            // Use createImageBitmap with imageOrientation: 'from-image' to respect EXIF
-            const bitmap = await createImageBitmap(imageFile, { 
-                imageOrientation: 'from-image' 
-            });
+            // Try with 'from-image' first (respects EXIF)
+            let bitmap;
+            try {
+                bitmap = await createImageBitmap(imageFile, { 
+                    imageOrientation: 'from-image' 
+                });
+                debugLog(`✓ EXIF orientation supported`);
+            } catch (e) {
+                // Fallback without options if not supported
+                debugLog(`⚠ EXIF not supported, using default`);
+                bitmap = await createImageBitmap(imageFile);
+            }
             
-            // Create canvas with the bitmap's corrected dimensions
+            debugLog(`📷 ${imageFile.name}`);
+            debugLog(`   Bitmap: ${bitmap.width}x${bitmap.height}`);
+            
+            // Create canvas with the bitmap's dimensions
             const canvas = document.createElement('canvas');
             canvas.width = bitmap.width;
             canvas.height = bitmap.height;
@@ -695,32 +749,27 @@
             const convertedBytes = await blob.arrayBuffer();
             const image = await pdfDoc.embedJpg(convertedBytes);
             
-            // Determine page size based on image orientation
+            debugLog(`   Embedded: ${image.width}x${image.height}`);
+            
+            // Determine page size based on actual image dimensions
             let pageWidth = image.width;
             let pageHeight = image.height;
             
-            // A4 dimensions in points: 595 x 842 (portrait), 842 x 595 (landscape)
+            // A4 dimensions in points: 595 x 842 (portrait)
             const A4_PORTRAIT_WIDTH = 595;
             const A4_PORTRAIT_HEIGHT = 842;
+            const MAX_DIMENSION = 2000; // Reasonable max for PDF
             
-            // Check if image is portrait (taller than wide)
-            if (image.height > image.width) {
-                // Portrait orientation - scale to fit A4 portrait if too large
-                const maxWidth = A4_PORTRAIT_WIDTH * 2.5; // Allow 2.5x for high-res
-                if (image.width > maxWidth) {
-                    const scale = maxWidth / image.width;
-                    pageWidth = maxWidth;
-                    pageHeight = image.height * scale;
-                }
-            } else {
-                // Landscape orientation - scale to fit A4 landscape if too large
-                const maxHeight = A4_PORTRAIT_WIDTH * 2.5; // Use portrait width as landscape height
-                if (image.height > maxHeight) {
-                    const scale = maxHeight / image.height;
-                    pageHeight = maxHeight;
-                    pageWidth = image.width * scale;
-                }
+            // Scale down if image is too large, maintaining aspect ratio
+            if (image.width > MAX_DIMENSION || image.height > MAX_DIMENSION) {
+                const scale = Math.min(MAX_DIMENSION / image.width, MAX_DIMENSION / image.height);
+                pageWidth = image.width * scale;
+                pageHeight = image.height * scale;
             }
+            
+            const orientation = pageHeight > pageWidth ? 'PORTRAIT' : 'LANDSCAPE';
+            debugLog(`   PDF page: ${Math.round(pageWidth)}x${Math.round(pageHeight)} (${orientation})`);
+            debugLog('');
             
             // Create page and draw image
             const page = pdfDoc.addPage([pageWidth, pageHeight]);
@@ -742,6 +791,7 @@
             }
 
             try {
+                clearDebug();
                 showStatus('Processing files...', 'loading');
                 mergeBtn.disabled = true;
 
