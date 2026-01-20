@@ -844,13 +844,24 @@
                 filename += '.pdf';
             }
 
+            // Sanitize filename (remove invalid characters)
+            filename = filename.replace(/[^a-z0-9_\-\.]/gi, '_');
+
+            debugLog(`📥 Downloading as: ${filename}`);
+
             const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.download = filename;
+            
+            // For better mobile support
+            document.body.appendChild(link);
             link.click();
-            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+            
+            // Clean up
+            setTimeout(() => URL.revokeObjectURL(url), 100);
         });
 
         // Clear all
