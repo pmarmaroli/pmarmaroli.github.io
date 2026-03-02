@@ -977,13 +977,13 @@ body {
 }
 
 .tech-categories {
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
 }
 
 .tech-categories h3 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: var(--text-primary);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     text-align: center;
     font-weight: 600;
     position: relative;
@@ -1003,15 +1003,15 @@ body {
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 }
 
 .category-card {
     background: var(--background);
-    padding: 2.5rem;
-    border-radius: 20px;
+    padding: 1.5rem;
+    border-radius: 16px;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border);
     transition: all 0.3s ease;
@@ -1036,33 +1036,33 @@ body {
 }
 
 .category-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-xl);
 }
 
 .category-card h4 {
     color: var(--text-primary);
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .tech-stack {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.5rem 0;
+    gap: 0.4rem;
+    margin: 1rem 0;
 }
 
 .tech-item {
     background: var(--surface);
     color: var(--text-primary);
-    padding: 0.6rem 1.2rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 500;
     white-space: nowrap;
     border: 1px solid var(--border);
@@ -1095,9 +1095,9 @@ body {
 
 .category-card p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-top: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-top: 0.75rem;
 }
 
 .tech-excellence {
