@@ -1,3 +1,4 @@
+.claude/worktrees/
 package-lock.json
 package.json
 server.js
