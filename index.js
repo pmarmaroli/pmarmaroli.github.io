@@ -75,8 +75,8 @@ function displayPortfolioByIndustry(items) {
         card.className = "project-card fade-in";
         card.style.animationDelay = `${sectionIdx * 0.15 + idx * 0.08}s`;
 
-        const urlMatch = item["URL"].match(/\[([^\]]+)\]\(([^)]+)\)/);
-        const moreInfoMatch = item["MoreInfo"].match(/\[([^\]]+)\]\(([^)]+)\)/);
+        const urlMatch = (item["URL"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
+        const moreInfoMatch = (item["MoreInfo"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
 
         const links = [];
         if (urlMatch && urlMatch[2] && urlMatch[2] !== "#") {
