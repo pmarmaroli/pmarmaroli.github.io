@@ -106,8 +106,57 @@ function displayPortfolioByIndustry(items) {
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const headers = lines[0].split(",").map((h) => h.trim());
+  const numCols = headers.length; // 6: Menu, Title, URL, Description, MoreInfo, Industry
+
   return lines.slice(1).map((line) => {
-    const values = line.split(",").map((v) => v.trim());
+    const parts = line.split(",");
+
+    let values;
+    if (parts.length === numCols) {
+      values = parts.map((v) => v.trim());
+    } else {
+      // Commas inside fields — reconstruct by anchoring on first 2 and last 1 columns
+      // Menu (no commas), Title (no commas), ..middle.., Industry (no commas)
+      const menu = parts[0].trim();
+      const title = parts[1].trim();
+      const industry = parts[parts.length - 1].trim();
+
+      // Rejoin the middle (URL + Description + MoreInfo)
+      const middle = parts.slice(2, parts.length - 1).join(",");
+
+      // Split middle into URL, Description, MoreInfo
+      // URL is a markdown link [text](url) or empty
+      // MoreInfo is a markdown link [text](url) or empty
+      // Description is everything between them
+      let url = "", description = "", moreInfo = "";
+
+      // Extract URL (first markdown link at the start, or empty)
+      const urlPattern = /^\s*(\[[^\]]*\]\([^)]*\))\s*,\s*/;
+      const urlEmpty = /^\s*,\s*/;
+      let rest = middle;
+
+      const urlM = rest.match(urlPattern);
+      if (urlM) {
+        url = urlM[1].trim();
+        rest = rest.slice(urlM[0].length);
+      } else if (rest.match(urlEmpty)) {
+        url = "";
+        rest = rest.replace(urlEmpty, "");
+      }
+
+      // Extract MoreInfo (last markdown link at the end, or empty)
+      // Look for the last occurrence of ,[markdown link] or just trailing empty
+      const moreInfoPattern = /,\s*(\[[^\]]*\]\([^)]*\)(?:\s*\w*)?)\s*$/;
+      const moreInfoM = rest.match(moreInfoPattern);
+      if (moreInfoM) {
+        moreInfo = moreInfoM[1].trim();
+        rest = rest.slice(0, rest.length - moreInfoM[0].length);
+      }
+
+      description = rest.trim();
+      values = [menu, title, url, description, moreInfo, industry];
+    }
+
     return headers.reduce((obj, header, i) => {
       obj[header] = values[i] || "";
       return obj;
