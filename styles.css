@@ -284,17 +284,26 @@ a:hover { text-decoration: underline; }
 .skill-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: 0;
 }
 
 .skill-tags span {
-    background: var(--bg-alt);
+    background: none;
     color: var(--text);
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: 1px solid var(--border);
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+    border: none;
+}
+
+.skill-tags span::after {
+    content: ' · ';
+    color: var(--text-muted);
+}
+
+.skill-tags span:last-child::after {
+    content: '';
 }
 
 /* ========== PORTFOLIO / PROJECTS ========== */
