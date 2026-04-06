@@ -8,9 +8,7 @@
     <meta name="description" content="Symptom Tracker web app for logging and monitoring health symptoms over time with visual charts and export features.">
     <link rel="canonical" href="https://pmarmaroli.github.io/moreinfo/symptom-tracker.html">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta name="description" content="Symptom Tracker web app for logging and monitoring health symptoms over time with visual charts and export features.">
-    <link rel="canonical" href="https://pmarmaroli.github.io/moreinfo/symptom-tracker.html">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -122,191 +120,478 @@
             font-family: monospace;
             overflow-x: auto;
         }
-        ul li {
-            margin: 8px 0;
+        /* ── App-specific styles ── */
+        .app-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
         }
-        .emoji {
-            font-size: 1.2em;
-            margin-right: 8px;
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 16px;
         }
-        .project-subtitle {
-            font-size: 1.2em;
+        .form-row label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.85em;
+            font-weight: 600;
             color: #1e40af;
-            margin-bottom: 20px;
-            text-align: center;
+            gap: 4px;
+            flex: 1 1 140px;
         }
-        .hero-section {
-            margin-bottom: 30px;
-        }
-        .description-box {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #2563eb;
-            margin: 20px 0;
-        }
-        .tech-category {
-            margin: 25px 0;
-        }
-        .tech-category h3 {
-            color: #1e40af;
-            margin-bottom: 15px;
-        }
-        .tech-category ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        .tech-category li {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            padding: 10px 15px;
-            margin: 8px 0;
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            padding: 8px 10px;
+            border: 1.5px solid #93c5fd;
             border-radius: 8px;
-            border-left: 3px solid #2563eb;
+            font-size: 0.95em;
+            background: #f0f9ff;
+            color: #1e3a8a;
+            outline: none;
+            transition: border-color 0.2s;
         }
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            border-color: #2563eb;
+        }
+        .btn {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.92em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+        .btn:hover { transform: translateY(-1px); opacity: 0.92; }
+        .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; }
+        .btn-danger  { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .btn-success { background: linear-gradient(135deg, #16a34a, #15803d); color: white; }
+        .btn-sm { padding: 5px 12px; font-size: 0.82em; }
+
+        /* Chart toggle */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 0 10px 0;
+        }
+        .toggle-group span {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #1e40af;
+        }
+        .toggle-btn {
+            padding: 6px 16px;
+            border: 1.5px solid #93c5fd;
+            border-radius: 20px;
+            background: #f0f9ff;
+            color: #2563eb;
+            font-size: 0.83em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-color: #1d4ed8;
+        }
+
+        /* Log table */
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            margin-top: 12px;
+        }
+        .log-table th {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .log-table td {
+            padding: 7px 12px;
+            border-bottom: 1px solid #e0f2fe;
+        }
+        .log-table tr:hover td { background: #f0f9ff; }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 12px;
+            font-size: 0.82em;
+            font-weight: 700;
+        }
+        .sev-1 { background:#d1fae5; color:#065f46; }
+        .sev-2 { background:#fef9c3; color:#854d0e; }
+        .sev-3 { background:#fee2e2; color:#991b1b; }
+
+        .empty-msg {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        ul li { margin: 8px 0; }
+        .emoji { font-size: 1.2em; margin-right: 8px; }
     </style>
 </head>
 
 <body>
-    <nav style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,sans-serif;font-size:0.88rem;"><a href="/" style="color:#3b82f6;text-decoration:none;">&larr; Back to pmarmaroli.github.io</a></nav>
-    <nav style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,sans-serif;font-size:0.88rem;"><a href="/" style="color:#3b82f6;text-decoration:none;">&larr; Back to pmarmaroli.github.io</a></nav>
-    <div class="container">
+    <nav style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,sans-serif;font-size:0.88rem;">
+        <a href="/" style="color:#3b82f6;text-decoration:none;">&larr; Back to pmarmaroli.github.io</a>
+    </nav>
+
+    <div class="container app-wrapper">
         <h1>📊 Symptom Tracker</h1>
-        
-        <div class="demo-section">
-            <h3>🏥 Health Monitoring Platform</h3>
-            <p>A lightweight web application designed to help users track and log their symptoms over time. It provides intuitive data visualization through charts and enables users to export their symptom logs as CSV files for further analysis or sharing with healthcare providers.</p>
-            <p><strong>Purpose:</strong> Streamlining personal health monitoring and data visualization for healthcare collaboration</p>
+
+        <!-- ── LOG ENTRY ── -->
+        <h2>➕ Log a Symptom</h2>
+        <div class="form-row">
+            <label>Symptom
+                <select id="symptomSelect">
+                    <option value="">— select —</option>
+                    <option>Headache</option>
+                    <option>Fatigue</option>
+                    <option>Nausea</option>
+                    <option>Dizziness</option>
+                    <option>Chest pain</option>
+                    <option>Shortness of breath</option>
+                    <option>Joint pain</option>
+                    <option>Fever</option>
+                    <option>Cough</option>
+                    <option>Other</option>
+                </select>
+            </label>
+            <label id="otherLabel" style="display:none;">Custom symptom
+                <input type="text" id="customSymptom" placeholder="Describe symptom">
+            </label>
+            <label>Severity
+                <select id="severitySelect">
+                    <option value="1">1 – Mild</option>
+                    <option value="2" selected>2 – Moderate</option>
+                    <option value="3">3 – Severe</option>
+                </select>
+            </label>
+            <label>Date &amp; time
+                <input type="datetime-local" id="datetimeInput">
+            </label>
+            <label style="flex:2 1 200px;">Notes
+                <input type="text" id="notesInput" placeholder="Optional notes…">
+            </label>
+            <button class="btn btn-primary" onclick="addEntry()">Log</button>
         </div>
+        <div id="addMsg" style="font-size:0.87em;color:#16a34a;min-height:18px;"></div>
 
-        <h2>🚀 Project Overview</h2>
-        <p>This health monitoring platform combines intuitive data entry with powerful visualization tools to create a comprehensive symptom tracking experience. Built as a client-side web application with advanced charting capabilities, it focuses on providing users with actionable insights into their health patterns while maintaining complete data privacy through local storage.</p>
-
-        <div class="highlight">
-            <p><span class="emoji">💡</span><strong>Key Innovation:</strong> Client-side health data management with advanced visualization and export capabilities for healthcare provider collaboration</p>
-        </div>
-
-        <h2>🛠️ Technical Stack</h2>
-
-        <h3>Frontend Technologies</h3>
-        <div class="tech-stack">
-            <span class="tech-item">HTML5</span>
-            <span class="tech-item">CSS3</span>
-            <span class="tech-item">JavaScript ES6+</span>
-            <span class="tech-item">Chart.js</span>
-            <span class="tech-item">Moment.js</span>
-            <span class="tech-item">Responsive Design</span>
-        </div>
-
-        <h3>Data Management</h3>
-        <div class="tech-stack">
-            <span class="tech-item">LocalStorage API</span>
-            <span class="tech-item">JSON Data Structure</span>
-            <span class="tech-item">CSV Export</span>
-            <span class="tech-item">Data Validation</span>
-            <span class="tech-item">Session Persistence</span>
-            <span class="tech-item">Privacy-First</span>
-        </div>
-
-        <h3>Visualization & UX</h3>
-        <div class="tech-stack">
-            <span class="tech-item">Interactive Charts</span>
-            <span class="tech-item">Real-time Updates</span>
-            <span class="tech-item">Mobile-First Design</span>
-            <span class="tech-item">Cross-Device Sync</span>
-            <span class="tech-item">Error Handling</span>
-            <span class="tech-item">Progressive Enhancement</span>
-        </div>
-
-        <div class="architecture-diagram">
-            <strong>Application Flow:</strong><br>
-            Symptom Entry → Data Validation → LocalStorage Persistence → 
-            Chart Generation → Trend Analysis → CSV Export → Healthcare Sharing
-        </div>
-
-        <h2>🔧 Core Features</h2>
-
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4>📊 Data Visualization</h4>
-                <p>Interactive charts display symptom frequency patterns over time using Chart.js library with customizable time ranges and trend analysis.</p>
-            </div>
-            
-            <div class="feature-card">
-                <h4>💾 Local Storage</h4>
-                <p>Browser-based data persistence without requiring server infrastructure, ensuring complete user privacy and offline functionality.</p>
-            </div>
-            
-            <div class="feature-card">
-                <h4>📋 CSV Export</h4>
-                <p>Export symptom logs for offline analysis or healthcare provider consultation with standardized medical data formatting.</p>
-            </div>
-            
-            <div class="feature-card">
-                <h4>🔧 Data Management</h4>
-                <p>Add, edit, and delete symptoms with comprehensive log history and bulk operations for efficient data management.</p>
+        <!-- ── CHART ── -->
+        <h2>📈 Occurrences Over Time</h2>
+        <div class="form-row" style="align-items:center;margin-bottom:8px;">
+            <label style="flex:0 1 auto;">Symptom filter
+                <select id="chartSymptomFilter" onchange="renderChart()">
+                    <option value="all">All symptoms</option>
+                </select>
+            </label>
+            <div class="toggle-group" style="margin-left:auto;margin-bottom:0;">
+                <span>Group by:</span>
+                <button class="toggle-btn active" id="btnDay"  onclick="setGranularity('day')">Per day</button>
+                <button class="toggle-btn"        id="btnHour" onclick="setGranularity('hour')">Per hour</button>
             </div>
         </div>
+        <canvas id="symptomChart" height="90"></canvas>
 
-        <h2>🏥 Health Applications</h2>
-        <ul>
-            <li><span class="emoji">📈</span><strong>Trend Analysis:</strong> Identify patterns in symptom occurrence and severity over time</li>
-            <li><span class="emoji">🩺</span><strong>Healthcare Collaboration:</strong> Shareable data exports for medical consultations</li>
-            <li><span class="emoji">📱</span><strong>Daily Tracking:</strong> Simple interface for consistent daily symptom logging</li>
-            <li><span class="emoji">🔍</span><strong>Pattern Recognition:</strong> Visual identification of triggers and improvement periods</li>
-            <li><span class="emoji">📊</span><strong>Progress Monitoring:</strong> Track treatment effectiveness and recovery progress</li>
-        </ul>
-
-        <h2>🛠️ Implementation Details</h2>
-        
-        <div class="tech-category">
-            <h3>Frontend Architecture</h3>
-            <ul>
-                <li><strong>Core Technologies:</strong> HTML5, CSS3, and JavaScript for responsive web interface</li>
-                <li><strong>Chart.js Integration:</strong> Dynamic line charts for visualizing symptom frequency trends</li>
-                <li><strong>Moment.js:</strong> Advanced date and time formatting for precise temporal tracking</li>
-                <li><strong>Responsive Design:</strong> Cross-device compatibility with mobile-first approach</li>
-            </ul>
+        <!-- ── LOG TABLE ── -->
+        <h2>📋 Symptom Log</h2>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-bottom:10px;">
+            <button class="btn btn-success btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+            <button class="btn btn-danger  btn-sm" onclick="clearAll()">🗑 Clear all</button>
         </div>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Date / Time</th>
+                    <th>Symptom</th>
+                    <th>Severity</th>
+                    <th>Notes</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="logBody"></tbody>
+        </table>
+        <div id="emptyMsg" class="empty-msg">No symptoms logged yet. Add your first entry above.</div>
 
-        <div class="tech-category">
-            <h3>Data Management</h3>
-            <ul>
-                <li><strong>LocalStorage API:</strong> Client-side data persistence for symptom logs and user preferences</li>
-                <li><strong>Data Structure:</strong> JSON-based symptom records with timestamp indexing</li>
-                <li><strong>Export Functionality:</strong> CSV generation for external data analysis</li>
-                <li><strong>Data Validation:</strong> Input sanitization and format checking</li>
-            </ul>
-        </div>
-
-        <div class="tech-category">
-            <h3>User Experience Features</h3>
-            <ul>
-                <li><strong>Interactive Interface:</strong> Intuitive symptom logging with dropdown selections</li>
-                <li><strong>Real-time Updates:</strong> Immediate chart refreshing upon data entry</li>
-                <li><strong>Data Cleanup Tools:</strong> Bulk deletion and selective symptom removal</li>
-                <li><strong>Error Handling:</strong> Comprehensive validation and user feedback systems</li>
-            </ul>
-        </div>
-
-        <h2>🎯 Technical Highlights</h2>
-        
-        <h3>Performance Optimization</h3>
-        <ul>
-            <li><strong>Client-Side Processing:</strong> No server dependency for core functionality</li>
-            <li><strong>Efficient Data Storage:</strong> Optimized JSON structure for minimal storage footprint</li>
-            <li><strong>Lazy Loading:</strong> Progressive chart rendering for large datasets</li>
-            <li><strong>Browser Compatibility:</strong> Cross-browser support with graceful degradation</li>
-        </ul>
-
-        <h3>Privacy & Security</h3>
-        <ul>
-            <li><span class="emoji">🔒</span><strong>Data Privacy:</strong> All data stored locally on user's device</li>
-            <li><span class="emoji">🛡️</span><strong>No Server Storage:</strong> Complete user control over personal health data</li>
-            <li><span class="emoji">🔐</span><strong>Secure Export:</strong> Safe data export for healthcare collaboration</li>
-        </ul>
-
-        <a href="../index.html" class="back-link">← Back to Portfolio</a>
+        <a href="../index.html" class="back-link" style="display:inline-block;margin-top:30px;">← Back to Portfolio</a>
     </div>
+
+    <script>
+    // ── Storage helpers ──────────────────────────────────────────────
+    const STORAGE_KEY = 'symptomTrackerLogs_v1';
+
+    function loadEntries() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch { return []; }
+    }
+
+    function saveEntries(entries) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    // ── State ────────────────────────────────────────────────────────
+    let granularity = 'day'; // 'day' | 'hour'
+    let chartInstance = null;
+
+    // ── Init ─────────────────────────────────────────────────────────
+    (function init() {
+        // Default datetime to now
+        const now = new Date();
+        now.setSeconds(0, 0);
+        document.getElementById('datetimeInput').value = now.toISOString().slice(0, 16);
+
+        document.getElementById('symptomSelect').addEventListener('change', function () {
+            document.getElementById('otherLabel').style.display =
+                this.value === 'Other' ? '' : 'none';
+        });
+
+        refreshAll();
+    })();
+
+    // ── Add entry ────────────────────────────────────────────────────
+    function addEntry() {
+        const selectEl  = document.getElementById('symptomSelect');
+        const customEl  = document.getElementById('customSymptom');
+        const sevEl     = document.getElementById('severitySelect');
+        const dtEl      = document.getElementById('datetimeInput');
+        const notesEl   = document.getElementById('notesInput');
+        const msgEl     = document.getElementById('addMsg');
+
+        let symptom = selectEl.value === 'Other'
+            ? customEl.value.trim()
+            : selectEl.value;
+
+        if (!symptom) { msgEl.style.color='#ef4444'; msgEl.textContent='Please select or enter a symptom.'; return; }
+        if (!dtEl.value) { msgEl.style.color='#ef4444'; msgEl.textContent='Please select a date and time.'; return; }
+
+        // Sanitise free-text inputs
+        const sanitise = s => s.replace(/[<>"'&]/g, c => ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','&':'&amp;'}[c]));
+        symptom = sanitise(symptom.slice(0, 80));
+        const notes = sanitise(notesEl.value.trim().slice(0, 200));
+
+        const entries = loadEntries();
+        entries.push({
+            id: Date.now(),
+            symptom,
+            severity: parseInt(sevEl.value, 10),
+            datetime: dtEl.value,    // ISO-ish: "YYYY-MM-DDTHH:mm"
+            notes
+        });
+        saveEntries(entries);
+
+        // Reset inputs
+        selectEl.value = '';
+        customEl.value = '';
+        notesEl.value  = '';
+        document.getElementById('otherLabel').style.display = 'none';
+        const next = new Date();
+        next.setSeconds(0, 0);
+        dtEl.value = next.toISOString().slice(0, 16);
+
+        msgEl.style.color = '#16a34a';
+        msgEl.textContent = '✓ Symptom logged!';
+        setTimeout(() => msgEl.textContent = '', 2500);
+
+        refreshAll();
+    }
+
+    // ── Delete entry ─────────────────────────────────────────────────
+    function deleteEntry(id) {
+        const entries = loadEntries().filter(e => e.id !== id);
+        saveEntries(entries);
+        refreshAll();
+    }
+
+    // ── Clear all ────────────────────────────────────────────────────
+    function clearAll() {
+        if (!confirm('Delete all symptom records? This cannot be undone.')) return;
+        saveEntries([]);
+        refreshAll();
+    }
+
+    // ── Granularity toggle ───────────────────────────────────────────
+    function setGranularity(g) {
+        granularity = g;
+        document.getElementById('btnDay').classList.toggle('active',  g === 'day');
+        document.getElementById('btnHour').classList.toggle('active', g === 'hour');
+        renderChart();
+    }
+
+    // ── Refresh all UI ───────────────────────────────────────────────
+    function refreshAll() {
+        populateFilterDropdown();
+        renderChart();
+        renderTable();
+    }
+
+    // ── Populate symptom filter dropdown ─────────────────────────────
+    function populateFilterDropdown() {
+        const entries  = loadEntries();
+        const filterEl = document.getElementById('chartSymptomFilter');
+        const current  = filterEl.value;
+        const symptoms = [...new Set(entries.map(e => e.symptom))].sort();
+
+        filterEl.innerHTML = '<option value="all">All symptoms</option>';
+        symptoms.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s;
+            opt.textContent = s;
+            filterEl.appendChild(opt);
+        });
+        if (symptoms.includes(current)) filterEl.value = current;
+    }
+
+    // ── Render chart ─────────────────────────────────────────────────
+    function renderChart() {
+        const entries    = loadEntries();
+        const filterSym  = document.getElementById('chartSymptomFilter').value;
+        const filtered   = filterSym === 'all' ? entries : entries.filter(e => e.symptom === filterSym);
+
+        // Build bucket key per entry
+        const buckets = {};
+        filtered.forEach(e => {
+            const key = granularity === 'hour'
+                ? e.datetime.slice(0, 13).replace('T', ' ') + ':00'  // "YYYY-MM-DD HH:00"
+                : e.datetime.slice(0, 10);                            // "YYYY-MM-DD"
+            buckets[key] = (buckets[key] || 0) + 1;
+        });
+
+        const labels = Object.keys(buckets).sort();
+        const data   = labels.map(k => buckets[k]);
+
+        const ctx = document.getElementById('symptomChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        if (labels.length === 0) {
+            chartInstance = null;
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = '#6b7280';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data to display.', ctx.canvas.width / 2, 60);
+            return;
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Occurrences',
+                    data,
+                    backgroundColor: 'rgba(37, 99, 235, 0.55)',
+                    borderColor: '#2563eb',
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: ctx => granularity === 'hour'
+                                ? ctx[0].label + ' (hour slot)'
+                                : ctx[0].label
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: { size: 11 }, maxRotation: 45 },
+                        title: {
+                            display: true,
+                            text: granularity === 'hour' ? 'Hour' : 'Date',
+                            color: '#1e40af', font: { weight: 'bold' }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, precision: 0 },
+                        title: {
+                            display: true,
+                            text: 'Occurrences',
+                            color: '#1e40af', font: { weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── Render table ─────────────────────────────────────────────────
+    function renderTable() {
+        const entries = loadEntries().slice().sort((a, b) => b.datetime.localeCompare(a.datetime));
+        const tbody   = document.getElementById('logBody');
+        const empty   = document.getElementById('emptyMsg');
+
+        tbody.innerHTML = '';
+        if (entries.length === 0) { empty.style.display = ''; return; }
+        empty.style.display = 'none';
+
+        const sevLabel = ['', 'Mild', 'Moderate', 'Severe'];
+        const sevClass = ['', 'sev-1', 'sev-2', 'sev-3'];
+
+        entries.forEach(e => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${escHtml(e.datetime.replace('T', ' '))}</td>
+                <td>${escHtml(e.symptom)}</td>
+                <td><span class="severity-badge ${sevClass[e.severity]}">${sevLabel[e.severity]}</span></td>
+                <td>${escHtml(e.notes)}</td>
+                <td><button class="btn btn-danger btn-sm" onclick="deleteEntry(${e.id})">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // ── CSV export ───────────────────────────────────────────────────
+    function exportCSV() {
+        const entries = loadEntries().slice().sort((a, b) => a.datetime.localeCompare(b.datetime));
+        if (!entries.length) { alert('No data to export.'); return; }
+
+        const header = ['Date/Time', 'Symptom', 'Severity', 'Notes'];
+        const rows = entries.map(e => [
+            e.datetime,
+            csvEsc(e.symptom),
+            e.severity,
+            csvEsc(e.notes)
+        ]);
+        const csv = [header, ...rows].map(r => r.join(',')).join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'symptom-log.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ── Utils ────────────────────────────────────────────────────────
+    function escHtml(s) {
+        return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function csvEsc(s) {
+        s = (s || '').replace(/"/g, '""');
+        return /[,"\n]/.test(s) ? `"${s}"` : s;
+    }
+    </script>
 </body>
 
 </html>
