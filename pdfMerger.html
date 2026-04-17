@@ -139,8 +139,7 @@
 
         .file-item {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
             padding: 12px 15px;
             background: var(--surface);
             border-radius: 8px;
@@ -153,6 +152,51 @@
             background: rgba(30, 58, 138, 0.03);
             border-color: var(--accent-color);
             transform: translateX(3px);
+        }
+
+        .file-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 8px;
+            margin-right: 4px;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+
+        .toggle-btn.expanded {
+            transform: rotate(90deg);
+        }
+
+        .page-strip {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .page-strip.show {
+            display: block;
+        }
+
+        .page-strip-empty {
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 20px;
+            text-align: center;
         }
 
         .file-info {
@@ -722,25 +766,31 @@
         function updateFileList() {
             fileList.innerHTML = '';
             selectedFiles.forEach((entry, index) => {
-                const { file, type, pageCount, rotations } = entry;
+                const { file, type, pageCount, rotations, expanded } = entry;
                 const rotatedCount = rotations.filter(r => r !== 0).length;
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
                 const icon = type === 'image' ? '🖼️' : '📄';
                 const rotatedSuffix = rotatedCount > 0 ? ` · ${rotatedCount} rotated` : '';
+
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
                 fileItem.innerHTML = `
-                    <div class="file-info">
-                        <span class="file-icon">${icon}</span>
-                        <span class="file-name" title="${file.name}">${file.name}</span>
-                        <span class="file-size">${pageCount} page${pageCount === 1 ? '' : 's'} · ${formatFileSize(file.size)}${rotatedSuffix}</span>
+                    <div class="file-item-row">
+                        <div class="file-info">
+                            <button class="toggle-btn ${expanded ? 'expanded' : ''}" data-toggle-index="${index}" aria-label="Toggle pages">▸</button>
+                            <span class="file-icon">${icon}</span>
+                            <span class="file-name" title="${file.name}">${file.name}</span>
+                            <span class="file-size">${pageCount} page${pageCount === 1 ? '' : 's'} · ${formatFileSize(file.size)}${rotatedSuffix}</span>
+                        </div>
+                        <button class="remove-btn" data-index="${index}">Remove</button>
                     </div>
-                    <button class="remove-btn" data-index="${index}">Remove</button>
+                    <div class="page-strip ${expanded ? 'show' : ''}" data-strip-index="${index}">
+                        <div class="page-strip-empty">Loading thumbnails…</div>
+                    </div>
                 `;
                 fileList.appendChild(fileItem);
             });
 
-            const removeButtons = fileList.querySelectorAll('.remove-btn');
-            removeButtons.forEach(btn => {
+            fileList.querySelectorAll('.remove-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const index = parseInt(this.getAttribute('data-index'));
@@ -753,6 +803,25 @@
                     updateFilenamePreview();
                 });
             });
+
+            fileList.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const index = parseInt(this.getAttribute('data-toggle-index'));
+                    selectedFiles[index].expanded = !selectedFiles[index].expanded;
+                    updateFileList();
+                    if (selectedFiles[index].expanded) {
+                        renderStrip(index);
+                    }
+                });
+            });
+        }
+
+        function renderStrip(index) {
+            // Placeholder — real rendering comes in Task 5.
+            const strip = fileList.querySelector(`.page-strip[data-strip-index="${index}"]`);
+            if (!strip) return;
+            strip.innerHTML = `<div class="page-strip-empty">Thumbnails coming in next task (${selectedFiles[index].pageCount} pages).</div>`;
         }
 
         function updateMergeButton() {
