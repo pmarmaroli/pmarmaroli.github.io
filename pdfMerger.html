@@ -970,7 +970,41 @@
             }).join('');
             strip.innerHTML = thumbs || '<div class="page-strip-empty">No pages.</div>';
 
-            // Rotate buttons get wired up in Task 6.
+            strip.querySelectorAll('.thumb-rotate').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const f = parseInt(this.getAttribute('data-rotate-file'));
+                    const p = parseInt(this.getAttribute('data-rotate-page'));
+                    const entry = selectedFiles[f];
+                    entry.rotations[p] = (entry.rotations[p] + 90) % 360;
+
+                    // Update only the affected thumb's transform + badge, without re-rendering thumbnails
+                    const thumbEl = strip.querySelector(`.thumb[data-file="${f}"][data-page="${p}"]`);
+                    const img = thumbEl && thumbEl.querySelector('img');
+                    const badge = thumbEl && thumbEl.querySelector('.thumb-badge');
+                    if (img) img.style.transform = `rotate(${entry.rotations[p]}deg)`;
+                    if (badge) {
+                        badge.textContent = `${entry.rotations[p]}°`;
+                        badge.classList.toggle('show', entry.rotations[p] !== 0);
+                    }
+
+                    // Refresh the file row header to update "N rotated" count
+                    updateFileRowHeader(f);
+                });
+            });
+        }
+
+        function updateFileRowHeader(index) {
+            const entry = selectedFiles[index];
+            const rotatedCount = entry.rotations.filter(r => r !== 0).length;
+            const rotatedSuffix = rotatedCount > 0 ? ` · ${rotatedCount} rotated` : '';
+            const sizeEl = fileList.querySelector(
+                `.file-item:nth-child(${index + 1}) .file-size`
+            );
+            if (sizeEl) {
+                sizeEl.textContent = `${entry.pageCount} page${entry.pageCount === 1 ? '' : 's'} · ${formatFileSize(entry.file.size)}${rotatedSuffix}`;
+            }
         }
 
         function updateMergeButton() {
