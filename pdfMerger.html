@@ -1147,7 +1147,15 @@
                         const fileBytes = await file.arrayBuffer();
                         const pdf = await PDFDocument.load(fileBytes);
                         const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                        copiedPages.forEach(page => mergedPdf.addPage(page));
+                        copiedPages.forEach((page, pageIndex) => {
+                            const userRotation = entry.rotations[pageIndex] || 0;
+                            if (userRotation !== 0) {
+                                const existing = page.getRotation().angle || 0;
+                                const composed = (existing + userRotation) % 360;
+                                page.setRotation(PDFLib.degrees(composed));
+                            }
+                            mergedPdf.addPage(page);
+                        });
                     } else {
                         const imagePdf = await imageToPdf(file);
                         const copiedPages = await mergedPdf.copyPages(imagePdf, imagePdf.getPageIndices());
