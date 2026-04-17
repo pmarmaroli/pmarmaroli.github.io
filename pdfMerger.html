@@ -1056,70 +1056,59 @@
         filenameInput.addEventListener('input', updateFilenamePreview);
 
         // Convert image to PDF with proper orientation
-        async function imageToPdf(imageFile) {
+        async function imageToPdf(imageFile, rotation = 0) {
             const { PDFDocument } = PDFLib;
             const pdfDoc = await PDFDocument.create();
-            
-            // Try with 'from-image' first (respects EXIF)
+
             let bitmap;
             try {
-                bitmap = await createImageBitmap(imageFile, { 
-                    imageOrientation: 'from-image' 
-                });
+                bitmap = await createImageBitmap(imageFile, { imageOrientation: 'from-image' });
                 debugLog(`✓ EXIF orientation supported`);
             } catch (e) {
-                // Fallback without options if not supported
                 debugLog(`⚠ EXIF not supported, using default`);
                 bitmap = await createImageBitmap(imageFile);
             }
-            
-            debugLog(`📷 ${imageFile.name}`);
+
+            debugLog(`📷 ${imageFile.name} (rotation ${rotation}°)`);
             debugLog(`   Bitmap: ${bitmap.width}x${bitmap.height}`);
-            
-            // Create canvas with the bitmap's dimensions
+
+            // Draw the bitmap onto a canvas rotated by `rotation` degrees.
+            // For 90/270 we swap canvas dimensions so the visible output matches.
+            const swap = rotation === 90 || rotation === 270;
+            const canvasWidth = swap ? bitmap.height : bitmap.width;
+            const canvasHeight = swap ? bitmap.width : bitmap.height;
+
             const canvas = document.createElement('canvas');
-            canvas.width = bitmap.width;
-            canvas.height = bitmap.height;
-            
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(bitmap, 0, 0);
-            
-            // Convert canvas to JPEG
+
+            ctx.translate(canvasWidth / 2, canvasHeight / 2);
+            ctx.rotate((rotation * Math.PI) / 180);
+            ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
+
             const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
             const convertedBytes = await blob.arrayBuffer();
             const image = await pdfDoc.embedJpg(convertedBytes);
-            
+
             debugLog(`   Embedded: ${image.width}x${image.height}`);
-            
-            // Determine page size based on actual image dimensions
+
             let pageWidth = image.width;
             let pageHeight = image.height;
-            
-            // A4 dimensions in points: 595 x 842 (portrait)
-            const A4_PORTRAIT_WIDTH = 595;
-            const A4_PORTRAIT_HEIGHT = 842;
-            const MAX_DIMENSION = 2000; // Reasonable max for PDF
-            
-            // Scale down if image is too large, maintaining aspect ratio
+            const MAX_DIMENSION = 2000;
             if (image.width > MAX_DIMENSION || image.height > MAX_DIMENSION) {
                 const scale = Math.min(MAX_DIMENSION / image.width, MAX_DIMENSION / image.height);
                 pageWidth = image.width * scale;
                 pageHeight = image.height * scale;
             }
-            
+
             const orientation = pageHeight > pageWidth ? 'PORTRAIT' : 'LANDSCAPE';
             debugLog(`   PDF page: ${Math.round(pageWidth)}x${Math.round(pageHeight)} (${orientation})`);
             debugLog('');
-            
-            // Create page and draw image
+
             const page = pdfDoc.addPage([pageWidth, pageHeight]);
-            page.drawImage(image, {
-                x: 0,
-                y: 0,
-                width: pageWidth,
-                height: pageHeight,
-            });
-            
+            page.drawImage(image, { x: 0, y: 0, width: pageWidth, height: pageHeight });
+
             return pdfDoc;
         }
 
@@ -1157,7 +1146,8 @@
                             mergedPdf.addPage(page);
                         });
                     } else {
-                        const imagePdf = await imageToPdf(file);
+                        const rotation = entry.rotations[0] || 0;
+                        const imagePdf = await imageToPdf(file, rotation);
                         const copiedPages = await mergedPdf.copyPages(imagePdf, imagePdf.getPageIndices());
                         copiedPages.forEach(page => mergedPdf.addPage(page));
                     }
