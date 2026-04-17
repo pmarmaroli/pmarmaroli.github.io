@@ -891,9 +891,7 @@
             });
         }
 
-        async function renderPdfThumbnail(file, pageIndex) {
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        async function renderPdfPageThumbnail(pdf, pageIndex) {
             const page = await pdf.getPage(pageIndex + 1); // pdf.js is 1-indexed
             const viewport = page.getViewport({ scale: 1 });
             const targetWidth = 200;
@@ -927,11 +925,18 @@
                 }
                 return;
             }
-            // PDF — render any missing thumbnails sequentially, yielding to the UI between pages.
-            for (let i = 0; i < entry.pageCount; i++) {
-                if (entry.thumbnails[i]) continue;
-                entry.thumbnails[i] = await renderPdfThumbnail(entry.file, i);
-                await new Promise(r => requestAnimationFrame(r));
+            // PDF — open once, render any missing pages sequentially, yielding to the UI between pages.
+            if (entry.thumbnails.every(Boolean)) return;
+            const arrayBuffer = await entry.file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            try {
+                for (let i = 0; i < entry.pageCount; i++) {
+                    if (entry.thumbnails[i]) continue;
+                    entry.thumbnails[i] = await renderPdfPageThumbnail(pdf, i);
+                    await new Promise(r => requestAnimationFrame(r));
+                }
+            } finally {
+                if (pdf.destroy) await pdf.destroy();
             }
         }
 
