@@ -716,6 +716,8 @@
                     updateMergeButton();
                     downloadSection.classList.remove('show');
                     mergedPdfBytes = null;
+                    filenameInput.disabled = true;
+                    updateFilenamePreview();
                 });
             });
         }
@@ -748,7 +750,7 @@
             let filename = (rawInput || '').trim();
             // Strip only characters filesystems reject; keep spaces, parens, accents, etc.
             filename = filename.replace(/[\/\\:*?"<>|]/g, '_').replace(/\s+/g, ' ').trim();
-            if (!filename) {
+            if (!filename || /^_+$/.test(filename)) {
                 filename = `document_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
             }
             if (!filename.toLowerCase().endsWith('.pdf')) {
