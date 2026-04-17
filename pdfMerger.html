@@ -542,6 +542,43 @@
             display: block;
         }
 
+        /* === Unified page-order grid === */
+        .page-grid-section {
+            margin-top: 16px;
+        }
+
+        .page-grid-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .page-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            max-height: 440px;
+            overflow-y: auto;
+        }
+
+        .thumb[draggable="true"] { cursor: grab; }
+        .thumb[draggable="true"]:active { cursor: grabbing; }
+
+        .thumb.dragging { opacity: 0.3; }
+
+        .thumb.drag-over {
+            outline: 2px dashed var(--accent-color);
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -583,6 +620,11 @@
         <input type="file" id="cameraInput" accept="image/*" capture="environment" multiple style="display: none;">
 
         <div class="file-list" id="fileList"></div>
+
+        <div class="page-grid-section" id="pageGridSection" style="display:none">
+            <div class="page-grid-title">📋 Page order — drag to reorder</div>
+            <div class="page-grid" id="pageGrid"></div>
+        </div>
 
         <button class="camera-btn" id="cameraBtn">📸 Take Photo</button>
 
@@ -645,6 +687,98 @@
 
         let selectedFiles = [];
         let mergedPdfBytes = null;
+        let pageOrder = [];    // [{ fileIndex, pageIndex }, …]
+        let dragSrcIndex = null;
+
+        function rebuildPageOrder(newFileIndex) {
+            const entry = selectedFiles[newFileIndex];
+            for (let p = 0; p < entry.pageCount; p++) {
+                pageOrder.push({ fileIndex: newFileIndex, pageIndex: p });
+            }
+        }
+
+        function renderPageGrid() {
+            const section = document.getElementById('pageGridSection');
+            const grid = document.getElementById('pageGrid');
+            if (pageOrder.length === 0) {
+                section.style.display = 'none';
+                grid.innerHTML = '';
+                return;
+            }
+            section.style.display = 'block';
+            grid.innerHTML = '';
+
+            pageOrder.forEach((item, orderIndex) => {
+                const entry = selectedFiles[item.fileIndex];
+                const src = entry.thumbnails[item.pageIndex];
+                const rot = entry.rotations[item.pageIndex];
+
+                const div = document.createElement('div');
+                div.className = 'thumb';
+                div.draggable = true;
+                div.dataset.orderIndex = String(orderIndex);
+
+                const imgHtml = src
+                    ? `<img src="${src}" style="transform:rotate(${rot}deg);">`
+                    : `<span style="font-size:11px;color:var(--text-secondary);">Loading…</span>`;
+                const badgeClass = rot !== 0 ? 'thumb-badge show' : 'thumb-badge';
+
+                div.innerHTML = `
+                    <div class="thumb-frame">${imgHtml}</div>
+                    <div class="thumb-label">${entry.file.name.replace(/\.[^.]+$/, '')} · p${item.pageIndex + 1}</div>
+                    <span class="${badgeClass}">${rot}°</span>
+                    <button class="thumb-rotate" title="Rotate 90°">↻</button>
+                `;
+
+                div.querySelector('.thumb-rotate').addEventListener('click', e => {
+                    e.stopPropagation();
+                    entry.rotations[item.pageIndex] = (entry.rotations[item.pageIndex] + 90) % 360;
+                    renderPageGrid();
+                });
+
+                div.addEventListener('dragstart', e => {
+                    dragSrcIndex = orderIndex;
+                    div.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+                div.addEventListener('dragend', () => {
+                    div.classList.remove('dragging');
+                    grid.querySelectorAll('.thumb').forEach(t => t.classList.remove('drag-over'));
+                    dragSrcIndex = null;
+                });
+                div.addEventListener('dragover', e => {
+                    if (dragSrcIndex === null || dragSrcIndex === orderIndex) return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    grid.querySelectorAll('.thumb').forEach(t => t.classList.remove('drag-over'));
+                    div.classList.add('drag-over');
+                });
+                div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+                div.addEventListener('drop', e => {
+                    e.preventDefault();
+                    div.classList.remove('drag-over');
+                    const targetIdx = parseInt(div.dataset.orderIndex);
+                    if (dragSrcIndex === null || dragSrcIndex === targetIdx) return;
+                    const moved = pageOrder.splice(dragSrcIndex, 1)[0];
+                    const insertAt = dragSrcIndex < targetIdx ? targetIdx - 1 : targetIdx;
+                    pageOrder.splice(insertAt, 0, moved);
+                    dragSrcIndex = null;
+                    renderPageGrid();
+                });
+
+                grid.appendChild(div);
+            });
+
+            // Lazy-load thumbnails for any not yet rendered
+            const entryIndicesNeeded = new Set(
+                pageOrder
+                    .filter(item => !selectedFiles[item.fileIndex].thumbnails[item.pageIndex])
+                    .map(item => item.fileIndex)
+            );
+            entryIndicesNeeded.forEach(fi => {
+                ensureThumbnails(selectedFiles[fi]).then(() => renderPageGrid());
+            });
+        }
 
         async function buildEntry(file) {
             const isPdf = file.type === 'application/pdf';
@@ -826,10 +960,13 @@
 
             for (const file of files) {
                 const entry = await buildEntry(file);
+                const newIndex = selectedFiles.length;
                 selectedFiles.push(entry);
+                rebuildPageOrder(newIndex);
             }
             updateFileList();
             updateMergeButton();
+            renderPageGrid();
             hideStatus();
             downloadSection.classList.remove('show');
             mergedPdfBytes = null;
@@ -840,25 +977,19 @@
         function updateFileList() {
             fileList.innerHTML = '';
             selectedFiles.forEach((entry, index) => {
-                const { file, type, pageCount, rotations, expanded } = entry;
-                const rotatedCount = rotations.filter(r => r !== 0).length;
+                const { file, type } = entry;
                 const icon = type === 'image' ? '🖼️' : '📄';
-                const rotatedSuffix = rotatedCount > 0 ? ` · ${rotatedCount} rotated` : '';
 
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 fileItem.innerHTML = `
                     <div class="file-item-row">
                         <div class="file-info">
-                            <button class="toggle-btn ${expanded ? 'expanded' : ''}" data-toggle-index="${index}" aria-label="Toggle pages">▸</button>
                             <span class="file-icon">${icon}</span>
                             <span class="file-name" title="${file.name}">${file.name}</span>
-                            <span class="file-size">${pageCount} page${pageCount === 1 ? '' : 's'} · ${formatFileSize(file.size)}${rotatedSuffix}</span>
+                            <span class="file-size">${entry.pageCount} page${entry.pageCount === 1 ? '' : 's'} · ${formatFileSize(file.size)}</span>
                         </div>
                         <button class="remove-btn" data-index="${index}">Remove</button>
-                    </div>
-                    <div class="page-strip ${expanded ? 'show' : ''}" data-strip-index="${index}">
-                        <div class="page-strip-empty">Loading thumbnails…</div>
                     </div>
                 `;
                 fileList.appendChild(fileItem);
@@ -868,25 +999,20 @@
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const index = parseInt(this.getAttribute('data-index'));
+                    // Remove this file's pages from pageOrder; fix remaining fileIndex refs
+                    pageOrder = pageOrder
+                        .filter(item => item.fileIndex !== index)
+                        .map(item => item.fileIndex > index
+                            ? { ...item, fileIndex: item.fileIndex - 1 }
+                            : item);
                     selectedFiles.splice(index, 1);
                     updateFileList();
                     updateMergeButton();
+                    renderPageGrid();
                     downloadSection.classList.remove('show');
                     mergedPdfBytes = null;
                     filenameInput.disabled = true;
                     updateFilenamePreview();
-                });
-            });
-
-            fileList.querySelectorAll('.toggle-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const index = parseInt(this.getAttribute('data-toggle-index'));
-                    selectedFiles[index].expanded = !selectedFiles[index].expanded;
-                    updateFileList();
-                    if (selectedFiles[index].expanded) {
-                        renderStrip(index);
-                    }
                 });
             });
         }
@@ -1119,7 +1245,7 @@
 
         // Merge PDFs and Images
         mergeBtn.addEventListener('click', async () => {
-            if (selectedFiles.length < 1) {
+            if (pageOrder.length === 0) {
                 showStatus('Please select at least 1 file to process.', 'error');
                 return;
             }
@@ -1132,35 +1258,41 @@
                 const { PDFDocument } = PDFLib;
                 const mergedPdf = await PDFDocument.create();
 
-                for (let i = 0; i < selectedFiles.length; i++) {
-                    const entry = selectedFiles[i];
-                    const file = entry.file;
-                    showStatus(`Processing ${i + 1} of ${selectedFiles.length}: ${file.name}...`, 'loading');
+                // Pre-load all source PDFs once
+                const pdfDocCache = {};
+                for (const item of pageOrder) {
+                    const entry = selectedFiles[item.fileIndex];
+                    if (entry.type === 'pdf' && !pdfDocCache[item.fileIndex]) {
+                        const bytes = await entry.file.arrayBuffer();
+                        pdfDocCache[item.fileIndex] = await PDFDocument.load(bytes);
+                    }
+                }
+
+                for (let i = 0; i < pageOrder.length; i++) {
+                    const item = pageOrder[i];
+                    const entry = selectedFiles[item.fileIndex];
+                    showStatus(`Processing page ${i + 1} of ${pageOrder.length}…`, 'loading');
 
                     if (entry.type === 'pdf') {
-                        const fileBytes = await file.arrayBuffer();
-                        const pdf = await PDFDocument.load(fileBytes);
-                        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                        copiedPages.forEach((page, pageIndex) => {
-                            const userRotation = entry.rotations[pageIndex] || 0;
-                            if (userRotation !== 0) {
-                                const existing = page.getRotation().angle || 0;
-                                const composed = (existing + userRotation) % 360;
-                                page.setRotation(PDFLib.degrees(composed));
-                            }
-                            mergedPdf.addPage(page);
-                        });
+                        const srcDoc = pdfDocCache[item.fileIndex];
+                        const [copiedPage] = await mergedPdf.copyPages(srcDoc, [item.pageIndex]);
+                        const userRotation = entry.rotations[item.pageIndex] || 0;
+                        if (userRotation !== 0) {
+                            const existing = copiedPage.getRotation().angle || 0;
+                            copiedPage.setRotation(PDFLib.degrees((existing + userRotation) % 360));
+                        }
+                        mergedPdf.addPage(copiedPage);
                     } else {
                         const rotation = entry.rotations[0] || 0;
-                        const imagePdf = await imageToPdf(file, rotation);
-                        const copiedPages = await mergedPdf.copyPages(imagePdf, imagePdf.getPageIndices());
-                        copiedPages.forEach(page => mergedPdf.addPage(page));
+                        const imagePdf = await imageToPdf(entry.file, rotation);
+                        const [copiedPage] = await mergedPdf.copyPages(imagePdf, [0]);
+                        mergedPdf.addPage(copiedPage);
                     }
                 }
 
                 mergedPdfBytes = await mergedPdf.save();
-                
-                showStatus(`✅ Successfully processed ${selectedFiles.length} file(s)!`, 'success');
+
+                showStatus(`✅ Successfully processed ${pageOrder.length} page(s)!`, 'success');
                 downloadSection.classList.add('show');
                 filenameInput.focus();
                 filenameInput.disabled = false;
@@ -1200,12 +1332,14 @@
         // Clear all
         clearBtn.addEventListener('click', () => {
             selectedFiles = [];
+            pageOrder = [];
             mergedPdfBytes = null;
             filenameInput.value = '';
             filenameInput.disabled = true;
             updateFilenamePreview();
             updateFileList();
             updateMergeButton();
+            renderPageGrid();
             hideStatus();
             downloadSection.classList.remove('show');
         });
