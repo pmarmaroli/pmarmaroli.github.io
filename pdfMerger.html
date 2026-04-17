@@ -528,6 +528,30 @@
         let selectedFiles = [];
         let mergedPdfBytes = null;
 
+        async function buildEntry(file) {
+            const isPdf = file.type === 'application/pdf';
+            let pageCount = 1;
+            if (isPdf) {
+                try {
+                    const { PDFDocument } = PDFLib;
+                    const bytes = await file.arrayBuffer();
+                    const doc = await PDFDocument.load(bytes);
+                    pageCount = doc.getPageCount();
+                } catch (e) {
+                    console.warn('Could not read PDF page count for', file.name, e);
+                    pageCount = 1;
+                }
+            }
+            return {
+                file,
+                type: isPdf ? 'pdf' : 'image',
+                pageCount,
+                rotations: new Array(pageCount).fill(0),
+                thumbnails: new Array(pageCount).fill(null),
+                expanded: false,
+            };
+        }
+
         // Debug logging function
         function debugLog(message) {
             console.log(message);
@@ -676,13 +700,16 @@
             return false;
         }, false);
 
-        function handleFiles(files) {
+        async function handleFiles(files) {
             if (files.length === 0) {
                 showStatus('Please select PDF or image files.', 'error');
                 return;
             }
 
-            selectedFiles.push(...files);
+            for (const file of files) {
+                const entry = await buildEntry(file);
+                selectedFiles.push(entry);
+            }
             updateFileList();
             updateMergeButton();
             hideStatus();
@@ -694,22 +721,24 @@
 
         function updateFileList() {
             fileList.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
+            selectedFiles.forEach((entry, index) => {
+                const { file, type, pageCount, rotations } = entry;
+                const rotatedCount = rotations.filter(r => r !== 0).length;
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
-                const icon = file.type.startsWith('image/') ? '🖼️' : '📄';
+                const icon = type === 'image' ? '🖼️' : '📄';
+                const rotatedSuffix = rotatedCount > 0 ? ` · ${rotatedCount} rotated` : '';
                 fileItem.innerHTML = `
                     <div class="file-info">
                         <span class="file-icon">${icon}</span>
                         <span class="file-name" title="${file.name}">${file.name}</span>
-                        <span class="file-size">${formatFileSize(file.size)}</span>
+                        <span class="file-size">${pageCount} page${pageCount === 1 ? '' : 's'} · ${formatFileSize(file.size)}${rotatedSuffix}</span>
                     </div>
                     <button class="remove-btn" data-index="${index}">Remove</button>
                 `;
                 fileList.appendChild(fileItem);
             });
-            
-            // Add event listeners to remove buttons
+
             const removeButtons = fileList.querySelectorAll('.remove-btn');
             removeButtons.forEach(btn => {
                 btn.addEventListener('click', function(e) {
@@ -858,17 +887,16 @@
                 const mergedPdf = await PDFDocument.create();
 
                 for (let i = 0; i < selectedFiles.length; i++) {
-                    const file = selectedFiles[i];
+                    const entry = selectedFiles[i];
+                    const file = entry.file;
                     showStatus(`Processing ${i + 1} of ${selectedFiles.length}: ${file.name}...`, 'loading');
-                    
-                    if (file.type === 'application/pdf') {
-                        // Handle PDF files
+
+                    if (entry.type === 'pdf') {
                         const fileBytes = await file.arrayBuffer();
                         const pdf = await PDFDocument.load(fileBytes);
                         const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
                         copiedPages.forEach(page => mergedPdf.addPage(page));
-                    } else if (file.type.startsWith('image/')) {
-                        // Handle image files
+                    } else {
                         const imagePdf = await imageToPdf(file);
                         const copiedPages = await mergedPdf.copyPages(imagePdf, imagePdf.getPageIndices());
                         copiedPages.forEach(page => mergedPdf.addPage(page));
