@@ -1,0 +1,394 @@
+# Patrick Marmaroli — Full Portfolio
+
+> Full markdown export of Patrick Marmaroli's portfolio, education, professional experience, and contact info. Generated from data.csv. Last updated: 2026-05-08.
+
+Site: https://pmarmaroli.github.io/
+
+## Bio
+
+- Name: Patrick Marmaroli
+- Role: Audio Signal Processing Engineer & AI Specialist
+- Current positions: Senior Audio Engineer at Microsoft (Tallinn); CEO & Co-Founder of Vocametrix; CEO & Co-Founder of Hidacs Sàrl.
+- Location: Tallinn, Estonia
+- Background: PhD in Acoustics & Audio Signal Processing (EPFL, 2008-2013). 15+ years across audio ML, acoustic sensing, embedded audio, and full-stack web/cloud development.
+- Email: patrick.marmaroli@gmail.com
+- LinkedIn: https://www.linkedin.com/in/pmarmaroli
+- GitHub: https://github.com/pmarmaroli
+- Google Scholar: https://scholar.google.com/citations?user=Qa_P6n8AAAAJ
+
+## Portfolio Projects
+
+### GCC-PHAT Time Delay Estimator for Stereo Channels – Executable & C# Source Code
+
+- Category: Developer Tools
+- Link: [access the repository](https://github.com/pmarmaroli/gccphat)
+- More info: [read the Linkedin article](https://www.linkedin.com/pulse/accurate-time-delay-estimation-gcc-phat-patrick-marmaroli-eu7jf/?trackingId=Wy8nO%2By6Ssqw0ffHPNFgNQ%3D%3D)
+
+A command-line tool for estimating the time delay between the two channels of a stereo signal using the Generalized Cross-Correlation Phase Transform (GCC-PHAT) technique
+
+### Matlab animations
+
+- Category: Audio Technology
+- Link: [access the repository](https://github.com/pmarmaroli/matlab-animation)
+
+Some Matlab animations of key physics and signal processing Prototypes,
+
+### AES file encryption and decryption
+
+- Category: Developer Tools
+- Link: [access the repository](https://github.com/pmarmaroli/CryptoWizard)
+
+A versatile command-line tool for AES file encryption decryption and key generation.,
+
+### 3D Sound with Matlab
+
+- Category: Audio Technology
+- Link: [listen to the demo on Youtube](https://youtu.be/S-NQ4vEIL_w)
+
+Implementation of an HRTF-based interface for 3D sound rendering,
+
+### Sound source localization
+
+- Category: Audio Technology
+- Link: [see the animation on Youtube](https://youtu.be/gUbjNSG2UK4)
+- More info: [download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/sound_source_localization_tdoa_two_mics.m)
+
+Localizing a sound source with a microphone array
+
+### GCC-PHAT vs classical cross-correlation
+
+- Category: Audio Technology
+- Link: [see the animation on Youtube](https://youtu.be/wQo50Ot2UOw)
+- More info: [download the Matlab code](https://github.com/pmarmaroli/matlab-animation/blob/main/time_delay_estimation_xcorr_vs_gccphat.m)
+
+Visualizing Time Delay Estimation with GCC-PHAT and classical cross-correlation
+
+### Vocametrix Audio Analysis & Games Platform For Speech Therapy
+
+- Category: Healthcare & Accessibility
+- More info: [see the demo and read technical details](/moreinfo/audio_analysis_platform.html) platform
+
+A web platform for intuitive audio analysis (pitch - speech transcription - pronunciation assessment - waveform visualization and more)
+
+### Say one sound
+
+- Category: Healthcare & Accessibility
+- Link: [see the concept on Youtube](https://youtu.be/ap-6O9KR5GU)
+
+A prototype of matlab-based game that reacts to voice and phoneme pronunciation,
+
+### ChefFantastique
+
+- Category: Food & Lifestyle
+- More info: [read technical details](/moreinfo/cheffantastique.html)
+
+,AI-assistant that generates custom recipes.
+
+### Pronunciation Assessment Game
+
+- Category: Healthcare & Accessibility
+- Link: [see the demo on Facebook](https://www.facebook.com/reel/888272712718230)
+- More info: [read technical details](/moreinfo/pronunciation_assessment_game.html)
+
+Pronunciation Assessment Game for young patients of speech therapists
+
+### Audio Comparison Tool
+
+- Category: Content Creation & Media
+- More info: [read technical details](/moreinfo/audio_comparison_tool.html)
+
+A web application for scenarios where comparative listening is required both for individual and collaborative use.
+
+### HadithGPT
+
+- Category: Education & Learning
+- More info: [see the demo and read technical details](/moreinfo/hadithgpt.html)
+
+An intuitive platform for searching and reading Hadiths using modern LLM technologies
+
+### TroubleShot
+
+- Category: Other
+- More info: [see the demo and read technical details](/moreinfo/troubleshot.html)
+
+A computer vision-based DIY assistant
+
+### EARSENS - Privacy-Preserving Indoor Activity Detection
+
+- Category: Security & Privacy
+- Link: [see project details](https://www.hesge.ch/hepia/en/recherche-developpement/projets-recherche/earsens)
+
+An innovative acoustic sensing system using electrodynamic loudspeakers and AI to detect indoor events without microphones ensuring privacy while monitoring occupancy room changes and security events.,
+
+### Explosive Event Acoustic Detection and Classification
+
+- Category: Security & Privacy
+- More info: [read technical details](/moreinfo/explosive_event_acoustic_detection.html)
+
+Advanced real-time audio analysis system for detecting localizing and classifying acoustic events using machine learning and signal processing with multi-channel directional analysis sound level monitoring and YAMNet-based event classification.
+
+### Symptom Tracker
+
+- Category: Healthcare & Accessibility
+- Link: [access the repository](https://github.com/pmarmaroli/symptom-tracker)
+- More info: [test the web app and read technical details](/moreinfo/symptom-tracker.html)
+
+A web-based application designed to help users track and log their symptoms over time
+
+### Acoustic-based Vehicle Detection & Classification
+
+- Category: Transportation & Safety
+- More info: [see the demo and read technical details](/moreinfo/vehicle_audio_detection_and_classification.html)
+
+A MATLAB-based system designed to detect and classify vehicle in real time based on their acoustic signature.
+
+### Zelda Quiz Game - Educational Gaming Platform
+
+- Category: Education & Learning
+- More info: [see the technical implementation details](/moreinfo/zelda_quiz_game.html)
+
+An AI-powered educational quiz game with competitive elements featuring real-time data integration external APIs and gamified learning mechanics.
+
+### FitPlan - AI-Powered Fitness Program Generator
+
+- Category: Fitness & Wellness
+- More info: [see the technical implementation details](/moreinfo/fitplan_ai_fitness.html)
+
+An intelligent fitness platform that creates personalized workout programs using AI and YouTube video integration with integrated payment system and email delivery.
+
+### AI-Powered YouTube Thumbnail Generator
+
+- Category: Content Creation & Media
+- More info: [see the technical implementation details](/moreinfo/youtube_thumbnail_generator.html)
+
+AI-powered thumbnail generation platform using DALL-E 3 with multi-step wizard comprehensive emotional tone analysis and target audience optimization.
+
+### SquatLock – Exercise-to-Unlock Screen Lock
+
+- Category: Fitness & Wellness
+- Link: [access the repository](https://github.com/pmarmaroli/SquatLock)
+
+A Windows desktop app that periodically locks your screen and requires you to perform exercises (squats and torso twists) detected via webcam with MediaPipe Pose to unlock it.,
+
+### Consulting Finder
+
+- Category: Developer Tools
+
+A B2B prospecting tool that scrapes web sources for consulting leads scores them and generates outreach messages via Claude API with a CRM pipeline to track status.,
+
+### Vibe Language (VL)
+
+- Category: Developer Tools
+- Link: [access the repository](https://github.com/pmarmaroli/vibe-language)
+
+A token-efficient programming language that compiles to Python JavaScript TypeScript C and Rust — designed to reduce AI coding costs by automatically converting code into a more compact syntax before sending it to an AI model.,
+
+### RBE Electronic Signature Platform
+
+- Category: Transportation & Safety
+- Link: [visit the web app](https://rbe-esign.azurewebsites.net/)
+
+An electronic signature platform for Rail Baltica — upload PDFs add signers place signature zones and collect digital signatures via email-based signing links.,
+
+### Predict-MOS – Audio Quality Score Predictor
+
+- Category: Audio Technology
+
+A full-reference Mean Opinion Score (MOS) predictor that estimates audio quality scores (1–5) given a clean reference and a degraded audio file pair with GUI and batch mode support.,
+
+### Item Manager
+
+- Category: Other
+
+An Azure-hosted web application for managing item listings with photo uploads reservations and AI-generated descriptions via Google Gemini featuring admin and visitor interfaces.,
+
+### Treasure Hunt Designer
+
+- Category: Education & Learning
+- Link: [visit the web app](https://treasure-hunt-designer.netlify.app)
+
+An interactive web app for designing personalized treasure hunts — create riddles define locations assign randomized circuits per participant and generate ready-to-print PDFs in three languages.,
+
+### French Logatome Phonemizer
+
+- Category: Healthcare & Accessibility
+
+A fine-tuning pipeline for CTC-based phoneme recognition on French logatomes (nonsense syllables) built on wav2vec2 for speech therapy and phonetics research. In collaboration with Sorbonne Université Santé.,
+
+### AudioTooltip
+
+- Category: Audio Technology
+- Link: [access the repository](https://github.com/pmarmaroli/AudioTooltip)
+
+A Windows system-tray app that shows instant audio file information (format waveform spectrogram speech transcript) via a keyboard shortcut without opening a full audio editor.,
+
+### Master Anything – AI Learning Platform
+
+- Category: Education & Learning
+- Link: [visit the web app](https://masteranything.azurewebsites.net/)
+
+An AI-powered multi-agent learning platform that uses the Feynman Method to guide learners through topic mastery via seven specialized Azure AI agents with voice diagrams and adventure mode.,
+
+### Subjective Listening Tool
+
+- Category: Audio Technology
+
+A web application for conducting subjective listening tests — compare multiple audio versions of a recording with synchronized playback waveform visualization and labeled segment navigation.,
+
+### QariQuest – Audio Feedback Platform
+
+- Category: Education & Learning
+- Link: [visit the web app](https://www.qariquest.com)
+
+A zero-friction web app for recording audio/video and sharing it with a teacher or therapist via link — the reviewer annotates at timestamps with emoji text or audio comments.,
+
+### ImmoGen – AI Real Estate Market Reports
+
+- Category: Content Creation & Media
+- Link: [visit the web app](https://www.immogen.io)
+
+An AI-powered real estate market analysis report generator using Claude agents with section-by-section iterative refinement professional PDF output and Stripe payment integration.,
+
+## Education
+
+### 2008-2013 - Phd Thesis in Acoustics & Audio Signal Processing
+
+- Category: Academic
+- More info: [link to my thesis](https://infoscience.epfl.ch/record/183751?v=pdf)
+
+,Swiss Federal Institute of Technology - Switzerland - Bimodal sound source tracking applied to road traffic monitoring
+
+### 2007-2008 - Master Thesis in Signal Processing
+
+- Category: Academic
+
+,Université du Sud Toulon Var - France - Signal Processing & Psychoacoustics & Trajectography,
+
+### 2005-2007 - Software Engineering School
+
+- Category: Academic
+- More info: [school website](https://isen-mediterranee.fr/)
+
+,Institut Supérieur de l'Electronique et du Numérique - Toulon France
+
+### 2003-2005 - Higher School Preparatory Classes
+
+- Category: Academic
+
+, Lycée Lachenal d'Argonay - France - Physics & Engineering Sciences,
+
+### 1999-2003 - High School
+
+- Category: Academic
+
+, Lycée Mme de Staël St-Julien-en-Genevois France - Scientific Baccalaureate,
+
+## Professional Experience
+
+### Senior Audio Engineer
+
+- Category: Professional
+- Link: [Corporate - sound quality for MS Teams](https://digipro.geenius.ee/blogi/microsofti-blogi/tallinnas-kaib-too-lahenduse-kallal-mis-aitaks-ule-maailma-videokonevasimusest-voitu-saada/)
+
+Jan 2022 -> Now: MICROSOFT,
+
+### CEO & Co-Founder
+
+- Category: Professional
+- Link: [Startup - Voice-controlled games and audio analysis tools for speech therapy](https://www.vocametrix.com)
+
+Oct 2023 -> Now: VOCAMETRIX,
+
+### Audio Signal Processing Consultant
+
+- Category: Professional
+- Link: [Corporate - Development of an anti-spoofing technology using ultrasound](https://onfido.com/press-release/onfido-acquires-eyn-to-provide-innovative-acoustic-based-liveness-detection-amid-record-breaking-global-revenue-growth/)
+
+Oct 2021 -> Dec 2021: ONFIDO,
+
+### Scientific Collaborator
+
+- Category: Professional
+- Link: [Research - Using loudspeaker for safety detection](https://www.hesge.ch/hepia/recherche-developpement/projets-recherche/earsens)
+
+Jul 2020 -> Sep 2021: HEPIA,
+
+### Audio Department Manager
+
+- Category: Professional
+- Link: [Startup - Development of a luxury headphone](https://www.getunity.com/)
+
+Jan 2020 -> Aug 2021: HED,
+
+### Signal Processing & Acoustics Specialist
+
+- Category: Professional
+- Link: [Startup - Development of a luxury headphone](https://www.getunity.com/)
+
+May 2016 -> Dec 2019: HED,
+
+### CEO & Co-Founder
+
+- Category: Professional
+- Link: [Startup - Signal processing engineering services](https://www.hidacs.ch)
+
+Feb 2016 -> Now: HIDACS,
+
+### Environmental Acoustics Project Manager
+
+- Category: Professional
+- Link: [Engineering services - Building and environmental acoustics](https://www.prona.ch/fr/)
+
+Aug 2014 -> Jun 2016: PRONA,
+
+### Post-doctoral Research Scientist
+
+- Category: Professional
+- Link: [Research - Microphone array processing for hearing-impaired people](https://lts2.epfl.ch/research/research-in-acoustics/)
+
+Mar 2013 -> Sep 2014: EPFL,
+
+### Phd Student
+
+- Category: Professional
+- Link: [Research - Bimodal sound source tracking applied to road trafic monitoring](https://infoscience.epfl.ch/record/183751?v=pdf)
+
+Oct 2008 -> Feb 2013: EPFL,
+
+### Master Thesis
+
+- Category: Professional
+- Link: [Research - Psychoacoustics & Audio Classification](https://www.semanticscholar.org/paper/Cat%C3%A9gorisation-des-Sons-de-Mat%C3%A9riaux-Frapp%C3%A9s-%3A-et-Marmaroli/04354db20232624ff3823327f44c90e9d4976efa)
+
+Mar 2009 -> Aug 2009: CNRS,
+
+## Contact
+
+### My Linkedin
+
+- Category: Contact
+- Link: [linkedin/pmarmaroli](https://www.linkedin.com/in/pmarmaroli)
+
+,
+
+### My Github
+
+- Category: Contact
+- Link: [github/pmarmaroli](https://github.com/pmarmaroli)
+
+,
+
+### My Email
+
+- Category: Contact
+- Link: [gmail](mailto:patrick.marmaroli@gmail.com)
+
+,
+
+### Patents & Publications
+
+- Category: Contact
+- Link: [Google Scholar](https://scholar.google.com/citations?user=Qa_P6n8AAAAJ&hl=en&oi=ao)
+
+,
+

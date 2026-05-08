@@ -1,0 +1,39 @@
+# Patrick Marmaroli
+
+> PhD Signal Processing engineer with 15+ years in audio ML, acoustic sensing, and full-stack development. Senior Audio Engineer at Microsoft and Co-Founder of Vocametrix. Based in Tallinn, Estonia.
+
+This site is a personal portfolio of audio signal processing, machine learning, and full-stack engineering projects.
+
+## About
+
+- [Homepage / Resume](https://pmarmaroli.github.io/): Bio, experience, education, and full project portfolio.
+- [Technical Stack Overview](https://pmarmaroli.github.io/moreinfo/technical_stack_overview.html): Languages, frameworks, ML/AI stack, cloud infrastructure used across projects.
+
+## Browser tools
+
+- [PDF Merger](https://pmarmaroli.github.io/pdfMerger.html): Free browser-based PDF merger; combines, reorders, and rotates pages locally without server upload.
+- [Buffer Size Calculator](https://pmarmaroli.github.io/bufferSizeCalculator.html): Calculate audio buffer sizes for given sample rate, bit depth, and channel count.
+- [Acoustic Attenuation Simulator](https://pmarmaroli.github.io/explosion_acoustic_simulation.html): Interactive simulator for explosion blast-wave pressure decay using the Kingery-Bulmash model.
+
+## Featured projects
+
+- [Vocametrix Audio Analysis Platform](https://pmarmaroli.github.io/moreinfo/audio_analysis_platform.html): Speech-therapy web platform with pitch tracking, pronunciation assessment, and waveform visualization.
+- [Vocametrix Pronunciation Assessment Game](https://pmarmaroli.github.io/moreinfo/pronunciation_assessment_game.html): Gamified phoneme pronunciation exercises for young patients.
+- [Explosive Event Acoustic Detection](https://pmarmaroli.github.io/moreinfo/explosive_event_acoustic_detection.html): Real-time multi-channel detection and YAMNet-based classification of acoustic events.
+- [Vehicle Audio Detection & Classification](https://pmarmaroli.github.io/moreinfo/vehicle_audio_detection_and_classification.html): MATLAB-based real-time acoustic vehicle detection and classification.
+- [Audio Comparison Tool](https://pmarmaroli.github.io/moreinfo/audio_comparison_tool.html): Web app for individual and collaborative subjective listening tests.
+- [HadithGPT](https://pmarmaroli.github.io/moreinfo/hadithgpt.html): LLM-powered platform for searching and reading Islamic Hadiths.
+- [ChefFantastique](https://pmarmaroli.github.io/moreinfo/cheffantastique.html): AI recipe generator using prompt engineering on top of GPT.
+- [TroubleShot](https://pmarmaroli.github.io/moreinfo/troubleshot.html): Computer-vision-based DIY troubleshooting assistant.
+- [Symptom Tracker](https://pmarmaroli.github.io/moreinfo/symptom-tracker.html): Web app for logging and visualizing health symptoms over time.
+- [FitPlan](https://pmarmaroli.github.io/moreinfo/fitplan_ai_fitness.html): AI-powered personalized fitness program generator with payment integration.
+- [YouTube Thumbnail Intelligence](https://pmarmaroli.github.io/moreinfo/youtube_thumbnail_generator.html): DALL-E-3-based thumbnail generation with emotional-tone analysis.
+- [Zelda Quiz Game](https://pmarmaroli.github.io/moreinfo/zelda_quiz_game.html): Educational quiz game with AI-generated questions and competitive scoring.
+
+## Optional
+
+- [Full project + experience dump (markdown)](https://pmarmaroli.github.io/llms-full.txt): Single-file markdown export of the entire portfolio for LLM ingestion.
+- [Sitemap](https://pmarmaroli.github.io/sitemap.xml): XML sitemap of all indexable pages.
+- [Google Scholar profile](https://scholar.google.com/citations?user=Qa_P6n8AAAAJ): Patents and publications.
+- [LinkedIn](https://www.linkedin.com/in/pmarmaroli)
+- [GitHub](https://github.com/pmarmaroli)

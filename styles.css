@@ -563,3 +563,10 @@ a:hover { text-decoration: underline; }
 
     .section-heading { font-size: 1.1rem; }
 }
+
+/* SEO / no-JS fallback content for the project list */
+.noscript-fallback { margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; line-height: 1.6; }
+.noscript-fallback h3 { margin-top: 1.25rem; margin-bottom: 0.5rem; color: #1e3a8a; font-size: 1.1rem; }
+.noscript-fallback ul { padding-left: 1.25rem; margin: 0 0 0.5rem; }
+.noscript-fallback li { margin: 0.4rem 0; }
+.noscript-fallback a { color: #3b82f6; }
