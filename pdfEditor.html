@@ -831,10 +831,19 @@
                 input.value = a.text;
                 input.style.color = a.color;
                 input.style.fontSize = a.size + 'px';
-                input.style.width = Math.max(60, a.text.length * a.size * 0.6) + 'px';
+                const measure = (txt) => {
+                    const cv = measure._cv || (measure._cv = document.createElement('canvas'));
+                    const ctx = cv.getContext('2d');
+                    ctx.font = a.size + 'px Helvetica, Arial, sans-serif';
+                    return ctx.measureText(txt || ' ').width;
+                };
+                const fit = () => {
+                    input.style.width = Math.max(40, measure(input.value) + 6) + 'px';
+                };
+                fit();
                 input.addEventListener('input', () => {
                     a.text = input.value;
-                    input.style.width = Math.max(60, a.text.length * a.size * 0.6) + 'px';
+                    fit();
                 });
                 input.addEventListener('mousedown', e => { e.stopPropagation(); select(a); });
                 input.addEventListener('focus', () => pushUndo());
