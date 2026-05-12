@@ -1339,7 +1339,7 @@
         });
 
         // Download merged PDF
-        downloadBtn.addEventListener('click', () => {
+        downloadBtn.addEventListener('click', async () => {
             if (!mergedPdfBytes) return;
 
             const filename = computeFinalFilename(filenameInput.value);
@@ -1347,18 +1347,52 @@
             debugLog(`📥 Downloading as: ${filename}`);
 
             const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+            const ua = navigator.userAgent || '';
+            const isIOS = /iPad|iPhone|iPod/.test(ua) || (ua.includes('Mac') && 'ontouchend' in document);
+            const isAndroid = /Android/i.test(ua);
+            const isMobile = isIOS || isAndroid;
+
+            // 1) Try the Web Share API with a file — best UX on iOS/Android (opens "Save to Files", "Share", etc.)
+            if (isMobile && navigator.canShare && typeof File !== 'undefined') {
+                try {
+                    const file = new File([blob], filename, { type: 'application/pdf' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file], title: filename });
+                        debugLog('✅ Shared via Web Share API');
+                        return;
+                    }
+                } catch (err) {
+                    // User cancelled or share failed — fall through to other strategies
+                    debugLog(`⚠️ Web Share failed: ${err.message}`);
+                    if (err.name === 'AbortError') return; // user cancelled, don't open a new tab
+                }
+            }
+
+            // 2) iOS Safari ignores the `download` attribute on blob URLs and silently drops the file.
+            //    Open the PDF in a new tab so the user can save it via the share sheet.
+            if (isIOS) {
+                const url = URL.createObjectURL(blob);
+                const win = window.open(url, '_blank');
+                if (!win) {
+                    // Popup blocked — navigate the current tab as a last resort
+                    showStatus('⚠️ Popup blocked. Tap the download button again or allow popups, then use the Share button to save the PDF.', 'error');
+                    location.href = url;
+                }
+                setTimeout(() => URL.revokeObjectURL(url), 60000);
+                return;
+            }
+
+            // 3) Standard download path (desktop, Android Chrome, etc.)
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.download = filename;
-            
-            // For better mobile support
+            link.rel = 'noopener';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Clean up
-            setTimeout(() => URL.revokeObjectURL(url), 100);
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         });
 
         // Clear all
