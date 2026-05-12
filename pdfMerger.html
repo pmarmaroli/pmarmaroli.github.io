@@ -237,22 +237,57 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
-            font-size: 14px;
-            line-height: 28px;
+            font-size: 16px;
+            line-height: 32px;
             padding: 0;
             opacity: 0;
             transition: opacity 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .thumb:hover .thumb-rotate {
             opacity: 1;
         }
 
+        .thumb-move-row {
+            display: none;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .thumb-move-btn {
+            flex: 1;
+            min-height: 36px;
+            background: rgba(30, 58, 138, 0.08);
+            color: var(--primary-color);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1;
+            padding: 0;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .thumb-move-btn:active:not(:disabled) {
+            background: rgba(30, 58, 138, 0.18);
+        }
+
+        .thumb-move-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
         @media (pointer: coarse) {
-            .thumb-rotate { opacity: 1; }
+            .thumb-rotate { opacity: 1; width: 36px; height: 36px; line-height: 36px; font-size: 18px; }
+            .thumb-move-row { display: flex; }
         }
 
         .thumb-badge {
@@ -577,20 +612,40 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+            }
+
             .container {
-                padding: 20px;
+                padding: 18px;
+                border-radius: 14px;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 22px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+                margin-bottom: 20px;
             }
 
             .upload-area {
-                padding: 30px 20px;
+                padding: 24px 16px;
             }
 
             .upload-icon {
                 font-size: 36px;
+                margin-bottom: 10px;
+            }
+
+            .upload-text {
+                font-size: 15px;
+            }
+
+            .upload-subtext {
+                font-size: 12px;
             }
 
             .actions {
@@ -599,6 +654,78 @@
 
             button {
                 width: 100%;
+            }
+
+            .file-item {
+                padding: 10px 12px;
+            }
+
+            .file-name {
+                font-size: 13px;
+            }
+
+            .remove-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+                min-height: 36px;
+            }
+
+            .toggle-btn {
+                font-size: 18px;
+                padding: 4px 10px;
+                min-height: 36px;
+                min-width: 36px;
+            }
+
+            .page-grid {
+                gap: 8px;
+                padding: 8px;
+                max-height: 60vh;
+                justify-content: center;
+            }
+
+            .thumb,
+            .thumb-frame {
+                width: 96px;
+            }
+
+            .thumb-frame {
+                height: 120px;
+            }
+
+            .thumb {
+                margin-right: 0;
+            }
+
+            .thumb-label {
+                font-size: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .info-box {
+                font-size: 12px;
+                padding: 12px;
+            }
+
+            .filename-input {
+                font-size: 16px; /* prevents iOS zoom on focus */
+            }
+        }
+
+        @media (max-width: 380px) {
+            .container {
+                padding: 14px;
+            }
+
+            .thumb,
+            .thumb-frame {
+                width: 84px;
+            }
+
+            .thumb-frame {
+                height: 106px;
             }
         }
     </style>
@@ -654,7 +781,7 @@
         <div class="file-list" id="fileList"></div>
 
         <div class="page-grid-section" id="pageGridSection" style="display:none">
-            <div class="page-grid-title">📋 Page order — drag to reorder</div>
+            <div class="page-grid-title" id="pageGridTitle">📋 Page order — drag to reorder</div>
             <div class="page-grid" id="pageGrid"></div>
         </div>
 
@@ -755,16 +882,39 @@
                     : `<span style="font-size:11px;color:var(--text-secondary);">Loading…</span>`;
                 const badgeClass = rot !== 0 ? 'thumb-badge show' : 'thumb-badge';
 
+                const isFirst = orderIndex === 0;
+                const isLast = orderIndex === pageOrder.length - 1;
+
                 div.innerHTML = `
                     <div class="thumb-frame">${imgHtml}</div>
                     <div class="thumb-label">${entry.file.name.replace(/\.[^.]+$/, '')} · p${item.pageIndex + 1}</div>
                     <span class="${badgeClass}">${rot}°</span>
-                    <button class="thumb-rotate" title="Rotate 90°">↻</button>
+                    <button class="thumb-rotate" title="Rotate 90°" aria-label="Rotate 90 degrees">↻</button>
+                    <div class="thumb-move-row">
+                        <button class="thumb-move-btn move-prev" title="Move earlier" aria-label="Move earlier" ${isFirst ? 'disabled' : ''}>◀</button>
+                        <button class="thumb-move-btn move-next" title="Move later" aria-label="Move later" ${isLast ? 'disabled' : ''}>▶</button>
+                    </div>
                 `;
 
                 div.querySelector('.thumb-rotate').addEventListener('click', e => {
                     e.stopPropagation();
                     entry.rotations[item.pageIndex] = (entry.rotations[item.pageIndex] + 90) % 360;
+                    renderPageGrid();
+                });
+
+                div.querySelector('.move-prev').addEventListener('click', e => {
+                    e.stopPropagation();
+                    if (orderIndex === 0) return;
+                    const moved = pageOrder.splice(orderIndex, 1)[0];
+                    pageOrder.splice(orderIndex - 1, 0, moved);
+                    renderPageGrid();
+                });
+
+                div.querySelector('.move-next').addEventListener('click', e => {
+                    e.stopPropagation();
+                    if (orderIndex === pageOrder.length - 1) return;
+                    const moved = pageOrder.splice(orderIndex, 1)[0];
+                    pageOrder.splice(orderIndex + 1, 0, moved);
                     renderPageGrid();
                 });
 
@@ -860,6 +1010,8 @@
             cameraBtn.classList.add('mobile-show');
             uploadText.textContent = 'Tap to select PDFs/Photos';
             uploadSubtext.textContent = 'Or use camera button below';
+            const gridTitle = document.getElementById('pageGridTitle');
+            if (gridTitle) gridTitle.textContent = '📋 Page order — tap ◀ ▶ to reorder';
         }
 
         // Upload area click
