@@ -253,6 +253,30 @@
             opacity: 1;
         }
 
+        .thumb-delete {
+            position: absolute;
+            bottom: 24px;
+            right: 4px;
+            background: rgba(220, 53, 69, 0.85);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 32px;
+            padding: 0;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .thumb:hover .thumb-delete {
+            opacity: 1;
+        }
+
         .thumb-move-row {
             display: none;
             justify-content: space-between;
@@ -287,6 +311,7 @@
 
         @media (pointer: coarse) {
             .thumb-rotate { opacity: 1; width: 36px; height: 36px; line-height: 36px; font-size: 18px; }
+            .thumb-delete { opacity: 1; width: 36px; height: 36px; line-height: 36px; font-size: 18px; bottom: 28px; }
             .thumb-move-row { display: flex; }
         }
 
@@ -765,7 +790,7 @@
 
 </head>
 <body>
-    <nav aria-label="Breadcrumb" style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:0.88rem;color:#64748b;"><a href="/" style="color:#3b82f6;text-decoration:none;">Home</a> &rsaquo; <a href="https://pmarmaroli.github.io/#portfolio" style="color:#3b82f6;text-decoration:none;">Tools</a> &rsaquo; <span aria-current="page">PDF Merger</span></nav>
+    <nav aria-label="Breadcrumb" style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:0.88rem;color:#64748b;display:flex;justify-content:space-between;align-items:center;"><span><a href="/" style="color:#3b82f6;text-decoration:none;">Home</a> &rsaquo; <a href="https://pmarmaroli.github.io/#portfolio" style="color:#3b82f6;text-decoration:none;">Tools</a> &rsaquo; <span aria-current="page">PDF Merger</span></span><a href="/pdfEditor.html" style="color:#3b82f6;text-decoration:none;font-weight:500;">📝 PDF Editor &rarr;</a></nav>
     <div class="container">
         <h1>📄 PDF Merger</h1>
         <p class="subtitle">Merge PDFs and images into one PDF - 100% client-side</p>
@@ -890,6 +915,7 @@
                     <div class="thumb-label">${entry.file.name.replace(/\.[^.]+$/, '')} · p${item.pageIndex + 1}</div>
                     <span class="${badgeClass}">${rot}°</span>
                     <button class="thumb-rotate" title="Rotate 90°" aria-label="Rotate 90 degrees">↻</button>
+                    <button class="thumb-delete" title="Delete page" aria-label="Delete page">✕</button>
                     <div class="thumb-move-row">
                         <button class="thumb-move-btn move-prev" title="Move earlier" aria-label="Move earlier" ${isFirst ? 'disabled' : ''}>◀</button>
                         <button class="thumb-move-btn move-next" title="Move later" aria-label="Move later" ${isLast ? 'disabled' : ''}>▶</button>
@@ -916,6 +942,17 @@
                     const moved = pageOrder.splice(orderIndex, 1)[0];
                     pageOrder.splice(orderIndex + 1, 0, moved);
                     renderPageGrid();
+                });
+
+                div.querySelector('.thumb-delete').addEventListener('click', e => {
+                    e.stopPropagation();
+                    pageOrder.splice(orderIndex, 1);
+                    updateMergeButton();
+                    renderPageGrid();
+                    downloadSection.classList.remove('show');
+                    mergedPdfBytes = null;
+                    filenameInput.disabled = true;
+                    updateFilenamePreview();
                 });
 
                 div.addEventListener('dragstart', e => {
