@@ -1296,6 +1296,8 @@
         async function docxToPages(file) {
             const A4_W = 794;
             const A4_H = 1123;
+            const PAGE_MARGIN = 56;          // top & bottom white margin on each page
+            const CONTENT_H = A4_H - 2 * PAGE_MARGIN;  // usable content height
             const arrayBuffer = await file.arrayBuffer();
             const result = await mammoth.convertToHtml({ arrayBuffer });
 
@@ -1338,9 +1340,9 @@
 
             // Search backwards from the ideal cut point for a white row (up to 20% of page)
             function findSafeCut(fromY) {
-                const target = fromY + A4_H;
+                const target = fromY + CONTENT_H;
                 if (target >= total) return total;
-                const maxBack = Math.floor(A4_H * 0.20);
+                const maxBack = Math.floor(CONTENT_H * 0.20);
                 for (let sy = target; sy > target - maxBack; sy--) {
                     if (isRowWhite(sy)) return sy;
                 }
@@ -1366,8 +1368,9 @@
                 const ctx = pc.getContext('2d');
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, A4_W, A4_H);
-                const sliceH = Math.min(cutY - y, A4_H);
-                ctx.drawImage(fullCanvas, 0, y, A4_W, sliceH, 0, 0, A4_W, sliceH);
+                const sliceH = Math.min(cutY - y, CONTENT_H);
+                // Draw content with top margin offset
+                ctx.drawImage(fullCanvas, 0, y, A4_W, sliceH, 0, PAGE_MARGIN, A4_W, sliceH);
                 pages.push(pc.toDataURL('image/jpeg', 0.88));
                 y = (cutY >= total) ? total : findContentStart(cutY);
             }
