@@ -451,6 +451,15 @@
             transition: background .12s, border-color .12s;
         }
         .qp-sidebar .qp-btn:hover { background: #e0f2fe; border-color: #7dd3fc; }
+        .qp-sidebar .qp-btn-wrap { display: flex; align-items: center; gap: 4px; }
+        .qp-sidebar .qp-btn-wrap .qp-btn { flex: 1; min-width: 0; }
+        .qp-sidebar .qp-del { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; padding: 2px 4px; line-height: 1; border-radius: 4px; flex-shrink: 0; }
+        .qp-sidebar .qp-del:hover { color: #dc2626; background: #fee2e2; }
+        .qp-add-row { display: flex; gap: 4px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #bae6fd; }
+        .qp-add-row input { flex: 1; min-width: 0; border: 1px solid var(--border); border-radius: 6px; padding: 4px 7px; font-size: 12px; font-family: inherit; color: var(--text-primary); }
+        .qp-add-row input:focus { outline: none; border-color: #7dd3fc; }
+        .qp-add-row button { background: #0ea5e9; color: white; border: none; border-radius: 6px; padding: 4px 8px; font-size: 16px; cursor: pointer; line-height: 1; }
+        .qp-add-row button:hover { background: #0284c7; }
         @media (max-width: 1100px) {
             .qp-sidebar { position: static; width: auto; max-height: none; margin: 12px 0; }
         }
@@ -1183,20 +1192,57 @@
     </script>
     <aside id="qpSidebar" class="qp-sidebar" aria-label="Quick paste">
       <div class="qp-title">📋 Quick paste</div>
-      <button class="qp-btn" data-text="MARMAROLI">MARMAROLI</button>
-      <button class="qp-btn" data-text="PATRICK">PATRICK</button>
-      <button class="qp-btn" data-text="DEKKICHE">DEKKICHE</button>
-      <button class="qp-btn" data-text="IBTICEM">IBTICEM</button>
-      <button class="qp-btn" data-text="589 ROUTE DE SAINT-JEAN">589 ROUTE DE SAINT-JEAN</button>
-      <button class="qp-btn" data-text="74270">74270</button>
-      <button class="qp-btn" data-text="CHAUMONT">CHAUMONT</button>
-      <button class="qp-btn" data-text="LAYLA">LAYLA</button>
-      <button class="qp-btn" data-text="NAÏM">NAÏM</button>
-      <button class="qp-btn" data-text="ASSYA">ASSYA</button>
-      <button class="qp-btn" data-text="MALIK">MALIK</button>
-      <button class="qp-btn" data-text="SOHAN">SOHAN</button>
-      <button class="qp-btn" data-text="MAÏSSA">MAÏSSA</button>
+      <div id="qpList"></div>
+      <div class="qp-add-row">
+        <input id="qpInput" type="text" placeholder="Add entry…" maxlength="120">
+        <button id="qpAddBtn" title="Add">＋</button>
+      </div>
     </aside>
+    <script>
+      (function () {
+        const list = document.getElementById('qpList');
+        const input = document.getElementById('qpInput');
+        const addBtn = document.getElementById('qpAddBtn');
+        let items = [];
+
+        function renderList() {
+          list.innerHTML = '';
+          items.forEach(function (text, i) {
+            const wrap = document.createElement('div');
+            wrap.className = 'qp-btn-wrap';
+            const btn = document.createElement('button');
+            btn.className = 'qp-btn';
+            btn.dataset.text = text;
+            btn.textContent = text;
+            const del = document.createElement('button');
+            del.className = 'qp-del';
+            del.title = 'Remove';
+            del.textContent = '×';
+            del.addEventListener('click', function (e) {
+              e.stopPropagation();
+              items.splice(i, 1);
+              renderList();
+            });
+            wrap.appendChild(btn);
+            wrap.appendChild(del);
+            list.appendChild(wrap);
+          });
+        }
+
+        function addItem() {
+          const val = input.value.trim();
+          if (!val) return;
+          items.push(val);
+          input.value = '';
+          renderList();
+        }
+
+        addBtn.addEventListener('click', addItem);
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); addItem(); }
+        });
+      })();
+    </script>
     <script data-goatcounter="https://pmarmaroli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
