@@ -1181,14 +1181,17 @@
                 console.log('All files:', allFiles.map(f => f.name + ' - ' + f.type));
                 
                 const files = allFiles.filter(file => 
-                    file.type === 'application/pdf' || file.type.startsWith('image/')
+                    file.type === 'application/pdf' ||
+                    file.type.startsWith('image/') ||
+                    file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                    file.name.toLowerCase().endsWith('.docx')
                 );
-                console.log('PDF/Image files found:', files.length);
+                console.log('PDF/Image/DOCX files found:', files.length);
                 
                 if (files.length > 0) {
                     handleFiles(files);
                 } else if (allFiles.length > 0) {
-                    showStatus('Please drop PDF or image files only. Found: ' + allFiles.map(f => f.type).join(', '), 'error');
+                    showStatus('Please drop PDF, DOCX or image files only. Found: ' + allFiles.map(f => f.type).join(', '), 'error');
                 } else {
                     showStatus('No files detected in drop event.', 'error');
                 }
