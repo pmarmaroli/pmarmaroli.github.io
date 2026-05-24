@@ -790,17 +790,18 @@
 
 </head>
 <body>
-    <nav aria-label="Breadcrumb" style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:0.88rem;color:#64748b;display:flex;justify-content:space-between;align-items:center;"><span><a href="/" style="color:#3b82f6;text-decoration:none;">Home</a> &rsaquo; <a href="https://pmarmaroli.github.io/#portfolio" style="color:#3b82f6;text-decoration:none;">Tools</a> &rsaquo; <span aria-current="page">PDF Merger</span></span><a href="/pdfEditor.html" style="color:#3b82f6;text-decoration:none;font-weight:500;">📝 PDF Editor &rarr;</a></nav>
+    <nav aria-label="Breadcrumb" style="padding:0.75rem 1.5rem;background:#f8fafc;border-bottom:1px solid #e5e7eb;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:0.88rem;color:#64748b;"><a href="/" style="color:#3b82f6;text-decoration:none;">Home</a> &rsaquo; <a href="https://pmarmaroli.github.io/#portfolio" style="color:#3b82f6;text-decoration:none;">Tools</a> &rsaquo; <span aria-current="page">PDF Merger</span></nav>
     <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span></span><a href="/pdfEditor.html" style="color:#3b82f6;text-decoration:none;font-size:0.9rem;font-weight:500;">📝 PDF Editor &rarr;</a></div>
         <h1>📄 PDF Merger</h1>
         <p class="subtitle">Merge PDFs and images into one PDF - 100% client-side</p>
 
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">📁</div>
             <div class="upload-text" id="uploadText">Click to select PDFs/Images or drag & drop</div>
-            <div class="upload-subtext" id="uploadSubtext">Supports PDF, JPG, PNG, HEIC and more</div>
+            <div class="upload-subtext" id="uploadSubtext">Supports PDF, DOCX, JPG, PNG, HEIC and more</div>
         </div>
-        <input type="file" id="fileInput" accept="application/pdf,image/*" multiple style="display: none;">
+        <input type="file" id="fileInput" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple style="display: none;">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" multiple style="display: none;">
 
         <div class="file-list" id="fileList"></div>
@@ -827,7 +828,7 @@
         </div>
 
         <div class="info-box">
-            <strong>How it works:</strong> Select or drag multiple PDF files and/or images (JPG, PNG, HEIC, etc.). Images will be converted to PDF pages. They will be merged in the order shown. All processing happens in your browser - no files are uploaded to any server.
+            <strong>How it works:</strong> Select or drag multiple PDF files, Word documents (DOCX) and/or images (JPG, PNG, HEIC, etc.). DOCX files are rendered page by page; images are converted to PDF pages. They will be merged in the order shown. All processing happens in your browser — no files are uploaded to any server.
         </div>
 
         <div class="debug-info" id="debugInfo"></div>
@@ -835,6 +836,8 @@
 
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
     <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
+    <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js" defer></script>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
     <script>
         // Wait for DOM to be ready
         document.addEventListener('DOMContentLoaded', function() {
@@ -1001,6 +1004,29 @@
 
         async function buildEntry(file) {
             const isPdf = file.type === 'application/pdf';
+            const isDocx = file.name.toLowerCase().endsWith('.docx') ||
+                file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+            if (isDocx) {
+                showStatus('Converting DOCX to pages…', 'loading');
+                try {
+                    const pages = await docxToPages(file);
+                    hideStatus();
+                    return {
+                        file,
+                        type: 'docx',
+                        pageCount: pages.length,
+                        rotations: new Array(pages.length).fill(0),
+                        thumbnails: pages,   // full-res page images reused as thumbnails
+                        docxPages: pages,
+                        expanded: false,
+                    };
+                } catch (e) {
+                    hideStatus();
+                    throw new Error('Could not convert DOCX: ' + e.message);
+                }
+            }
+
             let pageCount = 1;
             if (isPdf) {
                 try {
@@ -1265,7 +1291,56 @@
             return canvas.toDataURL('image/jpeg', 0.7);
         }
 
+        async function docxToPages(file) {
+            const A4_W = 794;
+            const A4_H = 1123;
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.convertToHtml({ arrayBuffer });
+
+            const container = document.createElement('div');
+            container.style.cssText = [
+                'position:fixed', 'left:-9999px', 'top:0',
+                `width:${A4_W}px`, 'background:white',
+                'padding:56px 64px', 'box-sizing:border-box',
+                'font-family:Arial,sans-serif', 'font-size:11pt',
+                'line-height:1.6', 'color:#000', 'word-wrap:break-word'
+            ].join(';');
+            container.innerHTML = result.value;
+            document.body.appendChild(container);
+
+            await new Promise(r => requestAnimationFrame(r));
+            await new Promise(r => setTimeout(r, 80));
+
+            const fullCanvas = await html2canvas(container, {
+                width: A4_W,
+                windowWidth: A4_W,
+                useCORS: true,
+                scale: 1,
+                backgroundColor: '#ffffff',
+                logging: false,
+            });
+            document.body.removeChild(container);
+
+            const pages = [];
+            let y = 0;
+            const total = fullCanvas.height;
+            while (y < total) {
+                const pc = document.createElement('canvas');
+                pc.width = A4_W;
+                pc.height = A4_H;
+                const ctx = pc.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, A4_W, A4_H);
+                const sliceH = Math.min(A4_H, total - y);
+                ctx.drawImage(fullCanvas, 0, y, A4_W, sliceH, 0, 0, A4_W, sliceH);
+                pages.push(pc.toDataURL('image/jpeg', 0.88));
+                y += A4_H;
+            }
+            return pages.length > 0 ? pages : [fullCanvas.toDataURL('image/jpeg', 0.88)];
+        }
+
         async function ensureThumbnails(entry) {
+            if (entry.type === 'docx') return; // thumbnails pre-populated at load time
             if (entry.type === 'image') {
                 if (!entry.thumbnails[0]) {
                     entry.thumbnails[0] = await renderImageThumbnail(entry.file);
@@ -1503,6 +1578,19 @@
                             copiedPage.setRotation(PDFLib.degrees((existing + userRotation) % 360));
                         }
                         mergedPdf.addPage(copiedPage);
+                    } else if (entry.type === 'docx') {
+                        const pageDataUrl = entry.docxPages[item.pageIndex];
+                        const base64 = pageDataUrl.split(',')[1];
+                        const bin = atob(base64);
+                        const bytes = new Uint8Array(bin.length);
+                        for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+                        const jpgImg = await mergedPdf.embedJpg(bytes);
+                        const pg = mergedPdf.addPage([jpgImg.width, jpgImg.height]);
+                        pg.drawImage(jpgImg, { x: 0, y: 0, width: jpgImg.width, height: jpgImg.height });
+                        const userRotation = entry.rotations[item.pageIndex] || 0;
+                        if (userRotation !== 0) {
+                            pg.setRotation(PDFLib.degrees(userRotation));
+                        }
                     } else {
                         const rotation = entry.rotations[0] || 0;
                         const imagePdf = await imageToPdf(entry.file, rotation);
