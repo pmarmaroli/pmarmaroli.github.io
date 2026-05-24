@@ -1323,20 +1323,53 @@
             });
             document.body.removeChild(container);
 
+            const total = fullCanvas.height;
+            const scanCtx = fullCanvas.getContext('2d');
+
+            // Returns true if the row at scanY is all white (safe page-break point)
+            function isRowWhite(scanY) {
+                if (scanY <= 0 || scanY >= total) return true;
+                const data = scanCtx.getImageData(0, scanY, A4_W, 1).data;
+                for (let i = 0; i < data.length; i += 4) {
+                    if (data[i] < 230 || data[i + 1] < 230 || data[i + 2] < 230) return false;
+                }
+                return true;
+            }
+
+            // Search backwards from the ideal cut point for a white row (up to 20% of page)
+            function findSafeCut(fromY) {
+                const target = fromY + A4_H;
+                if (target >= total) return total;
+                const maxBack = Math.floor(A4_H * 0.20);
+                for (let sy = target; sy > target - maxBack; sy--) {
+                    if (isRowWhite(sy)) return sy;
+                }
+                return target;
+            }
+
+            // Skip leading white rows at the start of the next page
+            function findContentStart(fromY) {
+                const limit = Math.min(fromY + 80, total);
+                for (let sy = fromY; sy < limit; sy++) {
+                    if (!isRowWhite(sy)) return sy;
+                }
+                return fromY;
+            }
+
             const pages = [];
             let y = 0;
-            const total = fullCanvas.height;
             while (y < total) {
+                const cutY = findSafeCut(y);
                 const pc = document.createElement('canvas');
                 pc.width = A4_W;
                 pc.height = A4_H;
                 const ctx = pc.getContext('2d');
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, A4_W, A4_H);
-                const sliceH = Math.min(A4_H, total - y);
+                const sliceH = Math.min(cutY - y, A4_H);
                 ctx.drawImage(fullCanvas, 0, y, A4_W, sliceH, 0, 0, A4_W, sliceH);
                 pages.push(pc.toDataURL('image/jpeg', 0.88));
-                y += A4_H;
+                y = (cutY >= total) ? total : findContentStart(cutY);
             }
             return pages.length > 0 ? pages : [fullCanvas.toDataURL('image/jpeg', 0.88)];
         }
