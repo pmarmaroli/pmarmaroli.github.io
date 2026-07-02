@@ -174,7 +174,7 @@ A Windows desktop app that periodically locks your screen and requires you to pe
 
 - Category: Developer Tools
 
-A B2B prospecting tool that scrapes web sources for consulting leads scores them and generates outreach messages via Claude API with a CRM pipeline to track status.,
+A B2B prospecting tool that scrapes web sources for consulting leads scores them and generates outreach messages via an LLM API with a CRM pipeline to track status.,
 
 ### Vibe Language (VL)
 
@@ -247,7 +247,7 @@ A zero-friction web app for recording audio/video and sharing it with a teacher 
 - Category: Content Creation & Media
 - Link: [visit the web app](https://www.immogen.io)
 
-An AI-powered real estate market analysis report generator using Claude agents with section-by-section iterative refinement professional PDF output and Stripe payment integration.,
+An AI-powered real estate market analysis report generator using LLM agents with section-by-section iterative refinement professional PDF output and Stripe payment integration.,
 
 ## Education
 
