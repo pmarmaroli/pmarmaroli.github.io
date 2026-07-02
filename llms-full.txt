@@ -188,7 +188,7 @@ A token-efficient programming language that compiles to Python JavaScript TypeSc
 - Category: Transportation & Safety
 - Link: [visit the web app](https://rbe-esign.azurewebsites.net/)
 
-An electronic signature platform for Rail Baltica — upload PDFs add signers place signature zones and collect digital signatures via email-based signing links.,
+An electronic signature platform — upload PDFs add signers place signature zones and collect digital signatures via email-based signing links.,
 
 ### Predict-MOS – Audio Quality Score Predictor
 
