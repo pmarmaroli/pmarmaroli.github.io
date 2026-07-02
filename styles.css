@@ -197,6 +197,18 @@ a:hover { text-decoration: underline; }
     text-decoration: none;
 }
 
+.consulting-banner + .consulting-banner {
+    margin-top: 1rem;
+}
+
+.consulting-inner--vocametrix {
+    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+}
+
+.consulting-cta--vocametrix {
+    color: #0f766e;
+}
+
 /* ========== TIMELINE ========== */
 .timeline {
     position: relative;
