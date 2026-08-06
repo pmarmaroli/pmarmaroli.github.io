@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patrick Marmaroli — CV</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    :root {
+        --primary: #1e3a8a;
+        --primary-light: #3b82f6;
+        --text: #1f2937;
+        --text-muted: #6b7280;
+        --border: #e5e7eb;
+        --bg-alt: #f8fafc;
+        --gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #0f766e 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 12mm 15mm; }
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--text);
+        font-size: 9.7pt;
+        line-height: 1.45;
+    }
+    .page { padding: 0; }
+
+    .cv-header {
+        background: var(--gradient);
+        color: white;
+        padding: 6mm 8mm;
+        margin: 0 0 6mm;
+        border-radius: 3mm;
+    }
+    .cv-header h1 { font-size: 20pt; font-weight: 700; margin-bottom: 1mm; }
+    .cv-header .title { font-size: 10.5pt; font-weight: 600; opacity: 0.95; }
+    .cv-header .subtitle { font-size: 9.5pt; opacity: 0.88; margin-bottom: 2.5mm; }
+    .cv-header .contact-line { font-size: 8.7pt; opacity: 0.92; }
+    .cv-header .contact-line span:not(:last-child)::after { content: ' \00b7 '; opacity: 0.7; }
+    .cv-header .contact-line i { width: 3mm; text-align: center; margin-right: 0.5mm; }
+
+    .section { margin-bottom: 4mm; }
+    .section-heading {
+        font-size: 10pt;
+        font-weight: 700;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        border-bottom: 1.4pt solid var(--primary);
+        padding-bottom: 1mm;
+        margin-bottom: 2.5mm;
+    }
+
+    .summary { color: var(--text); font-size: 9.6pt; }
+
+    .entry { margin-bottom: 2.6mm; page-break-inside: avoid; }
+    .entry-head { overflow: hidden; }
+    .entry-role { font-weight: 700; font-size: 9.8pt; }
+    .entry-date { float: right; font-size: 8.6pt; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+    .entry-org { font-size: 8.9pt; color: var(--primary-light); font-weight: 500; margin-bottom: 0.8mm; }
+    .entry ul { padding-left: 4mm; }
+    .entry li { margin-bottom: 0.6mm; }
+
+    .edu-entry { margin-bottom: 2.2mm; }
+    .edu-entry .entry-role { font-size: 9.5pt; }
+    .edu-entry .thesis { color: var(--text-muted); font-style: italic; }
+
+    .skills-row { margin-bottom: 1.4mm; }
+    .skills-row b { color: var(--primary); }
+
+    .two-col { display: flex; gap: 8mm; }
+    .two-col > div { flex: 1; }
+
+    .footer-note {
+        margin-top: 5mm;
+        padding-top: 2mm;
+        border-top: 0.7pt solid var(--border);
+        font-size: 7.6pt;
+        color: var(--text-muted);
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="page">
+
+    <header class="cv-header">
+        <h1>Patrick Marmaroli</h1>
+        <div class="title">Freelance</div>
+        <div class="subtitle">Audio Signal Processing, Machine Learning &amp; Fullstack Dev</div>
+        <div class="contact-line">
+            <span><i class="fas fa-phone"></i> +33 6 18 78 93 40</span>
+            <span>patrick.marmaroli@gmail.com</span>
+            <span><i class="fab fa-linkedin"></i> linkedin.com/in/pmarmaroli</span>
+            <span><i class="fas fa-globe"></i> pmarmaroli.github.io</span>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="section-heading">Professional Summary</div>
+        <p class="summary">Signal processing engineer with a PhD from EPFL, 15+ years of experience, and 30+ publications and 3 patents. Full-stack developer covering DSP, machine learning, frontend, backend, cloud infrastructure and databases end to end, using an AI-assisted development workflow that keeps the same engineering rigor while moving faster than a traditional single-discipline developer. Freelancing full-time since August 2026 through Hidacs Sàrl (custom software &amp; R&amp;D consulting — audio &amp; acoustic signal processing, machine learning, enterprise business software) and Vocametrix (speech-therapy audio analysis and games platform).</p>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">Work Experience</div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">CEO &amp; Co-Founder</span>
+                <span class="entry-date">Oct 2023 — Present</span>
+            </div>
+            <div class="entry-org">Vocametrix OÜ · Tallinn, Estonia</div>
+            <ul>
+                <li>Designed and deployed an AI-driven speech-therapy platform combining pronunciation assessment, pitch tracking, and gamified voice exercises, backed by a speech-processing API suite serving both the platform and external developers.</li>
+                <li>Managed the full product lifecycle — R&amp;D through a secure, GDPR-compliant cloud infrastructure for clinical use.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Founder</span>
+                <span class="entry-date">Feb 2016 — Present</span>
+            </div>
+            <div class="entry-org">Hidacs Sàrl · Lausanne, Switzerland</div>
+            <ul>
+                <li>R&amp;D consulting in signal processing, machine learning, and web development — feasibility studies, proof-of-concepts, and prototyping for speech, industrial, environmental, and health applications.</li>
+                <li>Delivered ERP, e-signature, and timesheet portal systems for multi-partner organizations, covering the full stack — frontend, backend, cloud infrastructure, and databases.</li>
+                <li>Independent freelancer full-time since August 2026, using an AI-assisted development workflow to own delivery end to end without compromising engineering quality.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Senior Audio Engineer</span>
+                <span class="entry-date">Jan 2022 — Jul 2026</span>
+            </div>
+            <div class="entry-org">Microsoft · Tallinn, Estonia</div>
+            <ul>
+                <li>Developed PyTorch-based audio quality models for collecting, analyzing, and evaluating audio signals across diverse acoustic environments (Microsoft Teams).</li>
+                <li>Designed automated tools for large-scale audio and video data analysis, generating comprehensive evaluation reports.</li>
+                <li>Conducted acoustic laboratory measurements and experimental validation to support research on audio conferencing quality.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Audio Signal Processing Consultant</span>
+                <span class="entry-date">Oct 2021 — Dec 2021</span>
+            </div>
+            <div class="entry-org">Onfido</div>
+            <ul>
+                <li>Developed an anti-spoofing technology using ultrasound for identity-verification liveness detection.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Research Engineer (part-time)</span>
+                <span class="entry-date">Jul 2020 — Sep 2021</span>
+            </div>
+            <div class="entry-org">HEPIA (HES-SO Geneva) · Geneva, Switzerland</div>
+            <ul>
+                <li>Contributed to the "EARSENS" research project, developing signal processing algorithms to repurpose loudspeakers as safety sensors for privacy-preserving indoor activity detection.</li>
+                <li>Co-authored "Towards the detection and classification of indoor events using a loudspeaker," published in Applied Acoustics (January 2023).</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Audio Department Manager</span>
+                <span class="entry-date">May 2016 — Aug 2021</span>
+            </div>
+            <div class="entry-org">HED Technologies · Geneva, Switzerland</div>
+            <ul>
+                <li>Contributed to the acoustic design and testing of audio devices, focusing on noise reduction and echo cancellation.</li>
+                <li>Developed custom acoustic test benches and technical specifications, ensuring high-fidelity performance in complex sound environments.</li>
+                <li>Built and led a team of 4 engineers from the ground up, steering signal processing algorithms from initial prototype to validated product.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Project Manager, R&amp;D Acoustics Department</span>
+                <span class="entry-date">Sep 2014 — Jun 2016</span>
+            </div>
+            <div class="entry-org">PRONA SA · Yverdon, Switzerland</div>
+            <ul>
+                <li>Developed custom Matlab pipelines to streamline RT60, STC, and NRC data processing, increasing the efficiency of building and environmental acoustic audits.</li>
+                <li>Conducted on-site normative acoustic measurements and authored technical reports ensuring compliance with international standards.</li>
+                <li>Managed multidisciplinary acoustic consulting projects for industrial, institutional, and private clients.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Post-Doctoral Fellow</span>
+                <span class="entry-date">Mar 2013 — Oct 2014</span>
+            </div>
+            <div class="entry-org">EPFL · Lausanne, Switzerland</div>
+            <ul>
+                <li>Designed audio signal processing algorithms and conducted laboratory and field experiments within European research projects.</li>
+                <li>Collaborated with industrial partners including Phonak (hearing aids), FIAT, and ARMASUISSE.</li>
+                <li>Supervised interns and PhD students, contributed to scientific publications, and coordinated with international teams.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">Education</div>
+        <div class="edu-entry">
+            <div class="entry-head"><span class="entry-role">PhD, Acoustics &amp; Audio Signal Processing</span><span class="entry-date">2008 — 2013</span></div>
+            <div class="entry-org">EPFL · Lausanne, Switzerland</div>
+            <div class="thesis">Thesis: Bimodal Sound Source Tracking Applied to Road Traffic Monitoring</div>
+        </div>
+        <div class="edu-entry">
+            <div class="entry-head"><span class="entry-role">Master Thesis in Signal Processing</span><span class="entry-date">2007 — 2008</span></div>
+            <div class="entry-org">Université du Sud Toulon-Var · France</div>
+            <div class="thesis">Signal processing, psychoacoustics, and trajectography</div>
+        </div>
+        <div class="edu-entry">
+            <div class="entry-head"><span class="entry-role">Software Engineering Degree</span><span class="entry-date">2005 — 2007</span></div>
+            <div class="entry-org">ISEN Toulon · France</div>
+        </div>
+    </section>
+
+    <div class="two-col">
+        <div class="section">
+            <div class="section-heading">Skills</div>
+            <div class="skills-row"><b>Core:</b> Signal Processing &amp; ML · DSP &amp; Acoustic Measurement · Full-Stack Web Dev · AI-Assisted Development</div>
+            <div class="skills-row"><b>Audio &amp; DSP:</b> MATLAB, Web Audio API, FFT Analysis, GCC-PHAT, HRTF</div>
+            <div class="skills-row"><b>AI &amp; ML:</b> PyTorch, Scikit-learn, OpenAI GPT-4, YAMNet, Azure Cognitive Services</div>
+            <div class="skills-row"><b>Web &amp; Cloud:</b> React, Next.js, Node.js/Express, Azure, PostgreSQL, Docker, CI/CD</div>
+            <div class="skills-row"><b>Security:</b> AES Encryption, Privacy-Preserving AI, GDPR Compliance</div>
+        </div>
+        <div class="section">
+            <div class="section-heading">Languages</div>
+            <div class="skills-row"><b>French:</b> Native</div>
+            <div class="skills-row"><b>English:</b> C1 Advanced</div>
+
+            <div class="section-heading" style="margin-top: 4mm;">Personal Information</div>
+            <div class="skills-row">Nationality: French</div>
+            <div class="skills-row">Married, 6 children</div>
+            <div class="skills-row">Based in France, Annecy / Geneva border area</div>
+        </div>
+    </div>
+
+    <div class="footer-note">Up-to-date details at pmarmaroli.github.io</div>
+
+</div>
+</body>
+</html>

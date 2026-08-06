@@ -16,6 +16,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
+// Display order: consulting/business first, personal experiments last
+const CATEGORY_ORDER = [
+  "Business & Enterprise Platforms",
+  "Audio & Signal Processing",
+  "Healthcare & Speech Therapy",
+  "AI-Powered Products",
+  "Tools & Experiments",
+];
+
+// Confidential client work: description stays, external links are withheld
+const CONFIDENTIAL_TITLES = new Set([
+  "RBE Electronic Signature Platform",
+  "RBE Alliance Control System (ERP)",
+  "RBE Timesheet Portal",
+  "Explosive Event Acoustic Detection and Classification",
+]);
+
+// Real screenshots, keyed by exact Title — everything else falls back to an icon tile
+const TITLE_IMAGES = {
+  "Vocametrix Audio Analysis & Games Platform For Speech Therapy": "vocametrix",
+  "Audio Comparison Tool": "audiocompare",
+  "ChefFantastique": "cheffantastique",
+  "Symptom Tracker": "stlogo",
+  "AI-Powered YouTube Thumbnail Generator": "thumbly",
+  "TroubleShot": "troubleshot",
+};
+
 function buildPortfolioUI(items) {
   const filtersContainer = document.getElementById("industry-filters");
   const content = document.getElementById("content");
@@ -23,30 +50,29 @@ function buildPortfolioUI(items) {
   if (!filtersContainer || !content) return;
 
   const industryIcons = {
-    "Audio Technology": "fas fa-volume-up",
-    "Content Creation & Media": "fas fa-video",
-    "Developer Tools": "fas fa-code",
-    "Education & Learning": "fas fa-graduation-cap",
-    "Fitness & Wellness": "fas fa-dumbbell",
-    "Food & Lifestyle": "fas fa-utensils",
-    "Healthcare & Accessibility": "fas fa-heartbeat",
-    "Other": "fas fa-folder",
-    "Security & Privacy": "fas fa-shield-alt",
-    "Transportation & Safety": "fas fa-car",
+    "Business & Enterprise Platforms": "fas fa-building",
+    "Audio & Signal Processing": "fas fa-wave-square",
+    "Healthcare & Speech Therapy": "fas fa-heartbeat",
+    "AI-Powered Products": "fas fa-robot",
+    "Tools & Experiments": "fas fa-flask",
   };
 
   // Group by industry
   const byIndustry = {};
   items.forEach((item) => {
-    const industry = item["Industry"] || "Other";
+    const industry = item["Industry"] || "Tools & Experiments";
     if (!byIndustry[industry]) byIndustry[industry] = [];
     byIndustry[industry].push(item);
   });
 
-  const industries = Object.keys(byIndustry).sort();
+  const knownOrder = CATEGORY_ORDER.filter((c) => byIndustry[c]);
+  const leftovers = Object.keys(byIndustry)
+    .filter((c) => !CATEGORY_ORDER.includes(c))
+    .sort();
+  const industries = [...knownOrder, ...leftovers];
 
   // Build filter buttons
-  industries.forEach((industry) => {
+  industries.forEach((industry, i) => {
     const btn = document.createElement("button");
     const icon = industryIcons[industry] || "fas fa-folder";
     const count = byIndustry[industry].length;
@@ -64,14 +90,17 @@ function buildPortfolioUI(items) {
       } else {
         btn.classList.add("active");
         if (prompt) prompt.style.display = "none";
-        showProjects(byIndustry[industry], content);
+        showProjects(byIndustry[industry], content, icon);
       }
     });
     filtersContainer.appendChild(btn);
+
+    // Lead with the category most relevant to consulting clients
+    if (i === 0) btn.click();
   });
 }
 
-function showProjects(items, container) {
+function showProjects(items, container, categoryIcon) {
   container.innerHTML = "";
 
   const grid = document.createElement("div");
@@ -82,25 +111,46 @@ function showProjects(items, container) {
     card.className = "project-card fade-in";
     card.style.animationDelay = `${idx * 0.06}s`;
 
-    const urlMatch = (item["URL"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
-    const moreInfoMatch = (item["MoreInfo"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const isConfidential = CONFIDENTIAL_TITLES.has(item["Title"]);
+    const image = TITLE_IMAGES[item["Title"]];
 
-    const links = [];
-    if (urlMatch && urlMatch[2] && urlMatch[2] !== "#") {
-      links.push(
-        `<a href="${urlMatch[2]}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> ${urlMatch[1]}</a>`
-      );
-    }
-    if (moreInfoMatch && moreInfoMatch[2] && moreInfoMatch[2] !== "#") {
-      links.push(
-        `<a href="${moreInfoMatch[2]}" target="_blank" class="project-link"><i class="fas fa-info-circle"></i> ${moreInfoMatch[1]}</a>`
-      );
+    const thumb = image
+      ? `<div class="project-thumb">
+           <picture>
+             <source srcset="/moreinfo/${image}.webp" type="image/webp">
+             <img src="/moreinfo/${image}.png" alt="" loading="lazy" width="320" height="180">
+           </picture>
+         </div>`
+      : `<div class="project-thumb project-thumb--fallback"><i class="${categoryIcon || "fas fa-folder"}"></i></div>`;
+
+    let linksHtml = "";
+    if (isConfidential) {
+      linksHtml = `<div class="confidential-note"><i class="fas fa-lock"></i> Confidential client project</div>`;
+    } else {
+      const urlMatch = (item["URL"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
+      const moreInfoMatch = (item["MoreInfo"] || "").match(/\[([^\]]+)\]\(([^)]+)\)/);
+
+      const links = [];
+      if (urlMatch && urlMatch[2] && urlMatch[2] !== "#") {
+        links.push(
+          `<a href="${urlMatch[2]}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> ${urlMatch[1]}</a>`
+        );
+      }
+      if (moreInfoMatch && moreInfoMatch[2] && moreInfoMatch[2] !== "#") {
+        links.push(
+          `<a href="${moreInfoMatch[2]}" target="_blank" class="project-link"><i class="fas fa-info-circle"></i> ${moreInfoMatch[1]}</a>`
+        );
+      }
+      linksHtml = links.length ? `<div class="project-links">${links.join("")}</div>` : "";
     }
 
     card.innerHTML = `
-      <h4>${item["Title"]}</h4>
-      <p>${item["Description"]}</p>
-      ${links.length ? `<div class="project-links">${links.join("")}</div>` : ""}
+      ${thumb}
+      <div class="project-body">
+        <h4>${item["Title"]}</h4>
+        <p>${item["Description"]}</p>
+        ${linksHtml}
+      </div>
     `;
 
     grid.appendChild(card);
