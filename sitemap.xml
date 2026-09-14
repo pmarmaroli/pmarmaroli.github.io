@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://pmarmaroli.github.io/</loc><lastmod>2026-05-08</lastmod><priority>1.0</priority></url>
+  <url><loc>https://pmarmaroli.github.io/spec-coach.html</loc><lastmod>2026-09-14</lastmod><priority>0.6</priority></url>
   <url><loc>https://pmarmaroli.github.io/bufferSizeCalculator.html</loc><lastmod>2026-05-08</lastmod><priority>0.6</priority></url>
   <url><loc>https://pmarmaroli.github.io/explosion_acoustic_simulation.html</loc><lastmod>2026-05-08</lastmod><priority>0.6</priority></url>
   <url><loc>https://pmarmaroli.github.io/pdfMerger.html</loc><lastmod>2026-05-08</lastmod><priority>0.6</priority></url>

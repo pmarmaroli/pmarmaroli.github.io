@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spec Coach — analyse de spécifications</title>
+    <meta name="description" content="Collez les spécifications de votre application : Claude les note critère par critère, pose les questions qui manquent et réécrit une version améliorée.">
+    <link rel="canonical" href="https://pmarmaroli.github.io/spec-coach.html">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="Spec Coach — analyse de spécifications">
+    <meta property="og:description" content="Collez vos specs, obtenez une note par critère, des questions et une version améliorée.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pmarmaroli.github.io/spec-coach.html">
+    <meta property="og:image" content="https://pmarmaroli.github.io/patrick-marmaroli.png">
+    <meta name="robots" content="noindex">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #10b981;
+            --warn: #f59e0b;
+            --danger: #dc2626;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e5e7eb;
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #0f766e 100%);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-alt);
+        }
+
+        a { color: var(--primary-light); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        nav.breadcrumb {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-alt);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88rem;
+            color: #64748b;
+        }
+
+        header.hero {
+            background: var(--gradient);
+            color: #fff;
+            padding: 2.5rem 1.5rem;
+        }
+        header.hero .inner { max-width: 900px; margin: 0 auto; }
+        header.hero h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+        header.hero p { opacity: 0.92; max-width: 640px; }
+
+        main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        .card h2 { font-size: 1.15rem; color: var(--primary); margin-bottom: 0.75rem; }
+        .card h3 { font-size: 1rem; color: var(--primary); margin: 1.25rem 0 0.5rem; }
+
+        .hint { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+        .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+        .row > input[type="password"] { flex: 1 1 260px; }
+
+        input, select, textarea {
+            font: inherit;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+        }
+        input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 2px;
+        }
+        textarea { width: 100%; resize: vertical; line-height: 1.5; }
+        textarea.answer { min-height: 4.5rem; margin-top: 0.4rem; }
+
+        button {
+            font: inherit;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 0.65rem 1.2rem;
+            cursor: pointer;
+            transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+        }
+        button:disabled { opacity: 0.55; cursor: not-allowed; }
+        .btn-primary { background: var(--primary-light); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: var(--primary); transform: translateY(-1px); }
+        .btn-accent { background: var(--accent); color: #fff; }
+        .btn-accent:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
+        .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-ghost:hover:not(:disabled) { color: var(--text); background: var(--bg-alt); }
+        .btn-small { padding: 0.3rem 0.7rem; font-size: 0.82rem; font-weight: 500; }
+
+        #status { font-size: 0.9rem; color: var(--text-muted); }
+        #status.error { color: var(--danger); }
+        #status.busy::before {
+            content: "";
+            display: inline-block;
+            width: 0.85em; height: 0.85em;
+            margin-right: 0.4em;
+            border: 2px solid var(--primary-light);
+            border-right-color: transparent;
+            border-radius: 50%;
+            vertical-align: -0.1em;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .score-wrap { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+        .score-ring {
+            --pct: 0;
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            display: grid; place-items: center;
+            background: conic-gradient(var(--ring) calc(var(--pct) * 1%), var(--border) 0);
+            flex-shrink: 0;
+        }
+        .score-ring > span {
+            width: 86px; height: 86px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: grid; place-items: center;
+            font-size: 1.7rem; font-weight: 700;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+        .score-wrap p { flex: 1 1 300px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        td.note { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+        .bar { display: inline-block; width: 60px; height: 6px; border-radius: 3px; background: var(--border); margin-right: 0.5rem; vertical-align: middle; overflow: hidden; }
+        .bar > i { display: block; height: 100%; background: var(--ring); }
+        td .sugg { display: block; color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem; }
+
+        ul.list { padding-left: 1.2rem; }
+        ul.list li { margin-bottom: 0.3rem; }
+
+        .question { padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+        .question:last-of-type { border-bottom: none; }
+        .question label { font-weight: 600; display: block; }
+        .question .why { font-size: 0.85rem; color: var(--text-muted); }
+
+        details summary { cursor: pointer; color: var(--primary-light); font-size: 0.9rem; margin-top: 0.75rem; }
+        .history-item { display: flex; gap: 0.75rem; align-items: center; padding: 0.4rem 0; font-size: 0.9rem; flex-wrap: wrap; }
+        .history-item .meta { color: var(--text-muted); flex: 1; }
+
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem; }
+
+        @media (max-width: 600px) {
+            header.hero { padding: 1.75rem 1rem; }
+            main { padding: 1rem; }
+            .card { padding: 1rem; }
+            th:nth-child(3), td:nth-child(3) { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> &rsaquo; <span aria-current="page">Spec Coach</span></nav>
+
+    <header class="hero">
+        <div class="inner">
+            <h1>Spec Coach</h1>
+            <p>Collez les spécifications de votre application. Claude les note sur dix critères, pose les questions qui manquent, puis réécrit une version améliorée à partir de vos réponses.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="card" aria-labelledby="h-key">
+            <h2 id="h-key">1. Clé API Anthropic</h2>
+            <p class="hint">La clé reste dans ce navigateur (localStorage) et n'est envoyée qu'à <code>api.anthropic.com</code>. Chaque analyse est facturée sur votre compte. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Créer une clé</a>.</p>
+            <div class="row">
+                <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off" spellcheck="false" aria-label="Clé API Anthropic">
+                <select id="model" aria-label="Modèle"></select>
+                <button type="button" id="forgetKey" class="btn-ghost">Oublier la clé</button>
+            </div>
+        </section>
+
+        <section class="card" aria-labelledby="h-spec">
+            <h2 id="h-spec">2. Vos spécifications <span id="versionTag" class="hint" style="display:inline"></span></h2>
+            <p class="hint">Rédigées à la main, en français ou en anglais. Plus c'est brut, plus l'analyse est utile.</p>
+            <textarea id="spec" rows="14" placeholder="Exemple : Je veux une application qui permet aux membres de mon club de tennis de réserver un court. Les membres se connectent, voient les créneaux libres, réservent…"></textarea>
+            <div class="row" style="margin-top:0.75rem">
+                <button type="button" id="analyze" class="btn-primary">Analyser</button>
+                <span id="status" role="status" aria-live="polite"></span>
+            </div>
+            <details id="historyBox" hidden>
+                <summary>Versions précédentes</summary>
+                <div id="history"></div>
+            </details>
+        </section>
+
+        <section class="card" id="result" hidden aria-labelledby="h-result">
+            <h2 id="h-result">3. Analyse</h2>
+            <div class="score-wrap">
+                <div class="score-ring" id="scoreRing"><span id="scoreValue">0</span></div>
+                <p id="resume"></p>
+            </div>
+
+            <h3>Critères</h3>
+            <table>
+                <thead><tr><th>Critère</th><th>Note</th><th>Justification et suggestion</th></tr></thead>
+                <tbody id="criteria"></tbody>
+            </table>
+
+            <h3>Points forts</h3>
+            <ul class="list" id="strengths"></ul>
+
+            <h3>Points faibles</h3>
+            <ul class="list" id="weaknesses"></ul>
+
+            <h3>4. Questions pour améliorer vos specs</h3>
+            <p class="hint">Répondez à celles que vous pouvez. Les questions sans réponse seront marquées « à confirmer » dans la version réécrite.</p>
+            <div id="questions"></div>
+            <div class="row" style="margin-top:1rem">
+                <button type="button" id="rewrite" class="btn-accent">Générer les specs v2 avec mes réponses</button>
+            </div>
+            <p class="hint" id="usage" style="margin-top:0.75rem"></p>
+        </section>
+    </main>
+
+    <footer>Outil de formation « vibe coding » — <a href="/">Patrick Marmaroli</a></footer>
+
+    <script>
+        'use strict';
+
+        const API_URL = 'https://api.anthropic.com/v1/messages';
+        const STORAGE = { key: 'specCoach.apiKey', model: 'specCoach.model', spec: 'specCoach.spec' };
+
+        // Prix indicatifs en $ par million de tokens (entrée, sortie), pour l'estimation affichée.
+        const MODELS = {
+            'claude-opus-5':   { label: 'Claude Opus 5 (recommandé)',       price: [5, 25] },
+            'claude-sonnet-5': { label: 'Claude Sonnet 5 (plus rapide)',    price: [2, 10] },
+            'claude-haiku-4-5': { label: 'Claude Haiku 4.5 (le moins cher)', price: [1, 5] },
+        };
+
+        const CRITERIA = [
+            ['Objectif et problème',            'Le problème résolu et le résultat attendu sont explicites.'],
+            ['Utilisateurs cibles',              'Qui utilise l\'application, dans quel contexte, avec quel niveau.'],
+            ['Fonctionnalités et priorités',     'Liste des fonctions avec priorisation (indispensable / souhaitable / plus tard).'],
+            ['Parcours utilisateur',             'Les enchaînements d\'écrans ou d\'actions principaux sont décrits.'],
+            ['Données et modèle',                'Les objets manipulés, leurs champs et leurs relations sont nommés.'],
+            ['Contraintes techniques',           'Plateforme, langages, services externes, hébergement, budget.'],
+            ['Critères d\'acceptation',          'On sait dire quand une fonctionnalité est terminée et correcte.'],
+            ['Cas limites et erreurs',           'Comportement attendu quand ça se passe mal ou dans les cas rares.'],
+            ['Hors périmètre',                   'Ce que l\'application ne fera pas est dit explicitement.'],
+            ['Clarté et absence d\'ambiguïté',   'Un développeur (humain ou IA) ne peut pas interpréter de deux façons.'],
+        ];
+
+        const ANALYSIS_SCHEMA = {
+            type: 'object',
+            properties: {
+                resume: { type: 'string' },
+                criteres: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            nom: { type: 'string', enum: CRITERIA.map(c => c[0]) },
+                            note: { type: 'integer' },
+                            justification: { type: 'string' },
+                            suggestion: { type: 'string' },
+                        },
+                        required: ['nom', 'note', 'justification', 'suggestion'],
+                        additionalProperties: false,
+                    },
+                },
+                points_forts: { type: 'array', items: { type: 'string' } },
+                points_faibles: { type: 'array', items: { type: 'string' } },
+                questions: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            question: { type: 'string' },
+                            pourquoi: { type: 'string' },
+                        },
+                        required: ['question', 'pourquoi'],
+                        additionalProperties: false,
+                    },
+                },
+            },
+            required: ['resume', 'criteres', 'points_forts', 'points_faibles', 'questions'],
+            additionalProperties: false,
+        };
+
+        const ANALYSIS_SYSTEM = `Tu es un coach en rédaction de spécifications logicielles. Tes interlocuteurs sont des débutants qui apprennent à faire développer une application par une IA (« vibe coding ») : la qualité de leurs specs conditionne directement la qualité du code produit.
+
+Analyse les spécifications fournies selon exactement ces dix critères, dans cet ordre :
+${CRITERIA.map(([n, d], i) => `${i + 1}. ${n} — ${d}`).join('\n')}
+
+Pour chaque critère : une note entière de 0 à 10 (0 = absent, 5 = présent mais flou ou incomplet, 10 = précis et actionnable), une justification de deux phrases maximum citant le texte quand c'est possible, et une suggestion concrète d'amélioration en une phrase.
+
+Ensuite : un résumé en trois phrases maximum de la qualité globale, trois à cinq points forts, trois à cinq points faibles, puis entre trois et sept questions à poser à l'auteur, classées de la plus bloquante à la moins bloquante. Chaque question doit être précise (pas « pouvez-vous préciser ? »), et « pourquoi » explique en une phrase ce que la réponse débloque pour le développement.
+
+Écris en français, ton direct et bienveillant, sans jargon inexpliqué. Ne réécris pas les specs à cette étape.`;
+
+        const REWRITE_SYSTEM = `Tu es un coach en rédaction de spécifications logicielles pour des débutants en « vibe coding ». On te donne des spécifications originales, puis les questions posées lors d'une analyse et les réponses de l'auteur.
+
+Réécris les spécifications complètes, en Markdown, en français, en respectant l'intention et le vocabulaire de l'auteur. Intègre les réponses là où elles s'appliquent. Structure le document avec ces sections : Objectif, Utilisateurs, Fonctionnalités (indispensables / souhaitables / plus tard), Parcours principaux, Données, Contraintes techniques, Critères d'acceptation, Cas limites et erreurs, Hors périmètre.
+
+Pour toute question restée sans réponse, ou toute information que tu dois supposer, écris l'hypothèse suivie de « [À CONFIRMER] ». N'invente pas de fonctionnalités que l'auteur n'a pas demandées. Renvoie uniquement le document Markdown, sans commentaire avant ou après.`;
+
+        const $ = (id) => document.getElementById(id);
+        const els = {
+            apiKey: $('apiKey'), model: $('model'), forgetKey: $('forgetKey'),
+            spec: $('spec'), analyze: $('analyze'), status: $('status'), versionTag: $('versionTag'),
+            historyBox: $('historyBox'), history: $('history'),
+            result: $('result'), scoreRing: $('scoreRing'), scoreValue: $('scoreValue'), resume: $('resume'),
+            criteria: $('criteria'), strengths: $('strengths'), weaknesses: $('weaknesses'),
+            questions: $('questions'), rewrite: $('rewrite'), usage: $('usage'),
+        };
+
+        const state = { version: 1, history: [], lastAnalysis: null, busy: false };
+
+        // ---------- stockage local ----------
+        const store = {
+            get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+            set(k, v) { try { localStorage.setItem(k, v); } catch { /* navigation privée */ } },
+            del(k) { try { localStorage.removeItem(k); } catch { /* idem */ } },
+        };
+
+        for (const [id, m] of Object.entries(MODELS)) {
+            const opt = document.createElement('option');
+            opt.value = id; opt.textContent = m.label;
+            els.model.appendChild(opt);
+        }
+        els.apiKey.value = store.get(STORAGE.key) || '';
+        els.model.value = MODELS[store.get(STORAGE.model)] ? store.get(STORAGE.model) : 'claude-opus-5';
+        els.spec.value = store.get(STORAGE.spec) || '';
+
+        els.apiKey.addEventListener('input', () => store.set(STORAGE.key, els.apiKey.value.trim()));
+        els.model.addEventListener('change', () => store.set(STORAGE.model, els.model.value));
+        els.spec.addEventListener('input', () => store.set(STORAGE.spec, els.spec.value));
+        els.forgetKey.addEventListener('click', () => { els.apiKey.value = ''; store.del(STORAGE.key); els.apiKey.focus(); });
+
+        // ---------- appel API ----------
+        function friendlyError(status, apiMessage) {
+            const detail = apiMessage ? ` (${apiMessage})` : '';
+            switch (status) {
+                case 401: return 'Clé API refusée. Vérifiez qu\'elle est complète et active.';
+                case 403: return `Accès refusé${detail}.`;
+                case 400: return `Requête invalide${detail}.`;
+                case 429: return 'Limite de débit atteinte. Patientez une minute puis réessayez.';
+                case 529: return 'API surchargée. Réessayez dans quelques instants.';
+                default: return `Erreur ${status}${detail}.`;
+            }
+        }
+
+        async function callClaude({ system, user, schema, maxTokens }) {
+            const key = els.apiKey.value.trim();
+            if (!key) throw new Error('Renseignez d\'abord votre clé API.');
+            const model = els.model.value;
+
+            const headers = {
+                'content-type': 'application/json',
+                'x-api-key': key,
+                'anthropic-version': '2023-06-01',
+                'anthropic-dangerous-direct-browser-access': 'true',
+            };
+            const body = { model, max_tokens: maxTokens, system, messages: [{ role: 'user', content: user }] };
+            if (schema) body.output_config = { format: { type: 'json_schema', schema } };
+            if (model === 'claude-opus-5') {
+                // Repli serveur si un classifieur de sécurité décline la requête.
+                headers['anthropic-beta'] = 'server-side-fallback-2026-07-01';
+                body.fallbacks = 'default';
+            }
+
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 5 * 60 * 1000);
+            let res;
+            try {
+                res = await fetch(API_URL, { method: 'POST', headers, body: JSON.stringify(body), signal: controller.signal });
+            } catch (err) {
+                if (err.name === 'AbortError') throw new Error('Délai dépassé (5 min). Réessayez avec des specs plus courtes.');
+                throw new Error('Impossible de joindre api.anthropic.com. Vérifiez la connexion, ou une extension qui bloque les requêtes.');
+            } finally {
+                clearTimeout(timer);
+            }
+
+            if (!res.ok) {
+                let apiMessage = '';
+                try { apiMessage = (await res.json()).error?.message || ''; } catch { /* corps non JSON */ }
+                throw new Error(friendlyError(res.status, apiMessage));
+            }
+
+            const data = await res.json();
+            if (data.stop_reason === 'refusal') throw new Error('Le modèle a décliné cette demande.');
+            if (data.stop_reason === 'max_tokens') throw new Error('Réponse tronquée. Réessayez avec des specs plus courtes.');
+            const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+            return { text, usage: data.usage, model: data.model };
+        }
+
+        function showUsage({ usage, model }) {
+            const price = (MODELS[model] || MODELS[els.model.value]).price;
+            const cost = (usage.input_tokens * price[0] + usage.output_tokens * price[1]) / 1e6;
+            els.usage.textContent = `Modèle ${model} · ${usage.input_tokens} tokens en entrée, ${usage.output_tokens} en sortie · coût estimé ${cost.toFixed(3)} $`;
+        }
+
+        function setBusy(busy, message = '') {
+            state.busy = busy;
+            els.analyze.disabled = busy;
+            els.rewrite.disabled = busy;
+            els.status.textContent = message;
+            els.status.className = busy ? 'busy' : '';
+        }
+
+        function setError(message) {
+            els.status.textContent = message;
+            els.status.className = 'error';
+        }
+
+        // ---------- rendu ----------
+        function li(text) { const el = document.createElement('li'); el.textContent = text; return el; }
+
+        function ringColor(score) {
+            return score >= 75 ? 'var(--accent)' : score >= 50 ? 'var(--warn)' : 'var(--danger)';
+        }
+
+        function renderAnalysis(a) {
+            const notes = CRITERIA.map(([nom]) => {
+                const c = a.criteres.find(x => x.nom === nom);
+                return c ? Math.max(0, Math.min(10, c.note)) : 0;
+            });
+            const score = Math.round(notes.reduce((s, n) => s + n, 0) / notes.length * 10);
+
+            els.scoreRing.style.setProperty('--pct', score);
+            els.scoreRing.style.setProperty('--ring', ringColor(score));
+            els.scoreValue.textContent = score;
+            els.resume.textContent = a.resume;
+
+            els.criteria.replaceChildren();
+            CRITERIA.forEach(([nom], i) => {
+                const c = a.criteres.find(x => x.nom === nom) || { justification: 'Non évalué.', suggestion: '' };
+                const tr = document.createElement('tr');
+                const tdName = document.createElement('td'); tdName.textContent = nom;
+                const tdNote = document.createElement('td'); tdNote.className = 'note';
+                const bar = document.createElement('span'); bar.className = 'bar';
+                const fill = document.createElement('i'); fill.style.width = `${notes[i] * 10}%`;
+                bar.style.setProperty('--ring', ringColor(notes[i] * 10));
+                bar.appendChild(fill);
+                tdNote.append(bar, `${notes[i]}/10`);
+                const tdText = document.createElement('td');
+                tdText.textContent = c.justification;
+                if (c.suggestion) { const s = document.createElement('span'); s.className = 'sugg'; s.textContent = `→ ${c.suggestion}`; tdText.appendChild(s); }
+                tr.append(tdName, tdNote, tdText);
+                els.criteria.appendChild(tr);
+            });
+
+            els.strengths.replaceChildren(...a.points_forts.map(li));
+            els.weaknesses.replaceChildren(...a.points_faibles.map(li));
+
+            els.questions.replaceChildren();
+            a.questions.forEach((q, i) => {
+                const wrap = document.createElement('div'); wrap.className = 'question';
+                const label = document.createElement('label'); label.htmlFor = `answer-${i}`; label.textContent = `${i + 1}. ${q.question}`;
+                const why = document.createElement('div'); why.className = 'why'; why.textContent = q.pourquoi;
+                const ta = document.createElement('textarea'); ta.id = `answer-${i}`; ta.className = 'answer'; ta.placeholder = 'Votre réponse (facultatif)';
+                wrap.append(label, why, ta);
+                els.questions.appendChild(wrap);
+            });
+
+            els.result.hidden = false;
+            return score;
+        }
+
+        function renderHistory() {
+            els.historyBox.hidden = state.history.length === 0;
+            els.history.replaceChildren();
+            state.history.forEach((h) => {
+                const row = document.createElement('div'); row.className = 'history-item';
+                const name = document.createElement('strong'); name.textContent = `v${h.version}`;
+                const meta = document.createElement('span'); meta.className = 'meta';
+                meta.textContent = `${h.score === null ? 'non analysée' : `note ${h.score}/100`} · ${h.spec.length} caractères`;
+                const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn-ghost btn-small'; btn.textContent = 'Restaurer';
+                btn.addEventListener('click', () => {
+                    if (!confirm(`Remplacer le texte actuel par la v${h.version} ?`)) return;
+                    els.spec.value = h.spec; store.set(STORAGE.spec, h.spec);
+                    state.version = h.version; updateVersionTag();
+                });
+                row.append(name, meta, btn);
+                els.history.appendChild(row);
+            });
+        }
+
+        function updateVersionTag() { els.versionTag.textContent = `— v${state.version}`; }
+        updateVersionTag();
+
+        // ---------- actions ----------
+        els.analyze.addEventListener('click', async () => {
+            const spec = els.spec.value.trim();
+            if (spec.length < 40) { setError('Collez des spécifications d\'au moins quelques lignes.'); return; }
+            setBusy(true, 'Analyse en cours… (10 à 60 s selon le modèle)');
+            try {
+                const r = await callClaude({
+                    system: ANALYSIS_SYSTEM,
+                    user: `Voici les spécifications à analyser :\n\n<specs>\n${spec}\n</specs>`,
+                    schema: ANALYSIS_SCHEMA,
+                    maxTokens: 16000,
+                });
+                const analysis = JSON.parse(r.text);
+                const score = renderAnalysis(analysis);
+                state.lastAnalysis = { spec, analysis, score };
+                showUsage(r);
+                setBusy(false, `Analyse terminée : ${score}/100.`);
+                els.result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (err) {
+                setBusy(false);
+                setError(err.message);
+            }
+        });
+
+        els.rewrite.addEventListener('click', async () => {
+            const last = state.lastAnalysis;
+            if (!last) return;
+            const qa = last.analysis.questions.map((q, i) => {
+                const answer = ($(`answer-${i}`)?.value || '').trim();
+                return `Q${i + 1} : ${q.question}\nR${i + 1} : ${answer || '(sans réponse)'}`;
+            }).join('\n\n');
+
+            setBusy(true, 'Réécriture en cours…');
+            try {
+                const r = await callClaude({
+                    system: REWRITE_SYSTEM,
+                    user: `<specs_originales>\n${last.spec}\n</specs_originales>\n\n<questions_reponses>\n${qa}\n</questions_reponses>`,
+                    maxTokens: 16000,
+                });
+                state.history.push({ version: state.version, spec: els.spec.value, score: last.score });
+                state.version += 1;
+                els.spec.value = r.text.trim();
+                store.set(STORAGE.spec, els.spec.value);
+                updateVersionTag();
+                renderHistory();
+                showUsage(r);
+                setBusy(false, `Specs v${state.version} générées. Relisez, ajustez, puis relancez l'analyse.`);
+                els.spec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (err) {
+                setBusy(false);
+                setError(err.message);
+            }
+        });
+    </script>
+</body>
+
+</html>
