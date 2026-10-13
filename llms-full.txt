@@ -7,9 +7,9 @@ Site: https://pmarmaroli.github.io/
 ## Bio
 
 - Name: Patrick Marmaroli
-- Role: Audio Signal Processing Engineer & AI Specialist
-- Current positions: Senior Audio Engineer at Microsoft (Tallinn); CEO & Co-Founder of Vocametrix; CEO & Co-Founder of Hidacs Sàrl.
-- Location: Tallinn, Estonia
+- Role: Freelance Speech & Audio ML Engineer (signal processing to production software)
+- Current positions: Freelance since August 2026 through Hidacs Sàrl (Co-Founder); Co-Founder of Vocametrix. Previously Senior Audio Engineer at Microsoft (Tallinn, 2022-2026).
+- Location: Fully remote from the Geneva area (Switzerland / France)
 - Background: PhD in Acoustics & Audio Signal Processing (EPFL, 2008-2013). 15+ years across audio ML, acoustic sensing, embedded audio, and full-stack web/cloud development.
 - Email: patrick.marmaroli@gmail.com
 - LinkedIn: https://www.linkedin.com/in/pmarmaroli
@@ -290,9 +290,9 @@ An AI-powered real estate market analysis report generator using LLM agents with
 - Category: Professional
 - Link: [Corporate - sound quality for MS Teams](https://digipro.geenius.ee/blogi/microsofti-blogi/tallinnas-kaib-too-lahenduse-kallal-mis-aitaks-ule-maailma-videokonevasimusest-voitu-saada/)
 
-Jan 2022 -> Now: MICROSOFT,
+Jan 2022 -> Jul 2026: MICROSOFT,
 
-### CEO & Co-Founder
+### Co-Founder
 
 - Category: Professional
 - Link: [Startup - Voice-controlled games and audio analysis tools for speech therapy](https://www.vocametrix.com)
@@ -327,7 +327,7 @@ Jan 2020 -> Aug 2021: HED,
 
 May 2016 -> Dec 2019: HED,
 
-### CEO & Co-Founder
+### Co-Founder
 
 - Category: Professional
 - Link: [Startup - Signal processing engineering services](https://www.hidacs.ch)

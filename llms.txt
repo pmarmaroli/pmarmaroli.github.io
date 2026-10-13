@@ -1,6 +1,6 @@
 # Patrick Marmaroli
 
-> PhD Signal Processing engineer with 15+ years in audio ML, acoustic sensing, and full-stack development. Senior Audio Engineer at Microsoft and Co-Founder of Vocametrix. Based in Tallinn, Estonia.
+> Freelance Speech & Audio ML Engineer: speech and audio AI that works outside the lab, and the production software around it. PhD EPFL, ex-Microsoft (Senior Audio Engineer, 2022-2026), 25+ publications (7 journal articles, 740+ citations), 2 granted US patents. Co-Founder of Hidacs Sàrl and Vocametrix. Fully remote from the Geneva area (Switzerland / France).
 
 This site is a personal portfolio of audio signal processing, machine learning, and full-stack engineering projects.
 
