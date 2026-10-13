@@ -24,6 +24,21 @@
         line-height: 1.45;
     }
     .page { padding: 0; }
+    @media screen {
+        body { background: #e5e7eb; padding: 24px 16px; }
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 12mm 15mm;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+        }
+    }
+    @media screen and (max-width: 600px) {
+        body { padding: 0; }
+        .page { padding: 16px; border-radius: 0; box-shadow: none; }
+    }
 
     .cv-header {
         background: var(--gradient);
@@ -68,17 +83,6 @@
     .skills-row { margin-bottom: 1.4mm; }
     .skills-row b { color: var(--primary); }
 
-    .two-col { display: flex; gap: 8mm; }
-    .two-col > div { flex: 1; }
-
-    .footer-note {
-        margin-top: 5mm;
-        padding-top: 2mm;
-        border-top: 0.7pt solid var(--border);
-        font-size: 7.6pt;
-        color: var(--text-muted);
-        text-align: center;
-    }
 </style>
 </head>
 <body>
@@ -86,10 +90,9 @@
 
     <header class="cv-header">
         <h1>Patrick Marmaroli</h1>
-        <div class="title">Freelance</div>
-        <div class="subtitle">Speech &amp; Audio ML Engineer — signal processing to production software</div>
+        <div class="title">Freelance Speech &amp; Audio ML Engineer</div>
+        <div class="subtitle">Signal processing to production software</div>
         <div class="contact-line">
-            <span><i class="fas fa-phone"></i> +33 6 18 78 93 40</span>
             <span>patrick.marmaroli@gmail.com</span>
             <span><i class="fab fa-linkedin"></i> linkedin.com/in/pmarmaroli</span>
             <span><i class="fas fa-globe"></i> pmarmaroli.github.io</span>
@@ -107,6 +110,19 @@
         <div class="entry">
             <div class="entry-head">
                 <span class="entry-role">Co-Founder</span>
+                <span class="entry-date">Feb 2016 — Present</span>
+            </div>
+            <div class="entry-org">Hidacs Sàrl · Switzerland · Remote — side project; full-time Oct–Dec 2021 and since Aug 2026</div>
+            <ul>
+                <li>Freelance missions in speech &amp; audio ML, signal processing and production software: feasibility studies, proofs of concept, model improvement and end-to-end builds.</li>
+                <li>Business platform suite (ERP, e-signature, timesheets, single sign-on) for a multi-company railway infrastructure alliance.</li>
+                <li>Phoneme recognition models for clinical speech therapy (Wav2Vec2, LoRA / DoRA fine-tuning).</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <span class="entry-role">Co-Founder</span>
                 <span class="entry-date">Oct 2023 — Present</span>
             </div>
             <div class="entry-org">Vocametrix OÜ · Tallinn, Estonia</div>
@@ -117,23 +133,12 @@
 
         <div class="entry">
             <div class="entry-head">
-                <span class="entry-role">Co-Founder</span>
-                <span class="entry-date">Feb 2016 — Present</span>
-            </div>
-            <div class="entry-org">Hidacs Sàrl · Switzerland · Remote</div>
-            <ul>
-                <li>Freelance missions in speech &amp; audio ML, signal processing and production software — feasibility studies, proofs of concept, model improvement and end-to-end builds. Selected: business platform suite (ERP, e-signature, timesheets, single sign-on) for a multi-company railway infrastructure alliance; phoneme recognition models for clinical speech therapy.</li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <div class="entry-head">
                 <span class="entry-role">Senior Audio Engineer</span>
                 <span class="entry-date">Jan 2022 — Jul 2026</span>
             </div>
             <div class="entry-org">Microsoft (Skype/Teams) · Tallinn, Estonia</div>
             <ul>
-                <li>Developed PyTorch-based audio quality models for evaluating audio signals quality across diverse acoustic environments.</li>
+                <li>Developed PyTorch-based models to evaluate audio signal quality across diverse acoustic environments.</li>
                 <li>Designed automated tools for large-scale audio and video data analysis, generating comprehensive evaluation reports.</li>
                 <li>Conducted acoustic laboratory measurements and experimental validation to support research on audio conferencing quality.</li>
             </ul>
@@ -158,7 +163,6 @@
             <div class="entry-org">HEPIA (HES-SO Geneva) · Geneva, Switzerland</div>
             <ul>
                 <li>Contributed to the "EARSENS" research project, developing signal processing algorithms to repurpose loudspeakers as safety sensors for privacy-preserving indoor activity detection.</li>
-                <li>Co-authored "Towards the detection and classification of indoor events using a loudspeaker," published in Applied Acoustics (January 2023).</li>
             </ul>
         </div>
 
@@ -203,6 +207,14 @@
     </section>
 
     <section class="section">
+        <div class="section-heading">Selected Patents &amp; Publications</div>
+        <div class="skills-row">US Patent 10,149,074 — Hearing assistance system (2018)</div>
+        <div class="skills-row">US Patent 9,510,090 — Device and method for capturing and processing voice (2016)</div>
+        <div class="skills-row">Virtual speech therapist: a clinician-in-the-loop AI speech therapy agent for personalized and supervised therapy — arXiv:2605.01101 (2026)</div>
+        <div class="skills-row">Towards the detection and classification of indoor events using a loudspeaker — Applied Acoustics (2023)</div>
+    </section>
+
+    <section class="section">
         <div class="section-heading">Education</div>
         <div class="edu-entry">
             <div class="entry-head"><span class="entry-role">PhD, Acoustics &amp; Audio Signal Processing</span><span class="entry-date">2008 — 2013</span></div>
@@ -210,38 +222,24 @@
             <div class="thesis">Thesis: Bimodal Sound Source Tracking Applied to Road Traffic Monitoring</div>
         </div>
         <div class="edu-entry">
-            <div class="entry-head"><span class="entry-role">Master Thesis in Signal Processing</span><span class="entry-date">2007 — 2008</span></div>
+            <div class="entry-head"><span class="entry-role">M.Sc. in Signal Processing</span><span class="entry-date">2007 — 2008</span></div>
             <div class="entry-org">Université du Sud Toulon-Var · France</div>
             <div class="thesis">Signal processing, psychoacoustics, and trajectography</div>
         </div>
         <div class="edu-entry">
-            <div class="entry-head"><span class="entry-role">Software Engineering Degree</span><span class="entry-date">2005 — 2007</span></div>
+            <div class="entry-head"><span class="entry-role">Engineering Degree (Diplôme d'ingénieur), Software</span><span class="entry-date">2005 — 2007</span></div>
             <div class="entry-org">ISEN Toulon · France</div>
         </div>
     </section>
 
-    <div class="two-col">
-        <div class="section">
-            <div class="section-heading">Skills</div>
-            <div class="skills-row"><b>Core:</b> Speech &amp; Audio ML · Signal Processing &amp; Acoustic Measurement · Production Software · AI-Assisted Development</div>
-            <div class="skills-row"><b>Audio &amp; DSP:</b> Speech Recognition, Phoneme Recognition, POLQA / MOS, MATLAB, Web Audio API, FFT Analysis, GCC-PHAT, HRTF</div>
-            <div class="skills-row"><b>AI &amp; ML:</b> PyTorch, Wav2Vec2, LoRA / DoRA Fine-Tuning, MLflow, DVC, Scikit-learn, YAMNet, LLM APIs (Claude, GPT), Azure Cognitive Services</div>
-            <div class="skills-row"><b>Web &amp; Cloud:</b> React, Next.js, Node.js/Express, Azure, PostgreSQL, Docker, CI/CD</div>
-            <div class="skills-row"><b>Security:</b> AES Encryption, Privacy-Preserving AI, GDPR Compliance</div>
-        </div>
-        <div class="section">
-            <div class="section-heading">Languages</div>
-            <div class="skills-row"><b>French:</b> Native</div>
-            <div class="skills-row"><b>English:</b> C1 Advanced</div>
-
-            <div class="section-heading" style="margin-top: 4mm;">Personal Information</div>
-            <div class="skills-row">Nationality: French</div>
-            <div class="skills-row">Married, 6 children</div>
-            <div class="skills-row">Fully remote from the Geneva area (Switzerland / France)</div>
-        </div>
-    </div>
-
-    <div class="footer-note">Up-to-date details at pmarmaroli.github.io</div>
+    <section class="section">
+        <div class="section-heading">Skills</div>
+        <div class="skills-row"><b>Core:</b> Speech &amp; Audio ML · Signal Processing &amp; Acoustic Measurement · Production Software · AI-Assisted Development</div>
+        <div class="skills-row"><b>Audio &amp; DSP:</b> Speech Recognition, Phoneme Recognition, POLQA / MOS, MATLAB, GCC-PHAT, HRTF</div>
+        <div class="skills-row"><b>AI &amp; ML:</b> PyTorch, Wav2Vec2, LoRA / DoRA Fine-Tuning, MLflow, DVC, Scikit-learn, YAMNet, LLM APIs (Claude, GPT), Azure Cognitive Services</div>
+        <div class="skills-row"><b>Web &amp; Cloud:</b> React, Next.js, Node.js/Express, Azure, PostgreSQL, Docker, CI/CD</div>
+        <div class="skills-row"><b>Languages:</b> French (native), English (C1 Advanced)</div>
+    </section>
 
 </div>
 </body>
